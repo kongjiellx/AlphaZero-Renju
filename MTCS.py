@@ -20,7 +20,6 @@ class MTCS(object):
                         fake_board = copy.deepcopy(self.board)
                         fake_board.add_stone(stone)
                         fake_board.do_turn()
-                        fake_board.paint()
                         while True:
                             out = self.net(nd.array(fake_board.get_feature())).asnumpy()
                             while True:
@@ -30,7 +29,7 @@ class MTCS(object):
                                 if fake_board.is_leagal(st):
                                     fake_board.add_stone(st)
                                     fake_board.do_turn()
-                                    fake_board.paint()
+                                    # fake_board.paint()
                                     break
                             winer = fake_board.is_over(st)
                             if winer == Color.black:

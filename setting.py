@@ -1,5 +1,5 @@
 board_size = 7
-win_num = 2
+win_num = 4
 
 model_path = '../model/renju.params'
 
@@ -10,4 +10,4 @@ lr_period = 50
 lr_decay = 0.2
 weight_decay = 1e-4
 
-rollout_num = 100
+rollout_num = 3
