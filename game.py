@@ -10,7 +10,8 @@ class Game(object):
         while True:
             ipt = input("pos:")
             pos = (int(ipt.strip().split(',')[0]), int(ipt.strip().split(',')[1]))
-            stone = Stone(pos, self.board.do_turn())
+            stone = Stone(pos, self.board.turn)
+            self.board.do_turn()
             self.board.add_stone(stone)
             self.board.paint()
             if self.board.is_over(stone) == Color.black:
@@ -47,15 +48,13 @@ class Board(object):
         return ret
 
     def do_turn(self):
-        ret = self.turn
         if self.turn == Color.black:
             self.turn = Color.white
         else:
             self.turn = Color.black
-        return ret
 
     def get_feature(self):
-        ret = np.zeros(shape=(3, 7, 7))
+        ret = np.zeros(shape=(3, board_size, board_size))
         for i in range(board_size):
             for j in range(board_size):
                 ret[2][i][j] = self.turn
@@ -63,10 +62,10 @@ class Board(object):
                     ret[0][i][j] = 1
                 elif self.board[i][j] == Color.white:
                     ret[1][i][j] = 1
-        return ret
+        return ret.reshape((1, 3, board_size, board_size))
 
     def is_leagal(self, stone):
-        if stone.color != self.turn and self.board[stone.pos[0]][stone.pos[1]] == 0:
+        if stone.color == self.turn and self.board[stone.pos[0]][stone.pos[1]] == 0:
             return True
         else:
             return False

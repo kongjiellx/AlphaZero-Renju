@@ -7,6 +7,8 @@ import utils
 from model import ResNet
 import datetime
 from setting import *
+from MTCS import MTCS
+from game import Board
 
 def train(net, train_data, valid_data, num_epochs, lr, wd, ctx, lr_period, lr_decay):
     trainer = gluon.Trainer(
@@ -56,9 +58,12 @@ if __name__ == '__main__':
     ctx = utils.try_gpu()
     net = ResNet(num_outputs)
     net.initialize(ctx=ctx, init=init.Xavier())
-    net.hybridize()
-    train(net, train_data, valid_data, num_epochs, learning_rate,
-            weight_decay, ctx, lr_period, lr_decay)
-    net.save_params(model_path)
+    # net.hybridize()
+    board = Board()
+    mtcs = MTCS(net=net, board=board)
+    mtcs.get_label()
+    # train(net, train_data, valid_data, num_epochs, learning_rate,
+    #         weight_decay, ctx, lr_period, lr_decay)
+    # net.save_params(model_path)
 
 

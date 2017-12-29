@@ -1,4 +1,4 @@
-board_size = 8
+board_size = 7
 win_num = 2
 
 model_path = '../model/renju.params'

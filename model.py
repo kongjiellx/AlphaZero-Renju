@@ -2,7 +2,7 @@ from mxnet.gluon import nn
 from mxnet import autograd
 from mxnet import nd
 from mxnet import gluon
-from util import utils
+import utils
 from setting import *
 
 
@@ -13,13 +13,13 @@ class Residual(nn.HybridBlock):
         with self.name_scope():
             strides = 1 if same_shape else 2
             self.conv1 = nn.Conv2D(channels, kernel_size=3, padding=1,
-                                  strides=strides)
+                                   strides=strides)
             self.bn1 = nn.BatchNorm()
             self.conv2 = nn.Conv2D(channels, kernel_size=3, padding=1)
             self.bn2 = nn.BatchNorm()
             if not same_shape:
                 self.conv3 = nn.Conv2D(channels, kernel_size=1,
-                                      strides=strides)
+                                       strides=strides)
 
     def hybrid_forward(self, F, x):
         out = F.relu(self.bn1(self.conv1(x)))
@@ -60,6 +60,7 @@ class ResNet(nn.HybridBlock):
         for i, b in enumerate(self.net):
             out = b(out)
             if self.verbose:
-                print('Block %d output: %s'%(i+1, out.shape))
+                print('Block %d output: %s' % (i + 1, out.shape))
+        out = F.softmax(out)
+        # print(out)
         return out
-
