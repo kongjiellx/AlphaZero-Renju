@@ -135,7 +135,11 @@ class Board(object):
             i += 1
             j -= 1
 
-        return 0
+        for i in range(self.size):
+            for j in range(self.size):
+                if self.board[i][j] == 0:
+                    return 0
+        return 2
 
 
 if __name__ == "__main__":

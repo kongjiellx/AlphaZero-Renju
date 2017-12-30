@@ -10,4 +10,4 @@ lr_period = 50
 lr_decay = 0.2
 weight_decay = 1e-4
 
-rollout_num = 3
+rollout_num = 10

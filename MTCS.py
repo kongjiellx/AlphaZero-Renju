@@ -34,8 +34,13 @@ class MTCS(object):
                             winer = fake_board.is_over(st)
                             if winer == Color.black:
                                 label[i][j] += 1
+                                print "black win"
                                 break
                             elif winer == Color.white:
+                                print "white win"
+                                break
+                            elif winer == 2:
+                                print "no one win"
                                 break
         print(label)
         # label = label.as_in_context(ctx)
