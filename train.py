@@ -60,7 +60,7 @@ if __name__ == '__main__':
     net.initialize(ctx=ctx, init=init.Xavier())
     # net.hybridize()
     board = Board()
-    mtcs = MTCS(net=net, board=board)
+    mtcs = MTCS(net=net, board=board, ctx=ctx)
     mtcs.get_label()
     # train(net, train_data, valid_data, num_epochs, learning_rate,
     #         weight_decay, ctx, lr_period, lr_decay)

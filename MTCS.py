@@ -21,7 +21,7 @@ class MTCS(object):
                         fake_board.add_stone(stone)
                         fake_board.do_turn()
                         while True:
-                            out = self.net(nd.array(fake_board.get_feature())).asnumpy()
+                            out = self.net(nd.array(fake_board.get_feature(), ctx=ctx)).asnumpy()
                             while True:
                                 pred = np.random.choice(num_outputs, 1, p=out.reshape(num_outputs))
                                 pos = (int(pred / board_size), int(pred % board_size))
