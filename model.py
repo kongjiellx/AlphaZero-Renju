@@ -36,22 +36,22 @@ class ResNet(nn.HybridBlock):
         with self.name_scope():
             net = self.net = nn.HybridSequential()
             # block 1
-            net.add(nn.Conv2D(channels=8, kernel_size=3, strides=1, padding=1))
+            net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1, padding=1))
             net.add(nn.BatchNorm())
             net.add(nn.Activation(activation='relu'))
             # block 2
-            for _ in range(3):
-                net.add(Residual(channels=8))
-            # block 3
-            net.add(Residual(channels=16, same_shape=False))
-            for _ in range(2):
+            for _ in range(1):
                 net.add(Residual(channels=16))
-            # block 4
+            # block 3
             net.add(Residual(channels=32, same_shape=False))
-            for _ in range(2):
+            for _ in range(1):
                 net.add(Residual(channels=32))
+            # # block 4
+            # net.add(Residual(channels=32, same_shape=False))
+            # for _ in range(2):
+            #     net.add(Residual(channels=32))
             # block 5
-            net.add(nn.AvgPool2D(pool_size=2))
+            net.add(nn.AvgPool2D(pool_size=3))
             net.add(nn.Flatten())
             net.add(nn.Dense(num_classes))
 
@@ -61,6 +61,6 @@ class ResNet(nn.HybridBlock):
             out = b(out)
             if self.verbose:
                 print('Block %d output: %s' % (i + 1, out.shape))
-        out = F.softmax(out)
+        # out = F.softmax(out)
         # print(out)
         return out

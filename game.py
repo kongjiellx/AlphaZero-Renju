@@ -56,7 +56,10 @@ class Board(object):
         ret = np.zeros(shape=(3, board_size, board_size))
         for i in range(board_size):
             for j in range(board_size):
-                ret[2][i][j] = self.turn
+                if self.turn == Color.black:
+                    ret[2][i][j] = 0
+                elif self.turn == Color.white:
+                    ret[2][i][j] = 1
                 if self.board[i][j] == Color.black:
                     ret[0][i][j] = 1
                 elif self.board[i][j] == Color.white:
