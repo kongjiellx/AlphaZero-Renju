@@ -5,6 +5,10 @@ import copy
 from mxnet import nd
 
 
+def softmax(x):
+    return np.exp(x) / np.sum(np.exp(x))
+
+
 class MTCS(object):
     def __init__(self, net, board, ctx):
         self.net = net
@@ -15,38 +19,39 @@ class MTCS(object):
         label = np.zeros(shape=(self.board.size, self.board.size))
         for i in range(self.board.size):
             for j in range(self.board.size):
+                f_board = copy.deepcopy(self.board)
                 stone = Stone((i, j), self.board.turn)
-                if self.board.is_leagal(stone):
+                true_status = f_board.step(stone)
+                if true_status == 0:
                     for n in range(rollout_num):
-                        fake_board = copy.deepcopy(self.board)
-                        fake_board.add_stone(stone)
-                        fake_board.do_turn()
+                        fake_board = copy.deepcopy(f_board)
                         while True:
-                            out = self.net(nd.array(fake_board.get_feature(), ctx=self.ctx)).asnumpy()
-                            while True:
-                                pred = np.random.choice(num_outputs, 1, p=out.reshape(num_outputs))
-                                pos = (int(pred / board_size), int(pred % board_size))
-                                st = Stone(pos, fake_board.turn)
-                                if fake_board.is_leagal(st):
-                                    fake_board.add_stone(st)
-                                    fake_board.do_turn()
-                                    # fake_board.paint()
-                                    break
-                            winer = fake_board.is_over(st)
-                            if winer == Color.black:
+                            out = self.net(nd.array(fake_board.get_feature(), ctx=self.ctx)).asnumpy().reshape(
+                                num_outputs)
+                            pred = np.random.choice(num_outputs, 1, p=softmax(out))
+                            # pred = np.argmax(out)
+                            pos = (int(pred / board_size), int(pred % board_size))
+                            st = Stone(pos, fake_board.turn)
+                            status = fake_board.step(st)
+                            if status == 0:
+                                # print('go on')
+                                continue
+                            elif status == 2:
+                                # print("no one win")
+                                break
+                            elif status == stone.color:
+                                # print("%s win" % ("black" if stone.color == Color.black else "white"))
                                 label[i][j] += 1
-                                print("black win")
                                 break
-                            elif winer == Color.white:
-                                print("white win")
+                            elif status == -stone.color:
+                                label[i][j] -= 1
                                 break
-                            elif winer == 2:
-                                print("no one win")
-                                break
-        print(label)
-        # label = label.as_in_context(ctx)
-        # with autograd.record():
-        #     output = net(data.as_in_context(ctx))
-        #     loss = softmax_cross_entropy(output, label)
-        # loss.backward()
-        # pass
+                elif true_status == 2:
+                    continue
+                elif true_status == stone.color:
+                    label[i][j] += rollout_num
+                elif true_status == -stone.color:
+                    label[i][j] -= rollout_num
+        # print("%s: %s" % ("black" if self.board.turn == Color.black else "white", label))
+        label = softmax(label.reshape(1, num_outputs))
+        return label

@@ -8,11 +8,12 @@ from model import ResNet
 import datetime
 from setting import *
 from MTCS import MTCS
-from game import Board
+from game import Board, Stone, Color
+
 
 def train(net, train_data, valid_data, num_epochs, lr, wd, ctx, lr_period, lr_decay):
     trainer = gluon.Trainer(
-            net.collect_params(), 'sgd', {'learning_rate': lr, 'momentum': 0.9, 'wd': wd})
+        net.collect_params(), 'sgd', {'learning_rate': lr, 'momentum': 0.9, 'wd': wd})
 
     softmax_cross_entropy = gluon.loss.SoftmaxCrossEntropyLoss()
 
@@ -53,17 +54,46 @@ def train(net, train_data, valid_data, num_epochs, lr, wd, ctx, lr_period, lr_de
         print(epoch_str + time_str + ', lr ' + str(trainer.learning_rate))
         net.save_params(model_path)
 
-if __name__ == '__main__':
 
+if __name__ == '__main__':
+    softmax_cross_entropy = gluon.loss.SoftmaxCrossEntropyLoss(sparse_label=False)
     ctx = utils.try_gpu()
     net = ResNet(num_outputs)
     net.initialize(ctx=ctx, init=init.Xavier())
-    # net.hybridize()
-    board = Board()
-    mtcs = MTCS(net=net, board=board, ctx=ctx)
-    mtcs.get_label()
+    net.hybridize()
+    trainer = gluon.Trainer(
+        net.collect_params(), 'sgd', {'learning_rate': learning_rate, 'momentum': 0.9, 'wd': weight_decay})
+    game_num = 0
+    while True:
+        game_num += 1
+        board = Board()
+        print("game %s go!" % game_num)
+        while True:
+            mtcs = MTCS(net=net, board=board, ctx=ctx)
+            out = mtcs.get_label()
+            with autograd.record():
+                pred = net(nd.array(board.get_feature(), ctx=ctx))
+                loss = softmax_cross_entropy(pred, nd.array(out, ctx))
+            loss.backward()
+            trainer.step(1)
+            # print(pred.reshape((board_size, board_size)))
+            pred = np.argmax(pred.asnumpy().reshape(num_outputs))
+            pos = (int(pred / board_size), int(pred % board_size))
+            st = Stone(pos, board.turn)
+            status = board.step(st)
+            board.paint()
+            if status == Color.black:
+                print("black win")
+                break
+            elif status == Color.white:
+                print("white win")
+                break
+            elif status == 2:
+                print("no one win")
+                break
+        if game_num % 100 == 0:
+            net.save_params(model_path)
+
     # train(net, train_data, valid_data, num_epochs, learning_rate,
     #         weight_decay, ctx, lr_period, lr_decay)
     # net.save_params(model_path)
-
-

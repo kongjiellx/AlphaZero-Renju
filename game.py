@@ -11,12 +11,11 @@ class Game(object):
             ipt = input("pos:")
             pos = (int(ipt.strip().split(',')[0]), int(ipt.strip().split(',')[1]))
             stone = Stone(pos, self.board.turn)
-            self.board.do_turn()
-            self.board.add_stone(stone)
+            status = self.board.step(stone)
             self.board.paint()
-            if self.board.is_over(stone) == Color.black:
+            if status == Color.black:
                 print("BLACK WIN!")
-            elif self.board.is_over(stone) == Color.white:
+            elif status == Color.white:
                 print("WHITE WIN!")
 
 
@@ -90,7 +89,13 @@ class Board(object):
             strs += ' '.join(row) + '\n'
         print(strs)
 
-    def is_over(self, last_stone):
+    def step(self, last_stone):
+        pos = last_stone.pos
+        if self.board[pos[0]][pos[1]] != 0:
+            return -last_stone.color
+        self.add_stone(last_stone)
+        self.do_turn()
+
         num = 0
         for i in range(self.size):
             if self.board[last_stone.pos[0]][i] == last_stone.color:
@@ -121,19 +126,19 @@ class Board(object):
                 num = 0
             i += 1
             j += 1
-
         num = 0
-        i = last_stone.pos[0] - min(last_stone.pos)
-        j = last_stone.pos[1] - min(last_stone.pos)
-        while i < self.size and j > 0:
+        all = sum(last_stone.pos)
+        i = min(self.size - 1, all)
+        j = all - i
+        while 0 <= i < self.size and self.size > j >= 0:
             if self.board[i][j] == last_stone.color:
                 num += 1
                 if num >= self.win_num:
                     return last_stone.color
             else:
                 num = 0
-            i += 1
-            j -= 1
+            i -= 1
+            j += 1
 
         for i in range(self.size):
             for j in range(self.size):
