@@ -65,20 +65,23 @@ if __name__ == '__main__':
         net.collect_params(), 'sgd', {'learning_rate': learning_rate, 'momentum': 0.9, 'wd': weight_decay})
     game_num = 0
     while True:
+        train_loss = 0
         game_num += 1
         board = Board()
         print("game %s go!" % game_num)
         while True:
             mtcs = MTCS(net=net, board=board, ctx=ctx)
-            out = mtcs.get_label()
+            out = mtcs.get_random()
             with autograd.record():
                 pred = net(nd.array(board.get_feature(), ctx=ctx))
                 loss = softmax_cross_entropy(pred, nd.array(out, ctx))
             loss.backward()
+            train_loss += nd.mean(loss).asscalar()
             trainer.step(1)
-            # print(pred.reshape((board_size, board_size)))
+            print(pred.asnumpy().reshape(num_outputs))
             pred = np.argmax(pred.asnumpy().reshape(num_outputs))
             pos = (int(pred / board_size), int(pred % board_size))
+            print("%s: %s" % ("black" if board.turn == Color.black else "white", pos))
             st = Stone(pos, board.turn)
             status = board.step(st)
             board.paint()
@@ -91,6 +94,7 @@ if __name__ == '__main__':
             elif status == 2:
                 print("no one win")
                 break
+        print("loss: %s" % train_loss)
         if game_num % 100 == 0:
             net.save_params(model_path)
 
