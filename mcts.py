@@ -85,7 +85,7 @@ class MTCS(object):
             v = node.expand()
             node.backup(v, node.board.turn)
         ret = [0] * board_size ** 2
-        for idx, n in node.nodes.items():
+        for idx, n in self.root.nodes.items():
             ret[idx] = n.inEdge.N
         return np.array(ret) ** (1.0 / self.T) / sum(np.array(ret) ** (1.0 / self.T))
 

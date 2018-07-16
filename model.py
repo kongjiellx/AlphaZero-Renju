@@ -16,10 +16,13 @@ class ResNet(nn.HybridBlock):
             net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1))
             net.add(nn.BatchNorm())
             net.add(nn.Activation(activation='relu'))
+            net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1))
+            net.add(nn.BatchNorm())
+            net.add(nn.Activation(activation='relu'))
             net.add(nn.AvgPool2D(pool_size=4))
             net.add(nn.Flatten())
-        self.p = nn.Dense(num_classes)
-        self.v = nn.Dense(1)
+            self.p = nn.Dense(num_classes)
+            self.v = nn.Dense(1)
 
     def hybrid_forward(self, F, x):
         out = x

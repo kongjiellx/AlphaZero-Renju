@@ -16,7 +16,7 @@ class MCTSAgent(object):
         self.mtcs = MTCS(net, board)
 
     def step(self, board):
-        ps = self.mtcs.simulate(10)
+        ps = self.mtcs.simulate(200)
         illegal_idx = board.illegal_idx
         for i in illegal_idx:
             ps[i] = 0

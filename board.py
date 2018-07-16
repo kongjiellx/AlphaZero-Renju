@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# encoding: utf-8
 from setting import *
 import numpy as np
 import random
