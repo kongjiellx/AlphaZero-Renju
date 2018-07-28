@@ -10,16 +10,12 @@ class ResNet(nn.HybridBlock):
         self.verbose = verbose
         with self.name_scope():
             net = self.net = nn.HybridSequential()
-            net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1, padding=1))
-            net.add(nn.BatchNorm())
-            net.add(nn.Activation(activation='relu'))
             net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1))
             net.add(nn.BatchNorm())
+            # net.add(nn.Activation(activation='relu'))
+            # net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1))
+            # net.add(nn.BatchNorm())
             net.add(nn.Activation(activation='relu'))
-            net.add(nn.Conv2D(channels=16, kernel_size=3, strides=1))
-            net.add(nn.BatchNorm())
-            net.add(nn.Activation(activation='relu'))
-            net.add(nn.AvgPool2D(pool_size=4))
             net.add(nn.Flatten())
             self.p = nn.Dense(num_classes)
             self.v = nn.Dense(1)
@@ -30,4 +26,4 @@ class ResNet(nn.HybridBlock):
             out = b(out)
             if self.verbose:
                 print('Block %d output: %s' % (i + 1, out.shape))
-        return [self.p(out), self.v(out)]
+        return [F.softmax(self.p(out)), self.v(out)]

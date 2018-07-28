@@ -15,10 +15,9 @@ class Node(object):
         self.inEdge = inEdge
 
     def evaluate(self):
-        ps, v = self.net(nd.array(np.expand_dims(self.board.get_feature(), axis=0)))
-        # print(ps, v)
-        # ps = [1.0 / board_size ** 2] * board_size ** 2
-        # v = 0
+        feature = np.expand_dims(self.board.get_feature(), axis=0)
+        feature = nd.array(feature)
+        ps, v = self.net(feature)
         return ps.asnumpy()[0], v.asnumpy()[0][0]
 
     def select(self):

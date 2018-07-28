@@ -43,7 +43,7 @@ class Game(object):
             o_ps, x_ps = [], []
             o_v, x_v = [], []
             winner = None
-            while len(board.illegal_idx) < 36:
+            while True:
                 o_data.append(board.get_feature())
                 ps, o_stone = agent.step(board)
                 o_ps.append(ps)
@@ -53,6 +53,9 @@ class Game(object):
                     print("O WIN!")
                     winner = Player.O
                     break
+                elif len(board.illegal_idx) >= board_size ** 2:
+                    print("NO WINER!")
+                    break
                 x_data.append(board.get_feature())
                 ps, x_stone = agent.step(board)
                 x_ps.append(ps)
@@ -61,6 +64,9 @@ class Game(object):
                 if board.get_winer(x_stone) == Player.X:
                     print("X WIN!")
                     winner = Player.X
+                    break
+                elif len(board.illegal_idx) >= board_size ** 2:
+                    print("NO WINER!")
                     break
             if winner == Player.O:
                 o_v = [1] * len(o_data)
