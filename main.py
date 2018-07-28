@@ -9,6 +9,7 @@ from mxnet import nd
 import mxnet as mx
 import numpy as np
 import datetime
+from utils import try_gpu
 
 
 class Game(object):
@@ -22,9 +23,12 @@ class Game(object):
         # print(x, ps, v)
         for i in range(1):
             for data, label in train_data:
+                data = data.as_in_context(try_gpu())
+                label0 = label[0].as_in_context(try_gpu())
+                label1 = label[1].as_in_context(try_gpu())
                 with autograd.record():
                     output = net(data)
-                    loss = softmax_cross_entropy(output[0], label[0]) + l2loss(output[1], label[1])
+                    loss = softmax_cross_entropy(output[0], label0) + l2loss(output[1], label1)
                 loss.backward()
                 trainer.step(batch_size)
                 print("loss: %s" % nd.mean(loss).asscalar())
@@ -32,7 +36,7 @@ class Game(object):
 
     def run(self):
         net = ResNet(board_size ** 2)
-        net.collect_params().initialize(init=init.Xavier(), ctx=mx.cpu())
+        net.collect_params().initialize(init=init.Xavier(), ctx=try_gpu())
         net.hybridize()
         game_num = 0
         while True:

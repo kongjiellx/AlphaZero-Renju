@@ -4,6 +4,7 @@ import numpy as np
 import random
 from board import Stone
 from mxnet import nd
+from utils import try_gpu
 
 
 class Node(object):
@@ -16,7 +17,7 @@ class Node(object):
 
     def evaluate(self):
         feature = np.expand_dims(self.board.get_feature(), axis=0)
-        feature = nd.array(feature)
+        feature = nd.array(feature, ctx=try_gpu())
         ps, v = self.net(feature)
         return ps.asnumpy()[0], v.asnumpy()[0][0]
 
