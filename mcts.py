@@ -2,24 +2,23 @@ from setting import *
 import copy
 import numpy as np
 import random
-from board import Stone
+from board import Stone, Board
 from mxnet import nd
 from utils import try_gpu
 
 
 class Node(object):
-    def __init__(self, board, net, inEdge):
+    def __init__(self, board, inEdge):
         self.board = board
-        self.net = net
         self.edges = {}
         self.nodes = {}
         self.inEdge = inEdge
 
-    def evaluate(self):
+    def evaluate(self, net):
         feature = np.expand_dims(self.board.get_feature(), axis=0)
-        feature = nd.array(feature, ctx=try_gpu())
-        ps, v = self.net(feature)
-        return ps.asnumpy()[0], v.asnumpy()[0][0]
+        feature = nd.array(feature)
+        ps, v = net(feature)
+        return nd.softmax(ps).asnumpy()[0], v.asnumpy()[0][0]
 
     def select(self):
         nb = sum([edge.N for action, edge in self.edges.items()])
@@ -31,24 +30,25 @@ class Node(object):
                 select_action = idx
         return self.nodes[select_action]
 
-    def expand(self):
-        ps, v = self.evaluate()
+    def expand(self, net):
+        ps, v = self.evaluate(net)
         for idx, p in enumerate(ps):
             if idx in self.board.illegal_idx:
                 continue
             self.edges[idx] = Edge(self, p)
             cp_board = copy.deepcopy(self.board)
             pos = (idx // board_size, idx % board_size)
-            self.nodes[idx] = Node(cp_board.step(Stone(pos, cp_board.turn)), self.net, self.edges[idx])
+            self.nodes[idx] = Node(cp_board.step(Stone(pos, cp_board.turn)), self.edges[idx])
         return v
+
 
     def backup(self, v, turn):
         if self.inEdge:  # not root
             self.inEdge.N += 1
             if self.board.turn == turn:
-                self.inEdge.W += v
-            else:
                 self.inEdge.W -= v
+            else:
+                self.inEdge.W += v
             self.inEdge.Q = self.inEdge.W / self.inEdge.N
             self.inEdge.inNode.backup(v, turn)
 
@@ -69,8 +69,8 @@ class Edge(object):
 
 
 class MTCS(object):
-    def __init__(self, net, board):
-        self.root = Node(board, net, None)
+    def __init__(self):
+        self.root = Node(Board(), None)
         self.T = 0.5
 
     def move_to_leaf(self):
@@ -79,10 +79,10 @@ class MTCS(object):
             node = node.select()
         return node
 
-    def simulate(self, simulate_num):
+    def simulate(self, net, simulate_num):
         for i in range(simulate_num):
             node = self.move_to_leaf()
-            v = node.expand()
+            v = node.expand(net)
             node.backup(v, node.board.turn)
         ret = [0] * board_size ** 2
         for idx, n in self.root.nodes.items():

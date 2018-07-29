@@ -26,4 +26,4 @@ class ResNet(nn.HybridBlock):
             out = b(out)
             if self.verbose:
                 print('Block %d output: %s' % (i + 1, out.shape))
-        return [F.softmax(self.p(out)), self.v(out)]
+        return [self.p(out), F.tanh(self.v(out))]
