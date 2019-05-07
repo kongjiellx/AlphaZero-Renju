@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
-from setting import *
+
+import conf
 import numpy as np
 import random
 
@@ -18,8 +19,8 @@ class Stone(object):
 
 class Board(object):
     def __init__(self):
-        self.size = board_size
-        self.win_num = win_num
+        self.size = conf.board_size
+        self.win_num = conf.win_num
         self.turn = Player.O
         self.init_board()
 
@@ -34,9 +35,9 @@ class Board(object):
             self.turn = Player.O
 
     def get_feature(self):
-        ret = np.zeros(shape=(3, board_size, board_size))
-        for i in range(board_size):
-            for j in range(board_size):
+        ret = np.zeros(shape=(3, conf.board_size, conf.board_size))
+        for i in range(conf.board_size):
+            for j in range(conf.board_size):
                 if self.turn == Player.O:
                     ret[2][i][j] = 0
                 elif self.turn == Player.X:
@@ -45,7 +46,7 @@ class Board(object):
                     ret[0][i][j] = 1
                 elif self.board[i][j] == Player.X:
                     ret[1][i][j] = 1
-        return ret.reshape((3, board_size, board_size))
+        return ret.reshape((3, conf.board_size, conf.board_size))
 
     def is_legal(self, stone):
         if stone.player == self.turn and self.board[stone.pos[0]][stone.pos[1]] == 0:
@@ -55,7 +56,7 @@ class Board(object):
 
     def add_stone(self, stone):
         if self.board[stone.pos[0]][stone.pos[1]] != 0:
-            raise BaseException
+            raise RuntimeError("not empty position!")
         else:
             self.board[stone.pos[0]][stone.pos[1]] = stone.player
 
@@ -92,7 +93,7 @@ class Board(object):
         if not self.is_legal(stone):
             raise RuntimeError
         self.add_stone(stone)
-        self.illegal_idx.append(stone.pos[0] * board_size + stone.pos[1])
+        self.illegal_idx.append(stone.pos[0] * conf.board_size + stone.pos[1])
         self.do_turn()
         return self
 
@@ -111,8 +112,3 @@ class Board(object):
                     return stone.player
         return 0
 
-
-
-if __name__ == "__main__":
-    game = Game()
-    game.run()

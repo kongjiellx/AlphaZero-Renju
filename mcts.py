@@ -1,10 +1,8 @@
-from setting import *
 import copy
 import numpy as np
 import random
 from board import Stone, Board
-from mxnet import nd
-from utils import try_gpu
+import conf
 
 
 class Node(object):
@@ -16,15 +14,14 @@ class Node(object):
 
     def evaluate(self, net):
         feature = np.expand_dims(self.board.get_feature(), axis=0)
-        feature = nd.array(feature)
         ps, v = net(feature)
-        return nd.softmax(ps).asnumpy()[0], v.asnumpy()[0][0]
+        return ps[0], v[0][0]
 
     def select(self):
         nb = sum([edge.N for action, edge in self.edges.items()])
         maxQU = -9999
         for idx, edge in self.edges.items():
-            U = CPUCT * edge.P * np.sqrt(nb) / (1 + edge.N)
+            U = conf.CPUCT * edge.P * np.sqrt(nb) / (1 + edge.N)
             if edge.Q + U > maxQU:
                 maxQU = U + edge.Q
                 select_action = idx
@@ -37,10 +34,9 @@ class Node(object):
                 continue
             self.edges[idx] = Edge(self, p)
             cp_board = copy.deepcopy(self.board)
-            pos = (idx // board_size, idx % board_size)
+            pos = (idx // conf.board_size, idx % conf.board_size)
             self.nodes[idx] = Node(cp_board.step(Stone(pos, cp_board.turn)), self.edges[idx])
         return v
-
 
     def backup(self, v, turn):
         if self.inEdge:  # not root
@@ -84,7 +80,7 @@ class MTCS(object):
             node = self.move_to_leaf()
             v = node.expand(net)
             node.backup(v, node.board.turn)
-        ret = [0] * board_size ** 2
+        ret = [0] * conf.board_size ** 2
         for idx, n in self.root.nodes.items():
             ret[idx] = n.inEdge.N
         return np.array(ret) ** (1.0 / self.T) / sum(np.array(ret) ** (1.0 / self.T))
