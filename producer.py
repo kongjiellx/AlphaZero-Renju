@@ -1,6 +1,6 @@
 from board import Board, Player, Stone
-from setting import board_size
 from mcts import MTCS
+import conf
 import numpy as np
 
 
@@ -30,8 +30,8 @@ class Producer(object):
                 o_ps.append(p)
             for i in board.illegal_idx:
                 p[i] = 0
-            idx = np.random.choice(board_size ** 2, p=p)
-            pos = (idx // board_size, idx % board_size)
+            idx = np.random.choice(conf.board_size ** 2, p=p)
+            pos = (idx // conf.board_size, idx % conf.board_size)
             mcts.change_root(idx)
             stone = Stone(pos, board.turn)
             board.step(stone)
@@ -51,7 +51,7 @@ class Producer(object):
                     else:
                         print("X WIN!")
                 break
-            elif len(board.illegal_idx) >= board_size ** 2:
+            elif len(board.illegal_idx) >= conf.board_size ** 2:
                 print("NO WINNER!")
                 return [], [], []
         return o_data + x_data, o_ps + x_ps, o_v + x_v

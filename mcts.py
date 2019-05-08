@@ -14,8 +14,8 @@ class Node(object):
 
     def evaluate(self, net):
         feature = np.expand_dims(self.board.get_feature(), axis=0)
-        ps, v = net(feature)
-        return ps[0], v[0][0]
+        ps, v = net.predict(feature)
+        return ps, v
 
     def select(self):
         nb = sum([edge.N for action, edge in self.edges.items()])

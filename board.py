@@ -35,18 +35,18 @@ class Board(object):
             self.turn = Player.O
 
     def get_feature(self):
-        ret = np.zeros(shape=(3, conf.board_size, conf.board_size))
+        ret = np.zeros(shape=(conf.board_size, conf.board_size, 3))
         for i in range(conf.board_size):
             for j in range(conf.board_size):
                 if self.turn == Player.O:
-                    ret[2][i][j] = 0
+                    ret[i][j][2] = 0
                 elif self.turn == Player.X:
-                    ret[2][i][j] = 1
+                    ret[i][j][2] = 1
                 if self.board[i][j] == Player.O:
-                    ret[0][i][j] = 1
+                    ret[i][j][0] = 1
                 elif self.board[i][j] == Player.X:
-                    ret[1][i][j] = 1
-        return ret.reshape((3, conf.board_size, conf.board_size))
+                    ret[i][j][1] = 1
+        return ret.reshape((conf.board_size, conf.board_size, 3))
 
     def is_legal(self, stone):
         if stone.player == self.turn and self.board[stone.pos[0]][stone.pos[1]] == 0:

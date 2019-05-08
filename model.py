@@ -12,6 +12,8 @@ from tensorflow.keras.layers import (
     Dense
 )
 import conf
+import random
+import numpy as np
 
 
 class Net(object):
@@ -29,29 +31,17 @@ class Net(object):
         net.compile(optimizer='Adam', loss=['categorical_crossentropy', 'mean_squared_error'])
         self.net = net
 
+    def train(self, x, y1, y2):
+        sd = list(zip(x, y1, y2))
+        random.shuffle(sd)
+        x = [d[0] for d in sd]
+        y1 = [d[1] for d in sd]
+        y2 = [d[2] for d in sd]
+        x = np.array(x, dtype=np.float32)
+        y1 = np.array(y1, dtype=np.float32)
+        y2 = np.array(y2, dtype=np.float32)
+        self.net.fit(x=x, y=[y1, y2])
 
-if __name__ == "__main__":
-    import random
-    import numpy as np
-    net = Net()
-    x = []
-    y1 = []
-    y2 = []
-    for i in range(100):
-        ax = np.zeros(shape=(conf.board_size, conf.board_size, 3))
-        for i in range(conf.board_size):
-            for j in range(conf.board_size):
-                if random.randint(0, 1) == 0:
-                    ax[i][j][2] = 0
-                else:
-                    ax[i][j][2] = 1
-                a = random.randint(0, 10)
-                if a == 0:
-                    ax[i][j][0] = 1
-                elif a == 1:
-                    ax[i][j][1] = 1
-        x.append(ax)
-        y1.append([0] * conf.num_outputs)
-        y2.append(random.randint(0, 1))
-
-    net.net.fit(x=np.array(x), y=[np.array(y1), np.array(y2)])
+    def predict(self, x):
+        res = self.net.predict(x)
+        return res[0][0], res[1][0][0]
