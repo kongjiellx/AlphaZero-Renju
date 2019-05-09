@@ -26,7 +26,7 @@ class Net(object):
         x = Flatten()(x)
 
         p = Dense(conf.num_outputs, activation="softmax")(x)
-        v = Dense(1, activation='sigmoid')(x)
+        v = Dense(1, activation='tanh')(x)
         net = Model(inputs=inputs, outputs=[p, v])
         net.compile(optimizer='Adam', loss=['categorical_crossentropy', 'mean_squared_error'])
         self.net = net
@@ -40,7 +40,7 @@ class Net(object):
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
         y2 = np.array(y2, dtype=np.float32)
-        self.net.fit(x=x, y=[y1, y2])
+        self.net.fit(x=x, y=[y1, y2], epochs=100)
 
     def predict(self, x):
         res = self.net.predict(x)

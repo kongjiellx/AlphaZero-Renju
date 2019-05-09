@@ -3,7 +3,6 @@
 
 import conf
 import numpy as np
-import random
 
 
 class Player:
@@ -22,11 +21,9 @@ class Board(object):
         self.size = conf.board_size
         self.win_num = conf.win_num
         self.turn = Player.O
-        self.init_board()
-
-    def init_board(self):
         self.board = np.zeros((self.size, self.size))
         self.illegal_idx = []
+        self.last_pos = None
 
     def do_turn(self):
         if self.turn == Player.O:
@@ -59,19 +56,24 @@ class Board(object):
             raise RuntimeError("not empty position!")
         else:
             self.board[stone.pos[0]][stone.pos[1]] = stone.player
+            self.last_pos = (stone.pos[0], stone.pos[1])
 
     def paint(self):
         strs = ''
         for i in range(self.size):
-            row = []
+            row = ''
             for j in range(self.size):
-                if self.board[i][j] == Player.O:
-                    row.append('O')
+                if (i, j) == self.last_pos and self.board[i][j] == Player.O:
+                    row += 'O)'
+                elif (i, j) == self.last_pos and self.board[i][j] == Player.X:
+                    row += 'X)'
+                elif self.board[i][j] == Player.O:
+                    row += 'O '
                 elif self.board[i][j] == Player.X:
-                    row.append('X')
+                    row += 'X '
                 else:
-                    row.append('-')
-            strs += ' '.join(row) + '\n'
+                    row += '- '
+            strs += row + '\n'
         print(strs)
 
     def count_on_direction(self, stone, xdirection, ydirection):
@@ -91,7 +93,7 @@ class Board(object):
 
     def step(self, stone):
         if not self.is_legal(stone):
-            raise RuntimeError
+            raise RuntimeError("illegal idx")
         self.add_stone(stone)
         self.illegal_idx.append(stone.pos[0] * conf.board_size + stone.pos[1])
         self.do_turn()
