@@ -40,7 +40,7 @@ class Net(object):
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
         y2 = np.array(y2, dtype=np.float32)
-        self.net.fit(x=x, y=[y1, y2], epochs=100)
+        self.net.fit(x=x, y=[y1, y2], epochs=2)
 
     def predict(self, x):
         res = self.net.predict(x)

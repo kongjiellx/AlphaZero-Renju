@@ -1,5 +1,5 @@
 from board import Board, Player, Stone
-from mcts import MTCS
+from mcts import MCTS
 import conf
 import numpy as np
 
@@ -19,7 +19,7 @@ class Producer(object):
 
     def play_a_agme(self, net, paint=False):
         board = Board()
-        mcts = MTCS()
+        mcts = MCTS()
         o_data, x_data = [], []
         o_ps, x_ps = [], []
         while True:
@@ -34,24 +34,24 @@ class Producer(object):
             pos = (idx // conf.board_size, idx % conf.board_size)
             mcts.change_root(idx)
             stone = Stone(pos, board.turn)
-            board.step(stone)
+            is_done, winner = board.step(stone)
             if paint:
-                board.paint()
-            winner = board.get_winer(stone)
-            if winner != 0:
-                if winner == Player.O:
-                    o_v = [1] * len(o_data)
-                    x_v = [-1] * len(x_data)
-                elif winner == Player.X:
-                    o_v = [-1] * len(o_data)
-                    x_v = [1] * len(x_data)
+                print(board)
+            if is_done:
                 if paint:
                     if winner == Player.O:
                         print("O WIN!")
-                    else:
+                    elif winner == Player.X:
                         print("X WIN!")
-                break
-            elif len(board.illegal_idx) >= conf.board_size ** 2:
-                print("NO WINNER!")
-                return [], [], []
-        return o_data + x_data, o_ps + x_ps, o_v + x_v
+                    else:
+                        print("NO WINNER!")
+                if winner == Player.O:
+                    o_v = [1] * len(o_data)
+                    x_v = [-1] * len(x_data)
+                    return o_data + x_data, o_ps + x_ps, o_v + x_v
+                elif winner == Player.X:
+                    o_v = [-1] * len(o_data)
+                    x_v = [1] * len(x_data)
+                    return o_data + x_data, o_ps + x_ps, o_v + x_v
+                else:
+                    return [], [], []

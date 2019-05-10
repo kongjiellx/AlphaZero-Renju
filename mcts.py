@@ -1,89 +1,94 @@
 import copy
 import numpy as np
+import math
 import random
 from board import Stone, Board
 import conf
 
 
 class Node(object):
-    def __init__(self, board, inEdge):
-        self.board = board
-        self.edges = {}
-        self.nodes = {}
-        self.inEdge = inEdge
-
-    def evaluate(self, net):
-        feature = np.expand_dims(self.board.get_feature(), axis=0)
-        ps, v = net.predict(feature)
-        return ps, v
-
-    def select(self):
-        nb = sum([edge.N for action, edge in self.edges.items()])
-        maxQU = -9999
-        for idx, edge in self.edges.items():
-            U = conf.CPUCT * edge.P * np.sqrt(nb) / (1 + edge.N)
-            if edge.Q + U > maxQU:
-                maxQU = U + edge.Q
-                select_action = idx
-        return self.nodes[select_action]
-
-    def expand(self, net):
-        ps, v = self.evaluate(net)
-        for idx, p in enumerate(ps):
-            if idx in self.board.illegal_idx:
-                continue
-            self.edges[idx] = Edge(self, p)
-            cp_board = copy.deepcopy(self.board)
-            pos = (idx // conf.board_size, idx % conf.board_size)
-            self.nodes[idx] = Node(cp_board.step(Stone(pos, cp_board.turn)), self.edges[idx])
-        return v
-
-    def backup(self, v, turn):
-        if self.inEdge:  # not root
-            self.inEdge.N += 1
-            if self.board.turn == turn:
-                self.inEdge.W -= v
-            else:
-                self.inEdge.W += v
-            self.inEdge.Q = self.inEdge.W / self.inEdge.N
-            self.inEdge.inNode.backup(v, turn)
-
-    def isLeaf(self):
-        if len(self.edges) > 0:
-            return False
-        else:
-            return True
-
-
-class Edge(object):
-    def __init__(self, inNode, p):
-        self.inNode = inNode
+    def __init__(self, board, parent, p, is_done, winner):
+        self.parent = parent
         self.N = 0
         self.W = 0
         self.Q = 0
         self.P = p
 
+        self.board = board
+        self.children = {}
+        self.is_done = is_done
+        self.winner = winner
+        self.v = None
 
-class MTCS(object):
+    def select(self):
+        nb = sum([child.N for action, child in self.children.items()])
+        max_qu = -1
+        for idx, child in self.children.items():
+            U = conf.CPUCT * child.P * math.sqrt(nb) / (1 + child.N)
+            if child.Q + U > max_qu:
+                max_qu = U + child.Q
+                select_action = idx
+        print("select idx: %s" % select_action)
+        return self.children[select_action]
+
+    def expand(self, ps):
+        for idx, p in enumerate(ps):
+            if idx in self.board.illegal_idx:
+                continue
+            cp_board = copy.deepcopy(self.board)
+            pos = (idx // conf.board_size, idx % conf.board_size)
+            is_done, winner = cp_board.step(Stone(pos, cp_board.turn))
+            self.children[idx] = Node(cp_board, self, p, is_done, winner)
+
+    def backup(self, v):
+        self.N += 1
+        self.W += v
+        self.Q = self.W / self.N
+        if self.parent is not None:  # not root
+            self.parent.backup(v)
+
+    def is_leaf(self):
+        if len(self.children) > 0:
+            return False
+        else:
+            return True
+
+    def __str__(self):
+        state = self.board.__str__()
+        info = "N: %s, W: %s, Q: %s, P: %s\n" % (self.N, self.W, self.Q, self.P)
+        return state + info
+
+
+class MCTS(object):
     def __init__(self):
-        self.root = Node(Board(), None)
+        self.root = Node(board=Board(), parent=None, p=None, is_done=False, winner=None)
         self.T = 0.5
 
     def move_to_leaf(self):
         node = self.root
-        while not node.isLeaf():
+        while not node.is_leaf():
             node = node.select()
         return node
 
     def simulate(self, net, simulate_num):
         for i in range(simulate_num):
             node = self.move_to_leaf()
-            v = node.expand(net)
-            node.backup(v, node.board.turn)
+            if node.v is not None:
+                v = node.v
+            else:
+                feature = np.expand_dims(node.board.get_feature(), axis=0)
+                ps, v = net.predict(feature)
+                node.v = v
+                # print("ps: %s, v: %s" % (ps, v))
+                node.expand(ps)
+            node.backup(v)
+            # print(node)
         ret = [0] * conf.board_size ** 2
-        for idx, n in self.root.nodes.items():
-            ret[idx] = n.inEdge.N
+        for idx, child in self.root.children.items():
+            ret[idx] = child.N
+        print("ns: %s" % ret)
         return np.array(ret) ** (1.0 / self.T) / sum(np.array(ret) ** (1.0 / self.T))
 
     def change_root(self, action):
-        self.root = self.root.nodes[action]
+        self.root = self.root.children[action]
+

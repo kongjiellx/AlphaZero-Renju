@@ -58,7 +58,7 @@ class Board(object):
             self.board[stone.pos[0]][stone.pos[1]] = stone.player
             self.last_pos = (stone.pos[0], stone.pos[1])
 
-    def paint(self):
+    def __str__(self):
         strs = ''
         for i in range(self.size):
             row = ''
@@ -74,7 +74,7 @@ class Board(object):
                 else:
                     row += '- '
             strs += row + '\n'
-        print(strs)
+        return strs
 
     def count_on_direction(self, stone, xdirection, ydirection):
         i, j = stone.pos
@@ -97,20 +97,25 @@ class Board(object):
         self.add_stone(stone)
         self.illegal_idx.append(stone.pos[0] * conf.board_size + stone.pos[1])
         self.do_turn()
-        return self
+        return self.check_done(stone)
 
-    def get_winer(self, stone):
+    def check_done(self, stone):
         # 四个方向计数 竖 横 左斜 右斜
-        directions = [[(-1, 0), (1, 0)],
-                      [(0, -1), (0, 1)],
-                      [(-1, 1), (1, -1)],
-                      [(-1, -1), (1, 1)]]
-
+        directions = [
+            [(-1, 0), (1, 0)],
+            [(0, -1), (0, 1)],
+            [(-1, 1), (1, -1)],
+            [(-1, -1), (1, 1)],
+        ]
         for axis in directions:
             axis_count = 1
             for xdirection, ydirection in axis:
                 axis_count += self.count_on_direction(stone, xdirection, ydirection)
                 if axis_count >= self.win_num:
-                    return stone.player
-        return 0
+                    return True, stone.player
+        else:
+            if len(self.illegal_idx) >= conf.board_size ** 2:
+                return True, 0
+            else:
+                return False, 0
 
