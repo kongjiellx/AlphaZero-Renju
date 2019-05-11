@@ -18,13 +18,14 @@ class Producer(object):
         return ds, ps, vs
 
     def play_a_agme(self, net, paint=False):
+        steps = 0
         board = Board()
         mcts = MCTS()
         o_data, x_data = [], []
         o_ps, x_ps = [], []
         while True:
             feature = board.get_feature()
-            p = mcts.simulate(net, 200)
+            p = mcts.simulate(net, 200, 1 if steps < conf.explore_steps else 0.1)
             if board.turn == Player.O:
                 o_data.append(feature)
                 o_ps.append(p)
@@ -35,6 +36,7 @@ class Producer(object):
             mcts.change_root(idx)
             stone = Stone(pos, board.turn)
             is_done, winner = board.step(stone)
+            steps += 1
             if paint:
                 print(board)
             if is_done:

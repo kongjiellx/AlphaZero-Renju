@@ -28,7 +28,6 @@ class Node(object):
             if child.Q + U > max_qu:
                 max_qu = U + child.Q
                 select_action = idx
-        print("select idx: %s" % select_action)
         return self.children[select_action]
 
     def expand(self, ps):
@@ -62,7 +61,6 @@ class Node(object):
 class MCTS(object):
     def __init__(self):
         self.root = Node(board=Board(), parent=None, p=None, is_done=False, winner=None)
-        self.T = 0.5
 
     def move_to_leaf(self):
         node = self.root
@@ -70,7 +68,15 @@ class MCTS(object):
             node = node.select()
         return node
 
-    def simulate(self, net, simulate_num):
+    def dirichlet_noise(self, ps):
+        """ Add Dirichlet noise in the root node """
+
+        dim = (ps.shape[0],)
+        new_ps = (1 - conf.dirichlet_esp) * ps + \
+                        conf.dirichlet_esp * np.random.dirichlet(np.full(dim, conf.dirichlet_alpha))
+        return new_ps
+
+    def simulate(self, net, simulate_num, T):
         for i in range(simulate_num):
             node = self.move_to_leaf()
             if node.v is not None:
@@ -79,15 +85,15 @@ class MCTS(object):
                 feature = np.expand_dims(node.board.get_feature(), axis=0)
                 ps, v = net.predict(feature)
                 node.v = v
-                # print("ps: %s, v: %s" % (ps, v))
+                if i == 0:
+                    ps = self.dirichlet_noise(ps)
                 node.expand(ps)
             node.backup(v)
-            # print(node)
         ret = [0] * conf.board_size ** 2
         for idx, child in self.root.children.items():
             ret[idx] = child.N
         print("ns: %s" % ret)
-        return np.array(ret) ** (1.0 / self.T) / sum(np.array(ret) ** (1.0 / self.T))
+        return np.array(ret) ** (1.0 / T) / sum(np.array(ret) ** (1.0 / T))
 
     def change_root(self, action):
         self.root = self.root.children[action]
