@@ -92,7 +92,14 @@ class MCTS(object):
         ret = [0] * conf.board_size ** 2
         for idx, child in self.root.children.items():
             ret[idx] = child.N
-        print("ns: %s" % ret)
+        # print search results
+        print("==========N==========")
+        info = ''
+        for i in range(1, len(ret) + 1):
+            info += str(ret[i - 1]) + ' '
+            if i % conf.board_size == 0:
+                info += '\n'
+        print(info)
         return np.array(ret) ** (1.0 / T) / sum(np.array(ret) ** (1.0 / T))
 
     def change_root(self, action):

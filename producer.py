@@ -26,11 +26,14 @@ class Producer(object):
         while True:
             feature = board.get_feature()
             p = mcts.simulate(net, 200, 1 if steps < conf.explore_steps else 0.1)
+            for i in board.illegal_idx:
+                p[i] = 0
             if board.turn == Player.O:
                 o_data.append(feature)
                 o_ps.append(p)
-            for i in board.illegal_idx:
-                p[i] = 0
+            else:
+                x_data.append(feature)
+                x_ps.append(p)
             idx = np.random.choice(conf.board_size ** 2, p=p)
             pos = (idx // conf.board_size, idx % conf.board_size)
             mcts.change_root(idx)

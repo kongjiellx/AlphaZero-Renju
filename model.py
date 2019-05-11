@@ -44,7 +44,45 @@ class Net(object):
         net.compile(optimizer='Adam', loss=['categorical_crossentropy', 'mean_squared_error'])
         self.net = net
 
+    def data_augmentation(self, xs, ys1, ys2):
+        new_x, new_y1, new_y2 = [], [], []
+        for x, y1, y2 in zip(xs, ys1, ys2):
+            new_x.append(x)
+            new_y1.append(y1)
+            new_y2.append(y2)
+
+            new_x.append(np.rot90(x))
+            new_y1.append(np.rot90(y1.reshape((conf.board_size, conf.board_size))).reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(np.rot90(x, 2))
+            new_y1.append(np.rot90(y1.reshape((conf.board_size, conf.board_size)), 2).reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(np.rot90(x, 3))
+            new_y1.append(np.rot90(y1.reshape((conf.board_size, conf.board_size)), 3).reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(x[::-1, :, :])
+            new_y1.append(y1.reshape((conf.board_size, conf.board_size))[::-1, :].reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(x[:, ::-1, :])
+            new_y1.append(y1.reshape((conf.board_size, conf.board_size))[:, ::-1].reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(np.rot90(x)[::-1, :, :])
+            new_y1.append(np.rot90(y1.reshape((conf.board_size, conf.board_size)))[::-1, :].reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+            new_x.append(np.rot90(x)[:, ::-1, :])
+            new_y1.append(np.rot90(y1.reshape((conf.board_size, conf.board_size)))[:, ::-1].reshape(conf.num_outputs))
+            new_y2.append(y2)
+
+        return new_x, new_y1, new_y2
+
     def train(self, x, y1, y2):
+        x, y1, y2 = self.data_augmentation(x, y1, y2)
         sd = list(zip(x, y1, y2))
         random.shuffle(sd)
         x = [d[0] for d in sd]
@@ -53,7 +91,7 @@ class Net(object):
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
         y2 = np.array(y2, dtype=np.float32)
-        self.net.fit(x=x, y=[y1, y2], epochs=2)
+        self.net.fit(x=x, y=[y1, y2], batch_size=8, epochs=1)
 
     def predict(self, x):
         res = self.net.predict(x)

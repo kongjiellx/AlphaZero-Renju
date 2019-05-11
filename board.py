@@ -43,7 +43,7 @@ class Board(object):
                     ret[i][j][0] = 1
                 elif self.board[i][j] == Player.X:
                     ret[i][j][1] = 1
-        return ret.reshape((conf.board_size, conf.board_size, 3))
+        return ret
 
     def is_legal(self, stone):
         if stone.player == self.turn and self.board[stone.pos[0]][stone.pos[1]] == 0:

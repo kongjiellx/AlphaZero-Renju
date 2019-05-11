@@ -9,7 +9,7 @@ class Main(object):
 
     def run(self):
         while True:
-            x, y1, y2 = self.producer.playn(10, self.net)
+            x, y1, y2 = self.producer.playn(5, self.net)
             if x:
                 self.net.train(x, y1, y2)
 

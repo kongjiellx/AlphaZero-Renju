@@ -5,7 +5,7 @@ num_outputs = board_size ** 2
 
 # model
 model_path = 'model/renju.params'
-residual_blocks = 2
+residual_blocks = 1
 batch_size = 32
 
 # mcts
