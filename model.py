@@ -12,7 +12,6 @@ from tensorflow.keras.layers import (
     Dense
 )
 import conf
-import random
 import numpy as np
 
 
@@ -24,6 +23,17 @@ def residual_block(x):
     t = BatchNormalization()(t)
     t = Activation('relu')(t)
     return x + t
+
+
+def softmax_cross_entropy_with_logits(y_true, y_pred):
+    p = y_pred
+    pi = y_true
+    zero = tf.zeros(shape = tf.shape(pi), dtype=tf.float32)
+    where = tf.equal(pi, zero)
+    negatives = tf.fill(tf.shape(pi), -100.0)
+    p = tf.where(where, negatives, p)
+    loss = tf.nn.softmax_cross_entropy_with_logits(labels = pi, logits = p)
+    return loss
 
 
 class Net(object):
@@ -38,10 +48,11 @@ class Net(object):
             x = residual_block(x)
 
         x = Flatten()(x)
-        p = Dense(conf.num_outputs, activation="softmax")(x)
+        p = Dense(conf.num_outputs)(x)
+        # p = Dense(conf.num_outputs, activation="softmax")(x)
         v = Dense(1, activation='tanh')(x)
         net = Model(inputs=inputs, outputs=[p, v])
-        net.compile(optimizer='Adam', loss=['categorical_crossentropy', 'mean_squared_error'])
+        net.compile(optimizer=keras.optimizers.SGD(lr=0.01, momentum=0.9), loss=[softmax_cross_entropy_with_logits, 'mean_squared_error'])
         self.net = net
 
     def data_augmentation(self, xs, ys1, ys2):
@@ -83,16 +94,18 @@ class Net(object):
 
     def train(self, x, y1, y2):
         x, y1, y2 = self.data_augmentation(x, y1, y2)
-        sd = list(zip(x, y1, y2))
-        random.shuffle(sd)
-        x = [d[0] for d in sd]
-        y1 = [d[1] for d in sd]
-        y2 = [d[2] for d in sd]
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
         y2 = np.array(y2, dtype=np.float32)
+        print(y2)
         self.net.fit(x=x, y=[y1, y2], batch_size=8, epochs=1)
 
     def predict(self, x):
         res = self.net.predict(x)
         return res[0][0], res[1][0][0]
+
+    def save(self, path):
+        self.net.save_weights(path)
+
+    def load(self, path):
+        self.net.load_weights(path)

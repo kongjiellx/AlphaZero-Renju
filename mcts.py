@@ -87,19 +87,28 @@ class MCTS(object):
                 node.v = v
                 if i == 0:
                     ps = self.dirichlet_noise(ps)
+                    print("==========V==========")
+                    print(v)
+                    print("==========ps==========")
+                    info = ''
+                    for i in range(1, len(ps) + 1):
+                        info += "%.2f" % ps[i - 1] + ' '
+                        if i % conf.board_size == 0:
+                            info += '\n'
+                    print(info)
                 node.expand(ps)
             node.backup(v)
         ret = [0] * conf.board_size ** 2
         for idx, child in self.root.children.items():
             ret[idx] = child.N
         # print search results
-        print("==========N==========")
-        info = ''
-        for i in range(1, len(ret) + 1):
-            info += str(ret[i - 1]) + ' '
-            if i % conf.board_size == 0:
-                info += '\n'
-        print(info)
+        # print("==========N==========")
+        # info = ''
+        # for i in range(1, len(ret) + 1):
+            # info += str(ret[i - 1]) + ' '
+            # if i % conf.board_size == 0:
+                # info += '\n'
+        # print(info)
         return np.array(ret) ** (1.0 / T) / sum(np.array(ret) ** (1.0 / T))
 
     def change_root(self, action):
