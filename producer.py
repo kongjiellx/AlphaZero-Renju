@@ -25,9 +25,33 @@ class Producer(object):
         o_ps, x_ps = [], []
         while True:
             feature = board.get_feature()
-            p = mcts.simulate(net, 200, 1 if steps < conf.explore_steps else 0.1)
-            for i in board.illegal_idx:
-                p[i] = 0
+            p = mcts.simulate(
+                net=net,
+                simulate_num=100,
+                T=1 if steps < conf.explore_steps else 0.1,
+                add_dirichlet_noise=True if steps == 0 else False,
+            )
+
+            # debug
+            ps, v = net.predict(np.array([feature]))
+            print("==========V==========")
+            print(v)
+            print("==========ps==========")
+            info = ''
+            for i in range(1, len(ps) + 1):
+                info += "%.2f" % ps[i - 1] + ' '
+                if i % conf.board_size == 0:
+                    info += '\n'
+            print(info)
+            print("==========mcts==========")
+            info = ''
+            for i in range(1, len(p) + 1):
+                info += "%.2f" % p[i - 1] + ' '
+                if i % conf.board_size == 0:
+                    info += '\n'
+            print(info)
+            # debug
+
             if board.turn == Player.O:
                 o_data.append(feature)
                 o_ps.append(p)

@@ -76,26 +76,19 @@ class MCTS(object):
                         conf.dirichlet_esp * np.random.dirichlet(np.full(dim, conf.dirichlet_alpha))
         return new_ps
 
-    def simulate(self, net, simulate_num, T):
+    def simulate(self, net, simulate_num, T, add_dirichlet_noise):
         for i in range(simulate_num):
             node = self.move_to_leaf()
             if node.v is not None:
                 v = node.v
             else:
-                feature = np.expand_dims(node.board.get_feature(), axis=0)
-                ps, v = net.predict(feature)
+                ps, v = net.predict(np.array([node.board.get_feature()]))
                 node.v = v
-                if i == 0:
+                if add_dirichlet_noise:
                     ps = self.dirichlet_noise(ps)
-                    print("==========V==========")
-                    print(v)
-                    print("==========ps==========")
-                    info = ''
-                    for i in range(1, len(ps) + 1):
-                        info += "%.2f" % ps[i - 1] + ' '
-                        if i % conf.board_size == 0:
-                            info += '\n'
-                    print(info)
+                for i in node.board.illegal_idx:
+                    ps[i] = 0
+                ps /= sum(ps)
                 node.expand(ps)
             node.backup(v)
         ret = [0] * conf.board_size ** 2
