@@ -11,7 +11,7 @@ save_every_n_games = 100
 
 # mcts
 CPUCT = 10
-explore_steps = 2
+explore_steps = 100
 dirichlet_esp = 0.25
 dirichlet_alpha = 0.03
 

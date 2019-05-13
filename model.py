@@ -35,10 +35,19 @@ class Net(object):
         for _ in range(conf.residual_blocks):
             x = residual_block(x)
 
-        x = Flatten()(x)
-        p = Dense(conf.num_outputs, activation="softmax")(x)
-        v = Dense(1, activation='tanh')(x)
-        net = Model(inputs=inputs, outputs=[p, v])
+        ph = Conv2D(filters=2, kernel_size=1)(x)
+        ph = BatchNormalization()(ph)
+        ph = Activation('relu')(ph)
+        ph = Flatten()(ph)
+        ph = Dense(conf.num_outputs, activation="softmax")(ph)
+
+        vh = Conv2D(filters=1, kernel_size=1)(x)
+        vh = BatchNormalization()(vh)
+        vh = Activation('relu')(vh)
+        vh = Flatten()(vh)
+        vh = Dense(1, activation='tanh')(vh)
+
+        net = Model(inputs=inputs, outputs=[ph, vh])
         net.compile(optimizer=keras.optimizers.SGD(lr=0.01, momentum=0.9), loss=["categorical_crossentropy", "mean_squared_error"])
         self.net = net
 
