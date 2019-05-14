@@ -1,5 +1,0 @@
-Python 3.5.6
-
-gym                 0.10.9
-gym-renju           0.1.8
-tensorflow          1.12.0
