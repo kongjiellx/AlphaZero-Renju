@@ -10,8 +10,8 @@ batch_size = 32
 save_every_n_games = 100
 
 # mcts
-CPUCT = 10
-explore_steps = 100
+CPUCT = 200
+explore_steps = 2
 dirichlet_esp = 0.25
 dirichlet_alpha = 0.03
 

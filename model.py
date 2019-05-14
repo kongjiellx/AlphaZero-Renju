@@ -16,10 +16,10 @@ import numpy as np
 
 
 def residual_block(x):
-    t = Conv2D(filters=16, kernel_size=3, padding="same")(x)
+    t = Conv2D(filters=32, kernel_size=3, padding="same")(x)
     t = BatchNormalization()(t)
     t = Activation('relu')(t)
-    t = Conv2D(filters=16, kernel_size=3, padding="same")(t)
+    t = Conv2D(filters=32, kernel_size=3, padding="same")(t)
     t = BatchNormalization()(t)
     return Activation('relu')(x + t)
 
@@ -28,7 +28,7 @@ class Net(object):
     def __init__(self):
         inputs = Input(shape=(conf.board_size, conf.board_size, 3))
 
-        x = Conv2D(filters=16, kernel_size=3, padding="same")(inputs)
+        x = Conv2D(filters=32, kernel_size=3, padding="same")(inputs)
         x = BatchNormalization()(x)
         x = Activation('relu')(x)
 
@@ -45,6 +45,7 @@ class Net(object):
         vh = BatchNormalization()(vh)
         vh = Activation('relu')(vh)
         vh = Flatten()(vh)
+        vh = Dense(20, activation='relu')(vh)
         vh = Dense(1, activation='tanh')(vh)
 
         net = Model(inputs=inputs, outputs=[ph, vh])

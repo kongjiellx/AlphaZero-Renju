@@ -27,8 +27,8 @@ class Producer(object):
             feature = board.get_feature()
             p = mcts.simulate(
                 net=net,
-                simulate_num=100,
-                T=1 if steps < conf.explore_steps else 0.1,
+                simulate_num=300,
+                T=1 if steps < conf.explore_steps else 0.5,
                 add_dirichlet_noise=True if steps < conf.explore_steps else False,
             )
 
