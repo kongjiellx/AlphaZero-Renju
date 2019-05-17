@@ -35,14 +35,14 @@ class Board(object):
         ret = np.zeros(shape=(conf.board_size, conf.board_size, 3))
         for i in range(conf.board_size):
             for j in range(conf.board_size):
-                if self.turn == Player.O:
-                    ret[i][j][2] = 0
-                elif self.turn == Player.X:
-                    ret[i][j][2] = 1
                 if self.board[i][j] == Player.O:
                     ret[i][j][0] = 1
                 elif self.board[i][j] == Player.X:
                     ret[i][j][1] = 1
+        if self.turn == Player.O:
+            ret[:, :, 2] = 1
+        elif self.turn == Player.X:
+            ret[:, :, 2] = 0
         return ret
 
     def is_legal(self, stone):
@@ -115,7 +115,7 @@ class Board(object):
                     return True, stone.player
         else:
             if len(self.illegal_idx) >= conf.board_size ** 2:
-                return True, 0
+                return True, None
             else:
-                return False, 0
+                return False, None
 

@@ -14,17 +14,21 @@ class Main(object):
 
     def run(self):
         while True:
-            x, y1, y2 = self.producer.playn(1, self.net)
-            self.game_num += 1
-            if x:
+            self.producer.playn(5, self.net)
+            self.game_num += 5
+            if len(self.producer.data) > conf.sample_num:
+                x, y1, y2 = self.producer.get_sample_data(conf.sample_num)
                 self.net.train(x, y1, y2)
             if self.game_num % conf.save_every_n_games == 0:
                 self.net.save(conf.model_path)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2 and sys.argv[1] == "continue":
-        m = Main(True)
+    if len(sys.argv) == 2:
+        if sys.argv[1] == "continue":
+            m = Main(True)
+        else:
+            raise RuntimeError("error param!")
     else:
         m = Main()
     m.run()

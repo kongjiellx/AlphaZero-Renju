@@ -2,20 +2,39 @@ from board import Board, Player, Stone
 from mcts import MCTS
 import conf
 import numpy as np
+from collections import deque
+import random
 
 
 class Producer(object):
     def __init__(self):
-        self.data = []
+        self.data = deque(maxlen=conf.maxlen)
+
+    def data_augmentation(self, data):
+        new_data = []
+        for x, y1, y2 in data:
+            for i in [1, 2, 3, 4]:
+                new_data.append((
+                    np.rot90(x, i),
+                    np.rot90(y1.reshape((conf.board_size, conf.board_size)), i).reshape(conf.num_outputs),
+                    y2
+                ))
+                new_data.append((
+                    x[::-1, :, :],
+                    y1.reshape((conf.board_size, conf.board_size))[::-1, :].reshape(conf.num_outputs),
+                    y2
+                ))
+        return new_data
+
+    def get_sample_data(self, n):
+        mini_batch = random.sample(self.data, n)
+        return [item[0] for item in mini_batch], \
+            [item[1] for item in mini_batch], \
+            [item[2] for item in mini_batch]
 
     def playn(self, n, net):
-        ds, ps, vs = [], [], []
         for i in range(n):
-            x, y1, y2 = self.play_a_agme(net, True)
-            ds.extend(x)
-            ps.extend(y1)
-            vs.extend(y2)
-        return ds, ps, vs
+            self.play_a_agme(net, True)
 
     def play_a_agme(self, net, paint=False):
         steps = 0
@@ -25,11 +44,12 @@ class Producer(object):
         o_ps, x_ps = [], []
         while True:
             feature = board.get_feature()
-            p = mcts.simulate(
+            p = mcts.search(
+                board=board,
                 net=net,
-                simulate_num=300,
+                simulate_num=conf.simulate_num,
                 T=1 if steps < conf.explore_steps else 0.5,
-                add_dirichlet_noise=True if steps < conf.explore_steps else False,
+                add_dirichlet_noise=True,
             )
 
             # debug
@@ -77,10 +97,15 @@ class Producer(object):
                 if winner == Player.O:
                     o_v = [1] * len(o_data)
                     x_v = [-1] * len(x_data)
-                    return o_data + x_data, o_ps + x_ps, o_v + x_v
                 elif winner == Player.X:
                     o_v = [-1] * len(o_data)
                     x_v = [1] * len(x_data)
-                    return o_data + x_data, o_ps + x_ps, o_v + x_v
                 else:
-                    return [], [], []
+                    o_v = [0] * len(o_data)
+                    x_v = [0] * len(x_data)
+                self.data.extend(
+                    self.data_augmentation(
+                        zip(o_data + x_data, o_ps + x_ps, o_v + x_v)
+                    )
+                )
+                break
