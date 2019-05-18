@@ -40,8 +40,8 @@ class Producer(object):
         steps = 0
         board = Board()
         mcts = MCTS()
-        o_data, x_data = [], []
-        o_ps, x_ps = [], []
+        data = []
+        ps = []
         while True:
             feature = board.get_feature()
             p = mcts.search(
@@ -53,13 +53,13 @@ class Producer(object):
             )
 
             # debug
-            ps, v = net.predict(np.array([feature]))
+            debug_ps, debug_v = net.predict(np.array([feature]))
             print("==========V==========")
-            print(v)
+            print(debug_v)
             print("==========ps==========")
             info = ''
-            for i in range(1, len(ps) + 1):
-                info += "%.2f" % ps[i - 1] + ' '
+            for i in range(1, len(debug_ps) + 1):
+                info += "%.2f" % debug_ps[i - 1] + ' '
                 if i % conf.board_size == 0:
                     info += '\n'
             print(info)
@@ -72,12 +72,9 @@ class Producer(object):
             print(info)
             # debug
 
-            if board.turn == Player.O:
-                o_data.append(feature)
-                o_ps.append(p)
-            else:
-                x_data.append(feature)
-                x_ps.append(p)
+            data.append(feature)
+            ps.append(p)
+
             idx = np.random.choice(conf.board_size ** 2, p=p)
             pos = (idx // conf.board_size, idx % conf.board_size)
             mcts.change_root(idx)
@@ -95,17 +92,14 @@ class Producer(object):
                     else:
                         print("NO WINNER!")
                 if winner == Player.O:
-                    o_v = [1] * len(o_data)
-                    x_v = [-1] * len(x_data)
+                    vs = [Player.O] * len(data)
                 elif winner == Player.X:
-                    o_v = [-1] * len(o_data)
-                    x_v = [1] * len(x_data)
+                    vs = [Player.X] * len(data)
                 else:
-                    o_v = [0] * len(o_data)
-                    x_v = [0] * len(x_data)
+                    vs = [0] * len(data)
                 self.data.extend(
                     self.data_augmentation(
-                        zip(o_data + x_data, o_ps + x_ps, o_v + x_v)
+                        zip(data, ps, vs)
                     )
                 )
                 break

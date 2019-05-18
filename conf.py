@@ -9,7 +9,7 @@ residual_blocks = 1
 batch_size = 32
 save_every_n_games = 100
 l2_c = 1e-4
-lr = 0.001
+lr = 0.0001
 validation_split = 0.2
 
 # mcts

@@ -7,14 +7,17 @@ import conf
 
 
 class Node(object):
-    def __init__(self, parent, p):
+    def __init__(self, parent, p, w, player):
         self.parent = parent
         self.N = 0
-        self.W = 0
-        self.Q = 0
+        self.W = w
         self.P = p
-
+        self.player = player
         self.children = {}
+
+    @property
+    def Q(self):
+        return self.W / (self.N + 1) * self.player
 
     def select(self):
         nb = sum([child.N for action, child in self.children.items()])
@@ -26,15 +29,14 @@ class Node(object):
                 select_action = idx
         return self.children[select_action], select_action
 
-    def expand(self, ps):
+    def expand(self, ps, q, player):
         for idx, p in enumerate(ps):
             if p > 0:
-                self.children[idx] = Node(self, p)
+                self.children[idx] = Node(self, p, q, player)
 
     def backup(self, v):
         self.N += 1
         self.W += v
-        self.Q = self.W / self.N
         if self.parent is not None:  # not root
             self.parent.backup(v)
 
@@ -51,7 +53,7 @@ class Node(object):
 
 class MCTS(object):
     def __init__(self):
-        self.root = Node(parent=None, p=None)
+        self.root = Node(parent=None, p=None, w=0, player=Player.O)
 
     def dirichlet_noise(self, ps):
         """ Add Dirichlet noise in the root node """
@@ -72,17 +74,19 @@ class MCTS(object):
                 node, action = node.select()
                 pos = (action // conf.board_size, action% conf.board_size)
                 is_done, winner = cp_board.step(Stone(pos, cp_board.turn))
-            if is_done and hasattr(node, "v"):
-                v = node.v
+            if is_done:
+                if winner is None:
+                    v = 0
+                else:
+                    v = winner
             else:
                 ps, v = net.predict(np.array([cp_board.get_feature()]))
-                node.v = v
                 if add_dirichlet_noise and i == 0:
                     ps = self.dirichlet_noise(ps)
                 for idx in cp_board.illegal_idx:
                     ps[idx] = 0
                 ps /= sum(ps)
-                node.expand(ps)
+                node.expand(ps, node.Q, cp_board.turn)
             node.backup(v)
         ret = [0] * conf.board_size ** 2
         for idx, child in self.root.children.items():
