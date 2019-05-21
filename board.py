@@ -59,7 +59,7 @@ class Board(object):
             self.last_pos = (stone.pos[0], stone.pos[1])
 
     def __str__(self):
-        strs = ''
+        strs = '\n'
         for i in range(self.size):
             row = ''
             for j in range(self.size):

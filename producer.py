@@ -2,14 +2,11 @@ from board import Board, Player, Stone
 from mcts import MCTS
 import conf
 import numpy as np
-from collections import deque
 import random
+from log_util import producer_logger as logger
 
 
 class Producer(object):
-    def __init__(self):
-        self.data = deque(maxlen=conf.maxlen)
-
     def data_augmentation(self, data):
         new_data = []
         for x, y1, y2 in data:
@@ -26,17 +23,14 @@ class Producer(object):
                 ))
         return new_data
 
-    def get_sample_data(self, n):
-        mini_batch = random.sample(self.data, n)
-        return [item[0] for item in mini_batch], \
-            [item[1] for item in mini_batch], \
-            [item[2] for item in mini_batch]
-
     def playn(self, n, net):
+        data = []
         for i in range(n):
-            self.play_a_agme(net, True)
+            data.extend(self.play_a_agme(net, True))
+        return data
 
     def play_a_agme(self, net, paint=False):
+        logger.info("New game start!")
         steps = 0
         board = Board()
         mcts = MCTS()
@@ -48,29 +42,27 @@ class Producer(object):
                 board=board,
                 net=net,
                 simulate_num=conf.simulate_num,
-                T=1 if steps < conf.explore_steps else 0.5,
+                T=1,
                 add_dirichlet_noise=True,
             )
 
-            # debug
             debug_ps, debug_v = net.predict(np.array([feature]))
-            print("==========V==========")
-            print(debug_v)
-            print("==========ps==========")
+            logger.info("V: %s" % debug_v)
             info = ''
+            info += "NetWork predict probs:\n"
             for i in range(1, len(debug_ps) + 1):
-                info += "%.2f" % debug_ps[i - 1] + ' '
+                info += "%.3f" % debug_ps[i - 1] + ' '
                 if i % conf.board_size == 0:
                     info += '\n'
-            print(info)
-            print("==========mcts==========")
+            logger.info(info)
+
             info = ''
+            info += "MCTS search probs:\n"
             for i in range(1, len(p) + 1):
-                info += "%.2f" % p[i - 1] + ' '
+                info += "%.3f" % p[i - 1] + ' '
                 if i % conf.board_size == 0:
                     info += '\n'
-            print(info)
-            # debug
+            logger.info(info)
 
             data.append(feature)
             ps.append(p)
@@ -82,24 +74,21 @@ class Producer(object):
             is_done, winner = board.step(stone)
             steps += 1
             if paint:
-                print(board)
+                logger.info(board)
             if is_done:
                 if paint:
                     if winner == Player.O:
-                        print("O WIN!")
+                        logger.info("O WIN!")
                     elif winner == Player.X:
-                        print("X WIN!")
+                        logger.info("X WIN!")
                     else:
-                        print("NO WINNER!")
+                        logger.info("NO WINNER!")
                 if winner == Player.O:
                     vs = [Player.O] * len(data)
                 elif winner == Player.X:
                     vs = [Player.X] * len(data)
                 else:
                     vs = [0] * len(data)
-                self.data.extend(
-                    self.data_augmentation(
-                        zip(data, ps, vs)
-                    )
+                return self.data_augmentation(
+                    zip(data, ps, vs)
                 )
-                break

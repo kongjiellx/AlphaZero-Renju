@@ -15,6 +15,7 @@ from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import EarlyStopping
 import conf
 import numpy as np
+from log_util import model_logger as logger
 
 
 def residual_block(x):
@@ -59,7 +60,7 @@ class Net(object):
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
         y2 = np.array(y2, dtype=np.float32)
-        self.net.fit(
+        r = self.net.fit(
             x=x,
             y=[y1, y2],
             batch_size=conf.batch_size,
@@ -67,6 +68,9 @@ class Net(object):
             validation_split=conf.validation_split,
             callbacks=[EarlyStopping()],
         )
+        logger.info("total train loss: %s, total valid loss: %s, classifier train loss: %s, classifier valid loss: %s, regress train loss: %s, regress valid loss: %s" % (
+            r.history["loss"][-1], r.history["val_loss"][-1], r.history["dense_loss"][-1], r.history["val_dense_loss"][-1], r.history["dense_2_loss"][-1], r.history["val_dense_2_loss"][-1]
+        ))
 
     def predict(self, x):
         res = self.net.predict(x)
