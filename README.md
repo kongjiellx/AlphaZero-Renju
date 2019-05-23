@@ -1,5 +1,5 @@
 ## AlphaGoZero-Renju
-References：
+### References：
 1. [A blog explain how mcts works](http://tim.hibal.org/blog/alpha-zero-how-and-why-it-works/)
 2. [AlphaZero connect four](https://medium.com/oracledevs/lessons-from-implementing-alphazero-7e36e9054191), there are someting interesting ideas, like use Q to instead of Z to be training target.
 3. [Some notices about mcts](https://medium.com/oracledevs/lessons-from-implementing-alphazero-7e36e9054191)
@@ -11,6 +11,6 @@ References：
 - tensorflow==2.0.0a0
 - loguru==0.2.5
 
-Training about 24 hours:
-- Each move with 100 mcts simulations:
+### Result
+- Training about 24 hours, each move with 100 mcts simulations:
 ![renju](https://raw.githubusercontent.com/kongjiellx/AlphaGoZero-like-Renju/master/renju.gif)
