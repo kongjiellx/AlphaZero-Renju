@@ -1,11 +1,16 @@
 ## AlphaGoZero-Renju
 References：
 1. [A blog explain how mcts works](http://tim.hibal.org/blog/alpha-zero-how-and-why-it-works/)
-2. https://medium.com/oracledevs/lessons-from-implementing-alphazero-7e36e9054191 AlphaZero connect four，提了一些有意思的思考，比如神经网络拟合Z变成拟合Q
-3. https://zhuanlan.zhihu.com/p/25345778 mcts提了几个值得注意的点
-4. https://github.com/tensorflow/minigo tf项目下面一个谷歌大佬自己的实现（不是官方开源，但是我觉得都挂tf下面了应该不会有bug啥的了吧）
-5. https://github.com/junxiaosong/AlphaZero_Gomoku （https://zhuanlan.zhihu.com/p/32089487 这篇文章对应的代码，但是似乎存在一些bug。比如我认为终局时候返回的z他弄反了。虽然backup的时候他又加了个负号看起来不影响结果。。）
+2. [AlphaZero connect four](https://medium.com/oracledevs/lessons-from-implementing-alphazero-7e36e9054191), there are someting interesting ideas, like use Q to instead of Z to be training target.
+3. [Some notices about mcts](https://medium.com/oracledevs/lessons-from-implementing-alphazero-7e36e9054191)
+4. [tensorflow AGZ implement(NOT an official version of AlphaGo)](https://github.com/tensorflow/minigo)
+5. [A renju program follow AlphaZero](https://github.com/junxiaosong/AlphaZero_Gomoku) [Here](https://zhuanlan.zhihu.com/p/32089487) is a chinese doc about it. I think this implement has some bugs. For example the author compute final z by mistake, but when do backup he add a negative sign, so maybe the result is ok.
 
-训练大概24小时的结果:
-- Each move with 100 MCTS playouts:
+### Requirements
+- python 3.5+
+- tensorflow==2.0.0a0
+- loguru==0.2.5
+
+Training about 24 hours:
+- Each move with 100 mcts simulations:
 ![renju](https://raw.githubusercontent.com/kongjiellx/AlphaGoZero-like-Renju/master/renju.gif)
