@@ -15,7 +15,7 @@ validation_split = 0.2
 # mcts
 simulate_num = 100
 CPUCT = 5
-explore_steps = 2
+explore_steps = 4
 dirichlet_esp = 0.25
 dirichlet_alpha = 1
 

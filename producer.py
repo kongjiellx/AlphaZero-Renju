@@ -42,7 +42,7 @@ class Producer(object):
                 board=board,
                 net=net,
                 simulate_num=conf.simulate_num,
-                T=1,
+                T=1 if steps < conf.explore_steps else 0.5,
                 add_dirichlet_noise=True,
             )
 
