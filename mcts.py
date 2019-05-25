@@ -105,6 +105,9 @@ class MCTS(object):
         return np.array(ret) ** (1.0 / T) / sum(np.array(ret) ** (1.0 / T))
 
     def change_root(self, action):
-        self.root = self.root.children[action]
-        self.root.parent = None
+        if action in self.root.children:
+            self.root = self.root.children[action]
+            self.root.parent = None
+        else:
+            self.root = Node(parent=None, p=None, player=Player.O if self.root.player == Player.X else Player.X)
 
