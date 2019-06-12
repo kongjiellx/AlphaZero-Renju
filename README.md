@@ -10,7 +10,7 @@
 - python 3.5+
 - tensorflow==2.0.0a0
 - loguru==0.2.5
-- pygame==1.9.6 (needed by play.py, trainging doesn't need this.)
+- pygame==1.9.6 (needed by play.py, training doesn't need this.)
 
 ### Results
 - Training about 24 hours, each move with 100 mcts simulations:
