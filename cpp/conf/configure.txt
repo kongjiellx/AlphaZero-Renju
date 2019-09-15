@@ -1,0 +1,3 @@
+game_conf: {
+    board_size: 10
+}

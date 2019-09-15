@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package renju;
+
+message GameConf {
+    int32 board_size = 1;
+    int32 win_num = 2;
+}
+
+message ModelConf {
+    string model_path = 1;
+    int32 residual_blocks = 2;
+    int32 batch_size = 3;
+    int32 save_every_n_games = 4;
+    float l2_c = 5;
+    float lr = 6;
+    float validation_split = 7;
+}
+
+message MctsConf {
+    int32 simulate_num = 1;
+    int32 c_puct = 2;
+    int32 explore_steps = 3;
+    float dirichlet_esp = 4;
+    float dirichlet_alpha = 5;
+}
+
+message DataConf {
+    int32 init_game_num = 1;
+    int32 batch_game_num = 2;
+    string data_path = 3;
+}
+
+message UIConf {
+    int32 background_size = 1;
+    int32 game_area = 2;
+    string background = 3;
+    int32 empty = 4;
+    int32 per_width = 5;
+    int32 stone_radius = 6;
+}
+
+message Configure {
+    GameConf game_conf = 1;
+    ModelConf model_conf = 2;
+    MctsConf mtcs_conf = 3;
+    DataConf data_conf = 4;
+    UIConf ui_conf = 5;
+}
+
