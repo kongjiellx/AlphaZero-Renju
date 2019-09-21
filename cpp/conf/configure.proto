@@ -35,9 +35,6 @@ message UIConf {
     int32 background_size = 1;
     int32 game_area = 2;
     string background = 3;
-    int32 empty = 4;
-    int32 per_width = 5;
-    int32 stone_radius = 6;
 }
 
 message Configure {
