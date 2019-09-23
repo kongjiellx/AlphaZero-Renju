@@ -8,3 +8,4 @@ log
 */bazel-genfiles
 */bazel-out
 */bazel-testlogs
+cpp/tensorflow/*
