@@ -12,16 +12,5 @@ cpp_proto_library(
     deps = [":configure_proto"],
 )
 
-cc_binary(
-    name = "test_conf",
-    srcs = [
-        "test_conf.cpp"
-        ],
-    deps = [
-        ":configure_cc_proto"
-    ],
-    data = [
-        "configure.txt"
-    ]
-)
+exports_files(["configure.txt"])
 

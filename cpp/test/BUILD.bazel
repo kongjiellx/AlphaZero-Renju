@@ -1,0 +1,25 @@
+cc_binary(
+    name = "test_conf",
+    srcs = [
+        "test_conf.cpp"
+        ],
+    deps = [
+        "//conf:configure_cc_proto"
+    ],
+    data = [
+        "//conf:configure.txt"
+    ]
+)
+
+cc_binary(
+    name = "test_board",
+    srcs = [
+        "test_board.cpp"
+        ],
+    deps = [
+        "//:board_lib"
+    ],
+    data = [
+        "//conf:configure.txt"
+    ]
+)

@@ -1,6 +1,6 @@
 game_conf: {
     board_size: 10
-    win_num: 5
+    win_num: 4
 }
 model_conf: {
     model_path: "model/params/h5"

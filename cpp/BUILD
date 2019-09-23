@@ -10,3 +10,15 @@
 #        "@org_tensorflow//tensorflow/core:framework",
 #    ],
 #)
+
+cc_library(
+    name = "board_lib",
+    srcs = [
+        "board.h",
+        "board.cpp"
+    ],
+    deps = [
+        "//conf:configure_cc_proto"
+    ],
+    visibility = ["//test:__pkg__"]
+)

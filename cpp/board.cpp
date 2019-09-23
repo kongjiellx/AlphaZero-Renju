@@ -1,6 +1,7 @@
+#include <iostream>
 #include "board.h"
 
-Board::Board(renju::GameConf &conf) {
+Board::Board(const renju::GameConf &conf) {
     this -> size = conf.board_size();
     this -> win_num = conf.win_num();
     this -> current_player = BLACK;
@@ -76,4 +77,27 @@ int Board::count_on_direction(Stone stone, int xdirection, int ydirection) {
         }
     }
     return count;
+}
+
+void Board::print() {
+    std::cout << "=======board=======" << std::endl;
+    std::string str = "";
+    for (int i = 0; i < size; i ++) {
+        std::string row = "";
+        for (int j = 0; j < size; j ++) {
+            if (i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board[i][j] == BLACK) {
+                row += "O)";
+            } else if(i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board[i][j] == WHITE){
+                row += "X)";
+            } else if(board[i][j] == BLACK){
+                row += "O ";
+            } else if(board[i][j] == WHITE) {
+                row += "X ";
+            } else {
+                row += "- ";
+            }
+        }
+        str += (row + "\n");
+    }
+    std::cout << str;
 }

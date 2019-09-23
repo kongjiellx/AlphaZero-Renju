@@ -36,7 +36,7 @@ private:
     std::tuple<int, int> last_pos;
     std::vector<std::vector<int>> board;
 public:
-    Board(renju::GameConf& conf);
+    Board(const renju::GameConf& conf);
     void do_turn();
     std::vector<std::vector<std::vector<int>>> get_feature();
     bool is_legal(Stone stone);
@@ -44,6 +44,7 @@ public:
     std::tuple<bool, Player > check_done(Stone stone);
     std::tuple<bool, Player > step(Stone stone);
     int count_on_direction(Stone stone, int xdirection, int ydirection);
+    void print();
 };
 
 
