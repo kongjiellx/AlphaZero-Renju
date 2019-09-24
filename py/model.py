@@ -9,7 +9,8 @@ from tensorflow.keras.layers import (
     BatchNormalization,
     Activation,
     Flatten,
-    Dense
+    Dense,
+    Add
 )
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import EarlyStopping
@@ -24,7 +25,8 @@ def residual_block(x):
     t = Activation('elu')(t)
     t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(t)
     t = BatchNormalization()(t)
-    return Activation('elu')(x + t)
+    add = Add()([x, t])
+    return Activation('elu')(add)
 
 
 class Net(object):
@@ -55,7 +57,6 @@ class Net(object):
         net.compile(optimizer=keras.optimizers.SGD(lr=conf.lr, momentum=0.9), loss=["categorical_crossentropy", "mean_squared_error"])
         self.net = net
 
-
     def train(self, x, y1, y2):
         x = np.array(x, dtype=np.float32)
         y1 = np.array(y1, dtype=np.float32)
@@ -81,3 +82,4 @@ class Net(object):
 
     def load(self, path):
         self.net.load_weights(path)
+

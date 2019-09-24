@@ -23,3 +23,16 @@ cc_binary(
         "//conf:configure.txt"
     ]
 )
+
+cc_binary(
+    name = "test_saved_pb",
+    srcs = [
+        "test_saved_pb.cpp"
+        ],
+    deps = [
+        "@org_tensorflow//tensorflow/core:protos_all_cc"
+    ],
+    data = [
+        "saved_model.pb"
+    ]
+)
