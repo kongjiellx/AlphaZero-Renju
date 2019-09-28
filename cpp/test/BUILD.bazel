@@ -1,38 +1,60 @@
 cc_binary(
     name = "test_conf",
     srcs = [
-        "test_conf.cpp"
-        ],
-    deps = [
-        "//conf:configure_cc_proto"
+        "test_conf.cpp",
     ],
     data = [
-        "//conf:configure.txt"
-    ]
+        "//conf:configure.txt",
+    ],
+    deps = [
+        "//conf:configure_cc_proto",
+    ],
 )
 
 cc_binary(
     name = "test_board",
     srcs = [
-        "test_board.cpp"
-        ],
-    deps = [
-        "//:board_lib"
+        "test_board.cpp",
     ],
     data = [
-        "//conf:configure.txt"
-    ]
+        "//conf:configure.txt",
+    ],
+    deps = [
+        "//:board_lib",
+    ],
 )
 
 cc_binary(
     name = "test_saved_pb",
     srcs = [
-        "test_saved_pb.cpp"
-        ],
-    deps = [
-        "@org_tensorflow//tensorflow/core:protos_all_cc"
+        "test_saved_pb.cpp",
     ],
     data = [
-        "saved_model.pb"
-    ]
+        "saved_model.pb",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
+    ],
+)
+
+cc_binary(
+    name = "test_train_example",
+    srcs = [
+        "test_train_example.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)
+
+cc_binary(
+    name = "test_train",
+    srcs = [
+        "test_train.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
 )
