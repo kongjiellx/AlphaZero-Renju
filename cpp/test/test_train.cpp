@@ -49,16 +49,20 @@ int main() {
     auto dense = MatMul(root, flatten, dense_w);
 
     auto loss = ReduceMean(root, Square(root, Sub(root, dense, y)), {0, 1});
-    std::vector<Output> grad_outputs;
-    TF_CHECK_OK(AddSymbolicGradients(root, {loss}, {conv_filter, dense_w}, &grad_outputs));
 
     auto assign_w1 = Assign(root, conv_filter, XavierInit(root, 3, 16, 3));
     auto assign_w2 = Assign(root, dense_w, XavierInit(root, 10 * 10 * 16, 1, 0));
+
+    std::cout << "no grad" << std::endl;
+    std::vector<Output> grad_outputs;
+    AddSymbolicGradients(root, {loss}, {conv_filter, dense_w}, &grad_outputs);
+    std::cout << "grad" << std::endl;
     auto apply_w1 = ApplyGradientDescent(root, conv_filter, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[0]});
     auto apply_w2 = ApplyGradientDescent(root, dense_w, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[1]});
 
     tensorflow::GraphDef def;
     TF_CHECK_OK(root.ToGraphDef(&def));
+    std::cout << "graph" << std::endl;
     ClientSession session(root);
     session.Run({assign_w1, assign_w2}, nullptr);
     std::cout << "done" << std::endl;
