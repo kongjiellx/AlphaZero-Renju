@@ -149,40 +149,6 @@ namespace tensorflow {
     }  // end namespace example
 }  // end namespace tensorflow
 
-namespace {
-
-    bool ParseInt32Flag(tensorflow::StringPiece arg, tensorflow::StringPiece flag,
-                        int32* dst) {
-        if (absl::ConsumePrefix(&arg, flag) && absl::ConsumePrefix(&arg, "=")) {
-            char extra;
-            return (sscanf(arg.data(), "%d%c", dst, &extra) == 1);
-        }
-
-        return false;
-    }
-
-    bool ParseBoolFlag(tensorflow::StringPiece arg, tensorflow::StringPiece flag,
-                       bool* dst) {
-        if (absl::ConsumePrefix(&arg, flag)) {
-            if (arg.empty()) {
-                *dst = true;
-                return true;
-            }
-
-            if (arg == "=true") {
-                *dst = true;
-                return true;
-            } else if (arg == "=false") {
-                *dst = false;
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-}  // namespace
-
 int main(int argc, char* argv[]) {
     tensorflow::example::Options opts;
     tensorflow::example::ConcurrentSteps(&opts, 0);
