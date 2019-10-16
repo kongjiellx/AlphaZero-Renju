@@ -37,35 +37,73 @@ Input XavierInit(Scope scope, int in_chan, int out_chan, int filter_side)
 }
 
 int main() {
-    std::cout << "go" << std::endl;
-    Scope root = Scope::NewRootScope();
-    auto input = Placeholder(root, DT_INT32, Placeholder::Shape({-1, 10, 10, 3}));
-    auto y = Placeholder(root, DT_INT32, Placeholder::Shape({-1, 1}));
-    auto conv_filter = Variable(root, {3, 3, 3, 16}, DT_FLOAT);
-    auto conv = Conv2D(root, input, conv_filter, {1, 1}, "SAME");
-    auto relu = Relu(root, conv);
-    auto flatten = Reshape(root, relu, {-1, 10 * 10 * 16});
-    auto dense_w = Variable(root, PartialTensorShape({10 * 10 * 16, 1}), DT_FLOAT);
-    auto dense = MatMul(root, flatten, dense_w);
+    Scope scope = Scope::NewRootScope();
+    auto x = Placeholder(scope, DT_FLOAT);
+    auto y = Placeholder(scope, DT_FLOAT);
 
-    auto loss = ReduceMean(root, Square(root, Sub(root, dense, y)), {0, 1});
+    // weights init
+    auto w1 = Variable(scope, {3, 3}, DT_FLOAT);
+    auto assign_w1 = Assign(scope, w1, RandomNormal(scope, {3, 3}, DT_FLOAT));
 
-    auto assign_w1 = Assign(root, conv_filter, XavierInit(root, 3, 16, 3));
-    auto assign_w2 = Assign(root, dense_w, XavierInit(root, 10 * 10 * 16, 1, 0));
+    auto w2 = Variable(scope, {3, 2}, DT_FLOAT);
+    auto assign_w2 = Assign(scope, w2, RandomNormal(scope, {3, 2}, DT_FLOAT));
 
-    std::cout << "no grad" << std::endl;
+    auto w3 = Variable(scope, {2, 1}, DT_FLOAT);
+    auto assign_w3 = Assign(scope, w3, RandomNormal(scope, {2, 1}, DT_FLOAT));
+
+// bias init
+    auto b1 = Variable(scope, {1, 3}, DT_FLOAT);
+    auto assign_b1 = Assign(scope, b1, RandomNormal(scope, {1, 3}, DT_FLOAT));
+
+    auto b2 = Variable(scope, {1, 2}, DT_FLOAT);
+    auto assign_b2 = Assign(scope, b2, RandomNormal(scope, {1, 2}, DT_FLOAT));
+
+    auto b3 = Variable(scope, {1, 1}, DT_FLOAT);
+    auto assign_b3 = Assign(scope, b3, RandomNormal(scope, {1, 1}, DT_FLOAT));
+
+    auto layer_1 = Tanh(scope, Add(scope, MatMul(scope, x, w1), b1));
+    auto layer_2 = Tanh(scope, Add(scope, MatMul(scope, layer_1, w2), b2));
+    auto layer_3 = Tanh(scope, Add(scope, MatMul(scope, layer_2, w3), b3));
+
+    // regularization
+    auto regularization = AddN(scope,
+                               std::initializer_list<Input>{L2Loss(scope, w1),
+                                                       L2Loss(scope, w2),
+                                                       L2Loss(scope, w3)});
+    auto loss = Add(scope,
+                    ReduceMean(scope, Square(scope, Sub(scope, layer_3, y)), {0, 1}),
+                    Mul(scope, Cast(scope, 0.01,  DT_FLOAT), regularization));
+    // add the gradients operations to the graph
     std::vector<Output> grad_outputs;
-    AddSymbolicGradients(root, {loss}, {conv_filter, dense_w}, &grad_outputs);
-    std::cout << "grad" << std::endl;
-    auto apply_w1 = ApplyGradientDescent(root, conv_filter, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[0]});
-    auto apply_w2 = ApplyGradientDescent(root, dense_w, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[1]});
+    TF_CHECK_OK(AddSymbolicGradients(scope, {loss}, {w1, w2, w3, b1, b2, b3}, &grad_outputs));
 
-    tensorflow::GraphDef def;
-    TF_CHECK_OK(root.ToGraphDef(&def));
-    std::cout << "graph" << std::endl;
-    ClientSession session(root);
-    session.Run({assign_w1, assign_w2}, nullptr);
-    std::cout << "done" << std::endl;
+    std::cout << "go" << std::endl;
+//    Scope root = Scope::NewRootScope();
+//    auto input = Placeholder(root, DT_INT32);
+//    auto y = Placeholder(root, DT_INT32);
+//
+//    auto dense_w = Variable(root, {10, 1}, DT_FLOAT);
+//    auto dense = MatMul(root, input, dense_w);
+//
+//    auto loss = Sum(root, Square(root, Sub(root, dense, y)), {1});
+//
+////    auto assign_w1 = Assign(root, conv_filter, XavierInit(root, 3, 3, 3));
+////    auto assign_w2 = Assign(root, dense_w, RandomNormal(root, {10, 1}, DT_FLOAT));
+//
+//    std::cout << "no grad" << std::endl;
+//    std::vector<Output> grad_outputs;
+//    auto status = AddSymbolicGradients(root, {loss}, {dense_w}, &grad_outputs);
+////    std::cout << status << std::endl;
+//    std::cout << "grad" << std::endl;
+////    auto apply_w1 = ApplyGradientDescent(root, conv_filter, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[0]});
+////    auto apply_w2 = ApplyGradientDescent(root, dense_w, Cast(root, 0.01,  DT_FLOAT), {grad_outputs[1]});
+////
+////    tensorflow::GraphDef def;
+////    TF_CHECK_OK(root.ToGraphDef(&def));
+////    std::cout << "graph" << std::endl;
+////    ClientSession session(root);
+////    session-.Run({assign_w1, assign_w2}, nullptr);
+//    std::cout << "doweqweeqwene" << std::endl;
     return 0;
 
 //    for (int i = 0; i < 5000; ++i) {
