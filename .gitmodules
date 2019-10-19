@@ -1,0 +1,3 @@
+[submodule "cpp/tensorflow"]
+	path = cpp/tensorflow
+	url = https://github.com/tensorflow/tensorflow.git
