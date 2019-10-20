@@ -61,3 +61,17 @@ cc_binary(
         "@org_tensorflow//tensorflow/core:tensorflow",
     ],
 )
+
+cc_binary(
+    name = "test_cnn",
+    srcs = [
+        "test_cnn.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/cc:client_session",
+        "@org_tensorflow//tensorflow/cc:grad_ops",
+        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)
