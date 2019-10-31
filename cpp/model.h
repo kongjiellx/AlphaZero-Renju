@@ -19,8 +19,7 @@ class Model {
 private:
     Scope scope;
 public:
-    Model(): scope(Scope::NewRootScope()) {
-    };
+    Model(): scope(Scope::NewRootScope()) {};
     void create_graph();
     void train();
     void predict();
