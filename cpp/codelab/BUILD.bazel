@@ -1,0 +1,65 @@
+cc_binary(
+    name = "saved_pb",
+    srcs = [
+        "saved_pb.cpp",
+    ],
+    data = [
+        "saved_model.pb",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
+    ],
+)
+
+cc_binary(
+    name = "train_example",
+    srcs = [
+        "train_example.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)
+
+cc_binary(
+    name = "train",
+    srcs = [
+        "train.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/cc:client_session",
+        "@org_tensorflow//tensorflow/cc:grad_ops",
+        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)
+
+cc_binary(
+    name = "cnn",
+    srcs = [
+        "cnn.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/cc:client_session",
+        "@org_tensorflow//tensorflow/cc:grad_ops",
+        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)
+
+cc_binary(
+    name = "model",
+    srcs = [
+        "model.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/cc:client_session",
+        "@org_tensorflow//tensorflow/cc:grad_ops",
+        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
+)

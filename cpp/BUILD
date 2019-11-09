@@ -29,6 +29,7 @@ cc_library(
         "model.cpp",
         "model.h",
     ],
+    visibility = ["//test:__pkg__"],
     deps = [
         ":tf_utils_lib",
         "@org_tensorflow//tensorflow/cc:cc_ops",

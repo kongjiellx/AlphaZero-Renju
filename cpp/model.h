@@ -18,11 +18,21 @@ using namespace tensorflow::ops;
 class Model {
 private:
     Scope scope;
+    std::unique_ptr<ClientSession> session;
+
+    Output x;
+    Output y;
+    Output assign_w1;
+    Output assign_b1;
+    Output loss;
+    Output apply_w1;
+    Output apply_b1;
+    Output layer_1;
 public:
-    Model(): scope(Scope::NewRootScope()) {};
+    Model(): scope(Scope::NewRootScope()), session(std::unique_ptr<ClientSession>(new ClientSession(scope))) {};
     void create_graph();
     void train();
-    void predict();
+    void predict(std::vector<float> data);
     void load(string path);
     void save(string path);
 };

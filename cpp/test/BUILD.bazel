@@ -25,68 +25,11 @@ cc_binary(
 )
 
 cc_binary(
-    name = "test_saved_pb",
-    srcs = [
-        "test_saved_pb.cpp",
-    ],
-    data = [
-        "saved_model.pb",
-    ],
-    deps = [
-        "@org_tensorflow//tensorflow/core:protos_all_cc",
-    ],
-)
-
-cc_binary(
-    name = "test_train_example",
-    srcs = [
-        "test_train_example.cpp",
-    ],
-    deps = [
-        "@org_tensorflow//tensorflow/cc:cc_ops",
-        "@org_tensorflow//tensorflow/core:tensorflow",
-    ],
-)
-
-cc_binary(
-    name = "test_train",
-    srcs = [
-        "test_train.cpp",
-    ],
-    deps = [
-        "@org_tensorflow//tensorflow/cc:cc_ops",
-        "@org_tensorflow//tensorflow/cc:client_session",
-        "@org_tensorflow//tensorflow/cc:grad_ops",
-        "@org_tensorflow//tensorflow/cc:gradients",
-        "@org_tensorflow//tensorflow/core:tensorflow",
-    ],
-)
-
-cc_binary(
-    name = "test_cnn",
-    srcs = [
-        "test_cnn.cpp",
-    ],
-    deps = [
-        "@org_tensorflow//tensorflow/cc:cc_ops",
-        "@org_tensorflow//tensorflow/cc:client_session",
-        "@org_tensorflow//tensorflow/cc:grad_ops",
-        "@org_tensorflow//tensorflow/cc:gradients",
-        "@org_tensorflow//tensorflow/core:tensorflow",
-    ],
-)
-
-cc_binary(
     name = "test_model",
     srcs = [
         "test_model.cpp",
     ],
     deps = [
-        "@org_tensorflow//tensorflow/cc:cc_ops",
-        "@org_tensorflow//tensorflow/cc:client_session",
-        "@org_tensorflow//tensorflow/cc:grad_ops",
-        "@org_tensorflow//tensorflow/cc:gradients",
-        "@org_tensorflow//tensorflow/core:tensorflow",
+        "//:model_lib",
     ],
 )
-
