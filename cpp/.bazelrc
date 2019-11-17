@@ -1,0 +1,6 @@
+# LLVM, MLIR and TF require C++14.
+build --cxxopt=-std=c++14
+build --host_cxxopt=-std=c++14
+
+# try to fix bazel full build when switch ide and terminal
+# build --incompatible_strict_action_env
