@@ -19,15 +19,14 @@ class Model {
 private:
     Scope scope;
     std::unique_ptr<ClientSession> session;
-
+    std::map<std::string, Output> m_vars;
+    std::map<std::string, Output> layers;
+    std::vector<Output> assigns;
+    std::vector<Output> applies;
     Output x;
     Output y;
-    Output assign_w1;
-    Output assign_b1;
     Output loss;
-    Output apply_w1;
-    Output apply_b1;
-    Output layer_1;
+
 public:
     Model(): scope(Scope::NewRootScope()), session(std::unique_ptr<ClientSession>(new ClientSession(scope))) {};
     void create_graph();

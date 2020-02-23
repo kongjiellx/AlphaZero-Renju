@@ -2,6 +2,7 @@
 
 import tensorflow as tf
 import tensorflow.keras as keras
+from tensorflow.python.keras import backend as K
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import (
     Input,
@@ -83,3 +84,11 @@ class Net(object):
     def load(self, path):
         self.net.load_weights(path)
 
+    def save_graph(self, path):
+        session = K.get_session()
+        tf.train.write_graph(K.get_graph(), path, "model", as_text=True)
+
+
+if __name__ == "__main__":
+    net = Net()
+    net.save_graph("graph")
