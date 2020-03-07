@@ -2,6 +2,7 @@ game_conf: {
     board_size: 10
     win_num: 4
 }
+
 model_conf: {
     model_path: "model/params/h5"
     residual_blocks: 2
@@ -11,6 +12,7 @@ model_conf: {
     lr: 0.01
     validation_split: 0.2
 }
+
 mtcs_conf: {
     simulate_num: 100
     c_puct: 5
@@ -18,11 +20,13 @@ mtcs_conf: {
     dirichlet_esp: 0.25
     dirichlet_alpha: 1.0
 }
+
 data_conf: {
     init_game_num: 200
     batch_game_num: 20
     data_path: "data.pkl"
 }
+
 ui_conf: {
     background_size: 630
     game_area: 540

@@ -8,7 +8,7 @@
 
 int main() {
     std::ifstream infile;
-    infile.open("conf/configure.txt");
+    infile.open("conf/conf.pbtxt");
     std::stringstream strStream;
     strStream << infile.rdbuf();
     infile.close();

@@ -63,3 +63,20 @@ cc_binary(
         "@org_tensorflow//tensorflow/core:tensorflow",
     ],
 )
+
+cc_binary(
+    name = "load_graph",
+    srcs = [
+        "load_graph.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+        "@org_tensorflow//tensorflow/cc:client_session",
+        "@org_tensorflow//tensorflow/cc:grad_ops",
+        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/core:tensorflow"
+    ],
+    data = [
+        "//conf:graph_def"
+    ]
+)

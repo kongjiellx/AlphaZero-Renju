@@ -1,0 +1,9 @@
+package(default_visibility = ["//visibility:public"])
+
+py_binary(
+    name = "model",
+    srcs = ["model.py"],
+    deps = ["//conf:conf_py_proto"],
+    data = ["//conf:conf.pbtxt"]
+)
+

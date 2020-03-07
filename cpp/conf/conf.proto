@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package renju;
+package conf;
 
 message GameConf {
     int32 board_size = 1;
@@ -37,7 +37,7 @@ message UIConf {
     string background = 3;
 }
 
-message Configure {
+message Conf {
     GameConf game_conf = 1;
     ModelConf model_conf = 2;
     MctsConf mtcs_conf = 3;
