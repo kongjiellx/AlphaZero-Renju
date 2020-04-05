@@ -28,10 +28,21 @@ public:
     }
 
     void Init() { TF_CHECK_OK(session_->Run({}, {}, {"init"}, nullptr)); }
+
+    void Predict(const std::vector<float>& batch) {
+        std::vector<tensorflow::Tensor> out_tensors;
+        TF_CHECK_OK(session_->Run({{"input", MakeTensor(batch)}}, {"output"}, {},
+                                  &out_tensors));
+        for (int i = 0; i < batch.size(); ++i) {
+            std::cout << "\t x = " << batch[i]
+                      << ", predicted y = " << out_tensors[0].flat<float>()(i)
+                      << "\n";
+        }
+    }
 };
 
 int main(int argc, char* argv[]) {
-    const string graph_def_filename = "conf/graph/model";
+    const string graph_def_filename = "conf/graph.pbtxt";
 
     // Setup global state for TensorFlow.
     tensorflow::port::InitMain(argv[0], &argc, &argv);
@@ -42,6 +53,8 @@ int main(int argc, char* argv[]) {
     std::cout << "initing...\n";
 
     model.Init();
+
+    std::cout << "initing...\n";
 
     return 0;
 }

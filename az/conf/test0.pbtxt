@@ -1,0 +1,3364 @@
+node {
+  name: "liuyekuan"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: -1
+        }
+        dim {
+          size: 2
+        }
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/shape"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\002\000\000\000\001\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/min"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: -1.4142135381698608
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/max"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.4142135381698608
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/RandomUniform"
+  op: "RandomUniform"
+  input: "dense/kernel/Initializer/random_uniform/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "seed"
+    value {
+      i: 0
+    }
+  }
+  attr {
+    key: "seed2"
+    value {
+      i: 0
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/sub"
+  op: "Sub"
+  input: "dense/kernel/Initializer/random_uniform/max"
+  input: "dense/kernel/Initializer/random_uniform/min"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform/mul"
+  op: "Mul"
+  input: "dense/kernel/Initializer/random_uniform/RandomUniform"
+  input: "dense/kernel/Initializer/random_uniform/sub"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel/Initializer/random_uniform"
+  op: "Add"
+  input: "dense/kernel/Initializer/random_uniform/mul"
+  input: "dense/kernel/Initializer/random_uniform/min"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+}
+node {
+  name: "dense/kernel"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 2
+        }
+        dim {
+          size: 1
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "dense/kernel"
+    }
+  }
+}
+node {
+  name: "dense/kernel/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "dense/kernel"
+}
+node {
+  name: "dense/kernel/Assign"
+  op: "AssignVariableOp"
+  input: "dense/kernel"
+  input: "dense/kernel/Initializer/random_uniform"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/kernel/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "dense/kernel"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/bias/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "dense/bias"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "dense/bias"
+    }
+  }
+}
+node {
+  name: "dense/bias/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "dense/bias"
+}
+node {
+  name: "dense/bias/Assign"
+  op: "AssignVariableOp"
+  input: "dense/bias"
+  input: "dense/bias/Initializer/zeros"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/bias/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "dense/bias"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/MatMul/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "dense/kernel"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/MatMul"
+  op: "MatMul"
+  input: "liuyekuan"
+  input: "dense/MatMul/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "dense/BiasAdd/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "dense/bias"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "dense/BiasAdd"
+  op: "BiasAdd"
+  input: "dense/MatMul"
+  input: "dense/BiasAdd/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "dense_target"
+  op: "Placeholder"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: -1
+        }
+        dim {
+          size: -1
+        }
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/SquaredDifference"
+  op: "SquaredDifference"
+  input: "dense/BiasAdd"
+  input: "dense_target"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Mean/reduction_indices"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: -1
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Mean"
+  op: "Mean"
+  input: "loss/dense_loss/SquaredDifference"
+  input: "loss/dense_loss/Mean/reduction_indices"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/rank"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/shape"
+  op: "Shape"
+  input: "loss/dense_loss/Mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/rank"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  op: "NoOp"
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  op: "Shape"
+  input: "loss/dense_loss/Mean"
+  input: "^loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  op: "Const"
+  input: "^loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like"
+  op: "Fill"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/broadcast_weights"
+  op: "Mul"
+  input: "loss/dense_loss/weighted_loss/Const"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/weighted_loss/Mul"
+  op: "Mul"
+  input: "loss/dense_loss/Mean"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Sum"
+  op: "Sum"
+  input: "loss/dense_loss/weighted_loss/Mul"
+  input: "loss/dense_loss/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/num_elements"
+  op: "Size"
+  input: "loss/dense_loss/weighted_loss/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/num_elements/Cast"
+  op: "Cast"
+  input: "loss/dense_loss/num_elements"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/Sum_1"
+  op: "Sum"
+  input: "loss/dense_loss/Sum"
+  input: "loss/dense_loss/Const_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/dense_loss/value"
+  op: "DivNoNan"
+  input: "loss/dense_loss/Sum_1"
+  input: "loss/dense_loss/num_elements/Cast"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/mul/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/mul"
+  op: "Mul"
+  input: "loss/mul/x"
+  input: "loss/dense_loss/value"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "keras_learning_phase/input"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_BOOL
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_BOOL
+        tensor_shape {
+        }
+        bool_val: false
+      }
+    }
+  }
+}
+node {
+  name: "keras_learning_phase"
+  op: "PlaceholderWithDefault"
+  input: "keras_learning_phase/input"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_BOOL
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/Shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/grad_ys_0"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 1.0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/Fill"
+  op: "Fill"
+  input: "SGD/gradients/Shape"
+  input: "SGD/gradients/grad_ys_0"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/mul_grad/Mul"
+  op: "Mul"
+  input: "SGD/gradients/Fill"
+  input: "loss/dense_loss/value"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/mul_grad/Mul_1"
+  op: "Mul"
+  input: "SGD/gradients/Fill"
+  input: "loss/mul/x"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Shape_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/BroadcastGradientArgs"
+  op: "BroadcastGradientArgs"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Shape"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan"
+  op: "DivNoNan"
+  input: "SGD/gradients/loss/mul_grad/Mul_1"
+  input: "loss/dense_loss/num_elements/Cast"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Sum"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan"
+  input: "SGD/gradients/loss/dense_loss/value_grad/BroadcastGradientArgs"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Sum"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Neg"
+  op: "Neg"
+  input: "loss/dense_loss/Sum_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan_1"
+  op: "DivNoNan"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Neg"
+  input: "loss/dense_loss/num_elements/Cast"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan_2"
+  op: "DivNoNan"
+  input: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan_1"
+  input: "loss/dense_loss/num_elements/Cast"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/mul"
+  op: "Mul"
+  input: "SGD/gradients/loss/mul_grad/Mul_1"
+  input: "SGD/gradients/loss/dense_loss/value_grad/div_no_nan_2"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Sum_1"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/value_grad/mul"
+  input: "SGD/gradients/loss/dense_loss/value_grad/BroadcastGradientArgs:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/value_grad/Reshape_1"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Sum_1"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_1_grad/Reshape/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_1_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/value_grad/Reshape"
+  input: "SGD/gradients/loss/dense_loss/Sum_1_grad/Reshape/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_1_grad/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_1_grad/Tile"
+  op: "Tile"
+  input: "SGD/gradients/loss/dense_loss/Sum_1_grad/Reshape"
+  input: "SGD/gradients/loss/dense_loss/Sum_1_grad/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tmultiples"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_grad/Reshape/shape"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/Sum_1_grad/Tile"
+  input: "SGD/gradients/loss/dense_loss/Sum_grad/Reshape/shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_grad/Shape"
+  op: "Shape"
+  input: "loss/dense_loss/weighted_loss/Mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Sum_grad/Tile"
+  op: "Tile"
+  input: "SGD/gradients/loss/dense_loss/Sum_grad/Reshape"
+  input: "SGD/gradients/loss/dense_loss/Sum_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tmultiples"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape"
+  op: "Shape"
+  input: "loss/dense_loss/Mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape_1"
+  op: "Shape"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/BroadcastGradientArgs"
+  op: "BroadcastGradientArgs"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Mul"
+  op: "Mul"
+  input: "SGD/gradients/loss/dense_loss/Sum_grad/Tile"
+  input: "loss/dense_loss/weighted_loss/broadcast_weights"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Sum"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Mul"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/BroadcastGradientArgs"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Sum"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Mul_1"
+  op: "Mul"
+  input: "loss/dense_loss/Mean"
+  input: "SGD/gradients/loss/dense_loss/Sum_grad/Tile"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Sum_1"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Mul_1"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/BroadcastGradientArgs:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Reshape_1"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Sum_1"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+  op: "Shape"
+  input: "loss/dense_loss/SquaredDifference"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Size"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 2
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/add"
+  op: "Add"
+  input: "loss/dense_loss/Mean/reduction_indices"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Size"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/mod"
+  op: "FloorMod"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/add"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Size"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_1"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+          }
+        }
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/range/start"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/range/delta"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/range"
+  op: "Range"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/range/start"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Size"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/range/delta"
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Fill/value"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Fill"
+  op: "Fill"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_1"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Fill/value"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "index_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/DynamicStitch"
+  op: "DynamicStitch"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/range"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/mod"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Fill"
+  attr {
+    key: "N"
+    value {
+      i: 2
+    }
+  }
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum/y"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum"
+  op: "Maximum"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/DynamicStitch"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum/y"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/floordiv"
+  op: "FloorDiv"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/gradients/loss/dense_loss/Mean_grad/Shape"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/weighted_loss/Mul_grad/Reshape"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/DynamicStitch"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Tile"
+  op: "Tile"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Reshape"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/floordiv"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tmultiples"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_2"
+  op: "Shape"
+  input: "loss/dense_loss/SquaredDifference"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_3"
+  op: "Shape"
+  input: "loss/dense_loss/Mean"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Prod"
+  op: "Prod"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_2"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Const_1"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Prod_1"
+  op: "Prod"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Shape_3"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Const_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum_1/y"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum_1"
+  op: "Maximum"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Prod_1"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum_1/y"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/floordiv_1"
+  op: "FloorDiv"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Prod"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Maximum_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/Cast"
+  op: "Cast"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/floordiv_1"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/Mean_grad/truediv"
+  op: "RealDiv"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Tile"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/Cast"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape"
+  op: "Shape"
+  input: "dense/BiasAdd"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape_1"
+  op: "Shape"
+  input: "dense_target"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "out_type"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/BroadcastGradientArgs"
+  op: "BroadcastGradientArgs"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/scalar"
+  op: "Const"
+  input: "^SGD/gradients/loss/dense_loss/Mean_grad/truediv"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 2.0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Mul"
+  op: "Mul"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/scalar"
+  input: "SGD/gradients/loss/dense_loss/Mean_grad/truediv"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/sub"
+  op: "Sub"
+  input: "dense/BiasAdd"
+  input: "dense_target"
+  input: "^SGD/gradients/loss/dense_loss/Mean_grad/truediv"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/mul_1"
+  op: "Mul"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Mul"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/sub"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Sum"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/mul_1"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/BroadcastGradientArgs"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Sum"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Sum_1"
+  op: "Sum"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/mul_1"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/BroadcastGradientArgs:1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape_1"
+  op: "Reshape"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Sum_1"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Shape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tshape"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Neg"
+  op: "Neg"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape_1"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/gradients/dense/BiasAdd_grad/BiasAddGrad"
+  op: "BiasAddGrad"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "data_format"
+    value {
+      s: "NHWC"
+    }
+  }
+}
+node {
+  name: "SGD/gradients/dense/MatMul_grad/MatMul"
+  op: "MatMul"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape"
+  input: "dense/MatMul/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: false
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: true
+    }
+  }
+}
+node {
+  name: "SGD/gradients/dense/MatMul_grad/MatMul_1"
+  op: "MatMul"
+  input: "liuyekuan"
+  input: "SGD/gradients/loss/dense_loss/SquaredDifference_grad/Reshape"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "transpose_a"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "transpose_b"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/iter/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/iter"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT64
+        tensor_shape {
+        }
+        int64_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/iter"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/iter"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/iter"
+    }
+  }
+}
+node {
+  name: "SGD/iter/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/iter"
+}
+node {
+  name: "SGD/iter/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/iter"
+  input: "SGD/iter/Initializer/zeros"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/iter"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+}
+node {
+  name: "SGD/iter/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/iter"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/iter"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+}
+node {
+  name: "SGD/decay/Initializer/initial_value"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/decay"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/decay"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/decay"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/decay"
+    }
+  }
+}
+node {
+  name: "SGD/decay/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/decay"
+}
+node {
+  name: "SGD/decay/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/decay"
+  input: "SGD/decay/Initializer/initial_value"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/decay"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/decay/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/decay"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/decay"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/learning_rate/Initializer/initial_value"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/learning_rate"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/learning_rate"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/learning_rate"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/learning_rate"
+    }
+  }
+}
+node {
+  name: "SGD/learning_rate/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/learning_rate"
+}
+node {
+  name: "SGD/learning_rate/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/learning_rate"
+  input: "SGD/learning_rate/Initializer/initial_value"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/learning_rate"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/learning_rate/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/learning_rate"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/learning_rate"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/momentum/Initializer/initial_value"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/momentum"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.8999999761581421
+      }
+    }
+  }
+}
+node {
+  name: "SGD/momentum"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/momentum"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/momentum"
+    }
+  }
+}
+node {
+  name: "SGD/momentum/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/momentum"
+}
+node {
+  name: "SGD/momentum/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/momentum"
+  input: "SGD/momentum/Initializer/initial_value"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/momentum"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/momentum/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/momentum"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@SGD/momentum"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/dense/kernel/momentum/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 2
+          }
+          dim {
+            size: 1
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/dense/kernel/momentum"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 2
+        }
+        dim {
+          size: 1
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/dense/kernel/momentum"
+    }
+  }
+}
+node {
+  name: "SGD/dense/kernel/momentum/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/dense/kernel/momentum"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/dense/kernel/momentum/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/dense/kernel/momentum"
+  input: "SGD/dense/kernel/momentum/Initializer/zeros"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/dense/kernel/momentum/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/dense/kernel/momentum"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/kernel"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/dense/bias/momentum/Initializer/zeros"
+  op: "Const"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "SGD/dense/bias/momentum"
+  op: "VarHandleOp"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "container"
+    value {
+      s: ""
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "shape"
+    value {
+      shape {
+        dim {
+          size: 1
+        }
+      }
+    }
+  }
+  attr {
+    key: "shared_name"
+    value {
+      s: "SGD/dense/bias/momentum"
+    }
+  }
+}
+node {
+  name: "SGD/dense/bias/momentum/IsInitialized/VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/dense/bias/momentum"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+}
+node {
+  name: "SGD/dense/bias/momentum/Assign"
+  op: "AssignVariableOp"
+  input: "SGD/dense/bias/momentum"
+  input: "SGD/dense/bias/momentum/Initializer/zeros"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/dense/bias/momentum/Read/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/dense/bias/momentum"
+  attr {
+    key: "_class"
+    value {
+      list {
+        s: "loc:@dense/bias"
+      }
+    }
+  }
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/kernel/Cast/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/learning_rate"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/kernel/Cast"
+  op: "Cast"
+  input: "SGD/SGD/update_dense/kernel/Cast/ReadVariableOp"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/kernel/ResourceApplyKerasMomentum/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/momentum"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/kernel/ResourceApplyKerasMomentum"
+  op: "ResourceApplyKerasMomentum"
+  input: "dense/kernel"
+  input: "SGD/dense/kernel/momentum"
+  input: "SGD/SGD/update_dense/kernel/Cast"
+  input: "SGD/gradients/dense/MatMul_grad/MatMul_1"
+  input: "SGD/SGD/update_dense/kernel/ResourceApplyKerasMomentum/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "use_nesterov"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/bias/Cast/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/learning_rate"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/bias/Cast"
+  op: "Cast"
+  input: "SGD/SGD/update_dense/bias/Cast/ReadVariableOp"
+  attr {
+    key: "DstT"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "SrcT"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "Truncate"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/bias/ResourceApplyKerasMomentum/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/momentum"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "SGD/SGD/update_dense/bias/ResourceApplyKerasMomentum"
+  op: "ResourceApplyKerasMomentum"
+  input: "dense/bias"
+  input: "SGD/dense/bias/momentum"
+  input: "SGD/SGD/update_dense/bias/Cast"
+  input: "SGD/gradients/dense/BiasAdd_grad/BiasAddGrad"
+  input: "SGD/SGD/update_dense/bias/ResourceApplyKerasMomentum/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "use_locking"
+    value {
+      b: true
+    }
+  }
+  attr {
+    key: "use_nesterov"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "SGD/SGD/Const"
+  op: "Const"
+  input: "^SGD/SGD/update_dense/bias/ResourceApplyKerasMomentum"
+  input: "^SGD/SGD/update_dense/kernel/ResourceApplyKerasMomentum"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT64
+        tensor_shape {
+        }
+        int64_val: 1
+      }
+    }
+  }
+}
+node {
+  name: "SGD/SGD/AssignAddVariableOp"
+  op: "AssignAddVariableOp"
+  input: "SGD/iter"
+  input: "SGD/SGD/Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+}
+node {
+  name: "SGD/SGD/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "SGD/iter"
+  input: "^SGD/SGD/AssignAddVariableOp"
+  input: "^SGD/SGD/update_dense/bias/ResourceApplyKerasMomentum"
+  input: "^SGD/SGD/update_dense/kernel/ResourceApplyKerasMomentum"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT64
+    }
+  }
+}
+node {
+  name: "training_1/group_deps"
+  op: "NoOp"
+  input: "^SGD/SGD/AssignAddVariableOp"
+  input: "^loss/mul"
+}
+node {
+  name: "VarIsInitializedOp"
+  op: "VarIsInitializedOp"
+  input: "SGD/decay"
+}
+node {
+  name: "VarIsInitializedOp_1"
+  op: "VarIsInitializedOp"
+  input: "SGD/momentum"
+}
+node {
+  name: "VarIsInitializedOp_2"
+  op: "VarIsInitializedOp"
+  input: "SGD/dense/kernel/momentum"
+}
+node {
+  name: "VarIsInitializedOp_3"
+  op: "VarIsInitializedOp"
+  input: "SGD/iter"
+}
+node {
+  name: "VarIsInitializedOp_4"
+  op: "VarIsInitializedOp"
+  input: "SGD/dense/bias/momentum"
+}
+node {
+  name: "VarIsInitializedOp_5"
+  op: "VarIsInitializedOp"
+  input: "dense/kernel"
+}
+node {
+  name: "VarIsInitializedOp_6"
+  op: "VarIsInitializedOp"
+  input: "dense/bias"
+}
+node {
+  name: "VarIsInitializedOp_7"
+  op: "VarIsInitializedOp"
+  input: "SGD/learning_rate"
+}
+node {
+  name: "init"
+  op: "NoOp"
+  input: "^SGD/decay/Assign"
+  input: "^SGD/dense/bias/momentum/Assign"
+  input: "^SGD/dense/kernel/momentum/Assign"
+  input: "^SGD/iter/Assign"
+  input: "^SGD/learning_rate/Assign"
+  input: "^SGD/momentum/Assign"
+  input: "^dense/bias/Assign"
+  input: "^dense/kernel/Assign"
+}
+versions {
+  producer: 38
+}

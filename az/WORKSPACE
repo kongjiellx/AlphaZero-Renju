@@ -5,7 +5,7 @@ load(":repo.bzl", "tensorflow_http_archive")
 tensorflow_http_archive(
     name = "org_tensorflow",
     sha256 = "1f4b09e6bff7f847bb1034699076055e50e87534d76008af8295ed71195b2b36",
-    git_commit = "e5bf8de410005de06a7ff5393fafdf832ef1d4ad", # v2.0.1 release
+    git_commit = "e5bf8de410005de06a7ff5393fafdf832ef1d4ad", # v2.1.0 release
 )
 
 # START: Upstream TensorFlow dependencies

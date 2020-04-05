@@ -22,6 +22,6 @@ exports_files(["conf.pbtxt"])
 
 filegroup(
     name = "graph_def",
-    srcs = ["graph/model"],
+    srcs = ["graph.pbtxt"],
 )
 
