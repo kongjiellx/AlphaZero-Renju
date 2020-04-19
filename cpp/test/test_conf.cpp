@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "conf/configure.pb.h"
+#include "conf/conf.pb.h"
 #include <google/protobuf/text_format.h>
 
 
@@ -14,7 +14,7 @@ int main() {
     infile.close();
     std::string str = strStream.str();
 
-    renju::Configure conf;
+    conf::Conf conf;
     google::protobuf::TextFormat::ParseFromString(str, &conf);
     std::string out_string;
     google::protobuf::TextFormat::PrintToString(conf, &out_string);

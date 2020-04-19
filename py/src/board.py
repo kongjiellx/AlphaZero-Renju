@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 
-import conf
+from py.src import conf
 import numpy as np
 
 

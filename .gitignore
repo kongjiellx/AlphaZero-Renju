@@ -1,11 +1,9 @@
 *.pyc
 .idea
-log
 *.params
-*/.clwb/*
-*/bazel-bin
-*/bazel-cpp
-*/bazel-genfiles
-*/bazel-out
-*/bazel-testlogs
-cpp/tensorflow/*
+.clwb
+bazel-AlphaZero-Renju
+bazel-bin
+bazel-genfiles
+bazel-out
+bazel-testlogs

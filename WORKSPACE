@@ -1,16 +1,21 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-load(":repo.bzl", "tensorflow_http_archive")
 
+########################################################
+# tensorflow archive
+########################################################
+load(":repo.bzl", "tensorflow_http_archive")
 tensorflow_http_archive(
     name = "org_tensorflow",
     sha256 = "1f4b09e6bff7f847bb1034699076055e50e87534d76008af8295ed71195b2b36",
     git_commit = "e5bf8de410005de06a7ff5393fafdf832ef1d4ad", # v2.1.0 release
 )
 
-# START: Upstream TensorFlow dependencies
+########################################################
+# Upstream TensorFlow dependencies
 # TensorFlow build depends on these dependencies.
 # Needs to be in-sync with TensorFlow sources.
+########################################################
 http_archive(
     name = "io_bazel_rules_closure",
     sha256 = "5b00383d08dd71f28503736db0500b6fb4dda47489ff5fc6bed42557c07c6ba9",
@@ -31,10 +36,11 @@ http_archive(
 )
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 bazel_skylib_workspace()
-# END: Upstream TensorFlow dependencies
 
+########################################################
+# load tensorflow workspace
+########################################################
 load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
-
 tf_workspace(
  path_prefix = "",
  tf_repo_name = "org_tensorflow",
@@ -43,24 +49,55 @@ tf_workspace(
 ########################################################
 #    grpc proto config
 ########################################################
-http_archive(
-    name = "build_stack_rules_proto",
-    urls = ["https://github.com/stackb/rules_proto/archive/b93b544f851fdcd3fc5c3d47aee3b7ca158a8841.tar.gz"],
-    sha256 = "c62f0b442e82a6152fcd5b1c0b7c4028233a9e314078952b6b04253421d56d61",
-    strip_prefix = "rules_proto-b93b544f851fdcd3fc5c3d47aee3b7ca158a8841",
-)
-# cpp grpc proto
-load("@build_stack_rules_proto//cpp:deps.bzl", "cpp_proto_library")
-cpp_proto_library()
-# python grpc proto
-load("@build_stack_rules_proto//python:deps.bzl", "python_proto_library")
-python_proto_library()
-load("@io_bazel_rules_python//python:pip.bzl", "pip_import", "pip_repositories")
-pip_repositories()
-pip_import(
-    name = "protobuf_py_deps",
-    requirements = "@build_stack_rules_proto//python/requirements:protobuf.txt",
-)
-load("@protobuf_py_deps//:requirements.bzl", protobuf_pip_install = "pip_install")
-protobuf_pip_install()
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+http_archive(
+    name = "rules_proto_grpc",
+    urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/1.0.2.tar.gz"],
+    sha256 = "5f0f2fc0199810c65a2de148a52ba0aff14d631d4e8202f41aff6a9d590a471b",
+    strip_prefix = "rules_proto_grpc-1.0.2",
+)
+
+load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_toolchains", "rules_proto_grpc_repos")
+rules_proto_grpc_toolchains()
+rules_proto_grpc_repos()
+
+load("@rules_proto_grpc//python:repositories.bzl", rules_proto_grpc_python_repos="python_repos")
+rules_proto_grpc_python_repos()
+load("@rules_proto_grpc//cpp:repositories.bzl", rules_proto_grpc_cpp_repos="cpp_repos")
+rules_proto_grpc_cpp_repos()
+
+########################################################
+# load pip dependencies
+########################################################
+#git_repository(
+#    name = "rules_python",
+#    remote = "https://github.com/bazelbuild/rules_python.git",
+#    commit = "748aa53d7701e71101dfd15d800e100f6ff8e5d1",
+#)
+#load("@rules_python//python:repositories.bzl", "py_repositories")
+#py_repositories()
+#load("@rules_python//python:pip.bzl", "pip_repositories")
+#pip_repositories()
+#load("@rules_python//python:pip.bzl", "pip_import")
+#pip_import(   # or pip3_import
+#   name = "pip_deps",
+#   requirements = "//:requirements.txt",
+#)
+#load("@pip_deps//:requirements.bzl", "pip_install")
+#pip_install()
+
+http_archive(
+    name = "com_github_ali5h_rules_pip",
+    strip_prefix = "rules_pip-2.1.0",
+    sha256 = "c8c11f219642ab94cb3f4a5ff25aadda6fb6dcb0c77329021e843a7e7ba294d1",
+    urls = ["https://github.com/ali5h/rules_pip/archive/2.1.0.tar.gz"],
+)
+load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
+pip_import(
+   name = "pip_deps",
+   requirements = "//:requirements.txt",
+)
+
+load("@pip_deps//:requirements.bzl", "pip_install")
+pip_install()

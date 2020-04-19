@@ -15,9 +15,9 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.callbacks import EarlyStopping
-import conf
+from py.src import conf
 import numpy as np
-from log_util import model_logger as logger
+from py.src.log_util import model_logger as logger
 
 
 def residual_block(x):

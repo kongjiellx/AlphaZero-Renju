@@ -1,10 +1,10 @@
 import sys
 import conf
-from model import Net
-from producer import Producer
+from py.src.model import Net
+from py.src.producer import Producer
 import pickle
 import random
-from log_util import main_logger as logger
+from py.src.log_util import main_logger as logger
 
 
 class Main(object):
