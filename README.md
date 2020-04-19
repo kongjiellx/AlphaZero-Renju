@@ -9,6 +9,7 @@
 ### Requirements
 1. This project build with bazel==2.0.0
 2. [python requirements](https://github.com/kongjiellx/AlphaZero-Renju/blob/master/requirements.txt)
+
 ### Results
 - Training about 24 hours, each move with 100 mcts simulations:
 ![renju](https://raw.githubusercontent.com/kongjiellx/AlphaZero-Renju/master/py/gif/523.gif)
