@@ -1,0 +1,86 @@
+load("@pip_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "board",
+    srcs = ["board.py"],
+    deps = [requirement("numpy")],
+)
+
+py_library(
+    name = "conf",
+    srcs = ["conf.py"],
+)
+
+py_library(
+    name = "log_util",
+    srcs = ["log_util.py"],
+    deps = [
+        requirement("loguru"),
+    ],
+)
+
+py_library(
+    name = "utils",
+    srcs = ["utils.py"],
+)
+
+py_library(
+    name = "mcts",
+    srcs = ["mcts.py"],
+    deps = [
+        requirement("numpy"),
+        ":board",
+        ":conf",
+        ":log_util",
+    ],
+)
+
+py_library(
+    name = "model",
+    srcs = ["model.py"],
+    deps = [
+        ":conf",
+        ":log_util",
+        requirement("tensorflow"),
+        requirement("h5py")
+    ],
+)
+
+py_library(
+    name = "producer",
+    srcs = ["producer.py"],
+    deps = [
+        requirement("numpy"),
+        ":board",
+        ":conf",
+        ":log_util",
+        ":mcts",
+    ],
+)
+
+py_binary(
+    name = "train",
+    srcs = ["train.py"],
+    deps = [
+        ":conf",
+        ":log_util",
+        ":model",
+        ":producer",
+    ],
+)
+
+py_binary(
+    name = "play",
+    srcs = ["play.py"],
+    deps = [
+        ":board",
+        ":mcts",
+        ":model",
+        ":utils",
+        requirement("numpy"),
+        requirement("pygame")
+    ],
+    data = [
+        "//py/images:background",
+    ]
+)

@@ -9,7 +9,7 @@ cc_binary(
         "//conf:conf.pbtxt",
     ],
     deps = [
-        "//conf:configure_cc_proto",
+        "//conf:conf_cc_proto",
     ],
 )
 

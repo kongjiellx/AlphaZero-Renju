@@ -1,9 +1,8 @@
-from board import Board, Player, Stone
-from mcts import MCTS
-import conf
+from py.src.board import Board, Player, Stone
+from py.src.mcts import MCTS
+from py.src import conf
 import numpy as np
-import random
-from log_util import producer_logger as logger
+from py.src.log_util import producer_logger as logger
 
 
 class Producer(object):

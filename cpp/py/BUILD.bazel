@@ -7,3 +7,8 @@ py_binary(
     data = ["//conf:conf.pbtxt"]
 )
 
+py_binary(
+    name = "learn_tf",
+    srcs = ["learn_tf.py"]
+)
+

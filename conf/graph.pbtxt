@@ -1,5 +1,5 @@
 node {
-  name: "input_1"
+  name: "liuyekuan"
   op: "Placeholder"
   attr {
     key: "dtype"
@@ -461,7 +461,7 @@ node {
 node {
   name: "conv2d/Conv2D"
   op: "Conv2D"
-  input: "input_1"
+  input: "liuyekuan"
   input: "conv2d/Conv2D/ReadVariableOp"
   attr {
     key: "T"
@@ -11201,13 +11201,13 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/shape"
+  name: "luozi/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11233,13 +11233,13 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/min"
+  name: "luozi/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11262,13 +11262,13 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/max"
+  name: "luozi/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11291,9 +11291,9 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/RandomUniform"
+  name: "luozi/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "dense/kernel/Initializer/random_uniform/shape"
+  input: "luozi/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -11304,7 +11304,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11328,10 +11328,10 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/sub"
+  name: "luozi/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "dense/kernel/Initializer/random_uniform/max"
-  input: "dense/kernel/Initializer/random_uniform/min"
+  input: "luozi/kernel/Initializer/random_uniform/max"
+  input: "luozi/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -11342,16 +11342,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform/mul"
+  name: "luozi/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "dense/kernel/Initializer/random_uniform/RandomUniform"
-  input: "dense/kernel/Initializer/random_uniform/sub"
+  input: "luozi/kernel/Initializer/random_uniform/RandomUniform"
+  input: "luozi/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -11362,16 +11362,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
 }
 node {
-  name: "dense/kernel/Initializer/random_uniform"
+  name: "luozi/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "dense/kernel/Initializer/random_uniform/mul"
-  input: "dense/kernel/Initializer/random_uniform/min"
+  input: "luozi/kernel/Initializer/random_uniform/mul"
+  input: "luozi/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -11382,19 +11382,19 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
 }
 node {
-  name: "dense/kernel"
+  name: "luozi/kernel"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11426,25 +11426,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense/kernel"
+      s: "luozi/kernel"
     }
   }
 }
 node {
-  name: "dense/kernel/IsInitialized/VarIsInitializedOp"
+  name: "luozi/kernel/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense/kernel"
+  input: "luozi/kernel"
 }
 node {
-  name: "dense/kernel/Assign"
+  name: "luozi/kernel/Assign"
   op: "AssignVariableOp"
-  input: "dense/kernel"
-  input: "dense/kernel/Initializer/random_uniform"
+  input: "luozi/kernel"
+  input: "luozi/kernel/Initializer/random_uniform"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11456,14 +11456,14 @@ node {
   }
 }
 node {
-  name: "dense/kernel/Read/ReadVariableOp"
+  name: "luozi/kernel/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense/kernel"
+  input: "luozi/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/kernel"
+        s: "loc:@luozi/kernel"
       }
     }
   }
@@ -11475,13 +11475,13 @@ node {
   }
 }
 node {
-  name: "dense/bias/Initializer/zeros"
+  name: "luozi/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/bias"
+        s: "loc:@luozi/bias"
       }
     }
   }
@@ -11507,13 +11507,13 @@ node {
   }
 }
 node {
-  name: "dense/bias"
+  name: "luozi/bias"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/bias"
+        s: "loc:@luozi/bias"
       }
     }
   }
@@ -11542,25 +11542,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense/bias"
+      s: "luozi/bias"
     }
   }
 }
 node {
-  name: "dense/bias/IsInitialized/VarIsInitializedOp"
+  name: "luozi/bias/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense/bias"
+  input: "luozi/bias"
 }
 node {
-  name: "dense/bias/Assign"
+  name: "luozi/bias/Assign"
   op: "AssignVariableOp"
-  input: "dense/bias"
-  input: "dense/bias/Initializer/zeros"
+  input: "luozi/bias"
+  input: "luozi/bias/Initializer/zeros"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/bias"
+        s: "loc:@luozi/bias"
       }
     }
   }
@@ -11572,14 +11572,14 @@ node {
   }
 }
 node {
-  name: "dense/bias/Read/ReadVariableOp"
+  name: "luozi/bias/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense/bias"
+  input: "luozi/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense/bias"
+        s: "loc:@luozi/bias"
       }
     }
   }
@@ -11591,9 +11591,9 @@ node {
   }
 }
 node {
-  name: "dense/MatMul/ReadVariableOp"
+  name: "luozi/MatMul/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense/kernel"
+  input: "luozi/kernel"
   attr {
     key: "dtype"
     value {
@@ -11602,10 +11602,10 @@ node {
   }
 }
 node {
-  name: "dense/MatMul"
+  name: "luozi/MatMul"
   op: "MatMul"
   input: "flatten/Reshape"
-  input: "dense/MatMul/ReadVariableOp"
+  input: "luozi/MatMul/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -11626,9 +11626,9 @@ node {
   }
 }
 node {
-  name: "dense/BiasAdd/ReadVariableOp"
+  name: "luozi/BiasAdd/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense/bias"
+  input: "luozi/bias"
   attr {
     key: "dtype"
     value {
@@ -11637,10 +11637,10 @@ node {
   }
 }
 node {
-  name: "dense/BiasAdd"
+  name: "luozi/BiasAdd"
   op: "BiasAdd"
-  input: "dense/MatMul"
-  input: "dense/BiasAdd/ReadVariableOp"
+  input: "luozi/MatMul"
+  input: "luozi/BiasAdd/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -11655,9 +11655,9 @@ node {
   }
 }
 node {
-  name: "dense/Softmax"
+  name: "luozi/Softmax"
   op: "Softmax"
-  input: "dense/BiasAdd"
+  input: "luozi/BiasAdd"
   attr {
     key: "T"
     value {
@@ -13686,13 +13686,13 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/shape"
+  name: "dense/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13718,13 +13718,13 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/min"
+  name: "dense/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13747,13 +13747,13 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/max"
+  name: "dense/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13776,9 +13776,9 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/RandomUniform"
+  name: "dense/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "dense_1/kernel/Initializer/random_uniform/shape"
+  input: "dense/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -13789,7 +13789,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13813,10 +13813,10 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/sub"
+  name: "dense/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "dense_1/kernel/Initializer/random_uniform/max"
-  input: "dense_1/kernel/Initializer/random_uniform/min"
+  input: "dense/kernel/Initializer/random_uniform/max"
+  input: "dense/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -13827,16 +13827,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform/mul"
+  name: "dense/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "dense_1/kernel/Initializer/random_uniform/RandomUniform"
-  input: "dense_1/kernel/Initializer/random_uniform/sub"
+  input: "dense/kernel/Initializer/random_uniform/RandomUniform"
+  input: "dense/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -13847,16 +13847,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_1/kernel/Initializer/random_uniform"
+  name: "dense/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "dense_1/kernel/Initializer/random_uniform/mul"
-  input: "dense_1/kernel/Initializer/random_uniform/min"
+  input: "dense/kernel/Initializer/random_uniform/mul"
+  input: "dense/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -13867,19 +13867,19 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_1/kernel"
+  name: "dense/kernel"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13911,25 +13911,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense_1/kernel"
+      s: "dense/kernel"
     }
   }
 }
 node {
-  name: "dense_1/kernel/IsInitialized/VarIsInitializedOp"
+  name: "dense/kernel/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense_1/kernel"
+  input: "dense/kernel"
 }
 node {
-  name: "dense_1/kernel/Assign"
+  name: "dense/kernel/Assign"
   op: "AssignVariableOp"
-  input: "dense_1/kernel"
-  input: "dense_1/kernel/Initializer/random_uniform"
+  input: "dense/kernel"
+  input: "dense/kernel/Initializer/random_uniform"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13941,14 +13941,14 @@ node {
   }
 }
 node {
-  name: "dense_1/kernel/Read/ReadVariableOp"
+  name: "dense/kernel/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_1/kernel"
+  input: "dense/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/kernel"
+        s: "loc:@dense/kernel"
       }
     }
   }
@@ -13960,13 +13960,13 @@ node {
   }
 }
 node {
-  name: "dense_1/bias/Initializer/zeros"
+  name: "dense/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/bias"
+        s: "loc:@dense/bias"
       }
     }
   }
@@ -13992,13 +13992,13 @@ node {
   }
 }
 node {
-  name: "dense_1/bias"
+  name: "dense/bias"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/bias"
+        s: "loc:@dense/bias"
       }
     }
   }
@@ -14027,25 +14027,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense_1/bias"
+      s: "dense/bias"
     }
   }
 }
 node {
-  name: "dense_1/bias/IsInitialized/VarIsInitializedOp"
+  name: "dense/bias/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense_1/bias"
+  input: "dense/bias"
 }
 node {
-  name: "dense_1/bias/Assign"
+  name: "dense/bias/Assign"
   op: "AssignVariableOp"
-  input: "dense_1/bias"
-  input: "dense_1/bias/Initializer/zeros"
+  input: "dense/bias"
+  input: "dense/bias/Initializer/zeros"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/bias"
+        s: "loc:@dense/bias"
       }
     }
   }
@@ -14057,14 +14057,14 @@ node {
   }
 }
 node {
-  name: "dense_1/bias/Read/ReadVariableOp"
+  name: "dense/bias/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_1/bias"
+  input: "dense/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_1/bias"
+        s: "loc:@dense/bias"
       }
     }
   }
@@ -14076,9 +14076,9 @@ node {
   }
 }
 node {
-  name: "dense_1/MatMul/ReadVariableOp"
+  name: "dense/MatMul/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_1/kernel"
+  input: "dense/kernel"
   attr {
     key: "dtype"
     value {
@@ -14087,10 +14087,10 @@ node {
   }
 }
 node {
-  name: "dense_1/MatMul"
+  name: "dense/MatMul"
   op: "MatMul"
   input: "flatten_1/Reshape"
-  input: "dense_1/MatMul/ReadVariableOp"
+  input: "dense/MatMul/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -14111,9 +14111,9 @@ node {
   }
 }
 node {
-  name: "dense_1/BiasAdd/ReadVariableOp"
+  name: "dense/BiasAdd/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_1/bias"
+  input: "dense/bias"
   attr {
     key: "dtype"
     value {
@@ -14122,10 +14122,10 @@ node {
   }
 }
 node {
-  name: "dense_1/BiasAdd"
+  name: "dense/BiasAdd"
   op: "BiasAdd"
-  input: "dense_1/MatMul"
-  input: "dense_1/BiasAdd/ReadVariableOp"
+  input: "dense/MatMul"
+  input: "dense/BiasAdd/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -14140,9 +14140,9 @@ node {
   }
 }
 node {
-  name: "dense_1/Elu"
+  name: "dense/Elu"
   op: "Elu"
-  input: "dense_1/BiasAdd"
+  input: "dense/BiasAdd"
   attr {
     key: "T"
     value {
@@ -14151,13 +14151,13 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/shape"
+  name: "yingdegailv/kernel/Initializer/random_uniform/shape"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14183,13 +14183,13 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/min"
+  name: "yingdegailv/kernel/Initializer/random_uniform/min"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14212,13 +14212,13 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/max"
+  name: "yingdegailv/kernel/Initializer/random_uniform/max"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14241,9 +14241,9 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/RandomUniform"
+  name: "yingdegailv/kernel/Initializer/random_uniform/RandomUniform"
   op: "RandomUniform"
-  input: "dense_2/kernel/Initializer/random_uniform/shape"
+  input: "yingdegailv/kernel/Initializer/random_uniform/shape"
   attr {
     key: "T"
     value {
@@ -14254,7 +14254,7 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14278,10 +14278,10 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/sub"
+  name: "yingdegailv/kernel/Initializer/random_uniform/sub"
   op: "Sub"
-  input: "dense_2/kernel/Initializer/random_uniform/max"
-  input: "dense_2/kernel/Initializer/random_uniform/min"
+  input: "yingdegailv/kernel/Initializer/random_uniform/max"
+  input: "yingdegailv/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -14292,16 +14292,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform/mul"
+  name: "yingdegailv/kernel/Initializer/random_uniform/mul"
   op: "Mul"
-  input: "dense_2/kernel/Initializer/random_uniform/RandomUniform"
-  input: "dense_2/kernel/Initializer/random_uniform/sub"
+  input: "yingdegailv/kernel/Initializer/random_uniform/RandomUniform"
+  input: "yingdegailv/kernel/Initializer/random_uniform/sub"
   attr {
     key: "T"
     value {
@@ -14312,16 +14312,16 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_2/kernel/Initializer/random_uniform"
+  name: "yingdegailv/kernel/Initializer/random_uniform"
   op: "Add"
-  input: "dense_2/kernel/Initializer/random_uniform/mul"
-  input: "dense_2/kernel/Initializer/random_uniform/min"
+  input: "yingdegailv/kernel/Initializer/random_uniform/mul"
+  input: "yingdegailv/kernel/Initializer/random_uniform/min"
   attr {
     key: "T"
     value {
@@ -14332,19 +14332,19 @@ node {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
 }
 node {
-  name: "dense_2/kernel"
+  name: "yingdegailv/kernel"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14376,25 +14376,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense_2/kernel"
+      s: "yingdegailv/kernel"
     }
   }
 }
 node {
-  name: "dense_2/kernel/IsInitialized/VarIsInitializedOp"
+  name: "yingdegailv/kernel/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense_2/kernel"
+  input: "yingdegailv/kernel"
 }
 node {
-  name: "dense_2/kernel/Assign"
+  name: "yingdegailv/kernel/Assign"
   op: "AssignVariableOp"
-  input: "dense_2/kernel"
-  input: "dense_2/kernel/Initializer/random_uniform"
+  input: "yingdegailv/kernel"
+  input: "yingdegailv/kernel/Initializer/random_uniform"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14406,14 +14406,14 @@ node {
   }
 }
 node {
-  name: "dense_2/kernel/Read/ReadVariableOp"
+  name: "yingdegailv/kernel/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/kernel"
+  input: "yingdegailv/kernel"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/kernel"
+        s: "loc:@yingdegailv/kernel"
       }
     }
   }
@@ -14425,13 +14425,13 @@ node {
   }
 }
 node {
-  name: "dense_2/bias/Initializer/zeros"
+  name: "yingdegailv/bias/Initializer/zeros"
   op: "Const"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/bias"
+        s: "loc:@yingdegailv/bias"
       }
     }
   }
@@ -14457,13 +14457,13 @@ node {
   }
 }
 node {
-  name: "dense_2/bias"
+  name: "yingdegailv/bias"
   op: "VarHandleOp"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/bias"
+        s: "loc:@yingdegailv/bias"
       }
     }
   }
@@ -14492,25 +14492,25 @@ node {
   attr {
     key: "shared_name"
     value {
-      s: "dense_2/bias"
+      s: "yingdegailv/bias"
     }
   }
 }
 node {
-  name: "dense_2/bias/IsInitialized/VarIsInitializedOp"
+  name: "yingdegailv/bias/IsInitialized/VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "dense_2/bias"
+  input: "yingdegailv/bias"
 }
 node {
-  name: "dense_2/bias/Assign"
+  name: "yingdegailv/bias/Assign"
   op: "AssignVariableOp"
-  input: "dense_2/bias"
-  input: "dense_2/bias/Initializer/zeros"
+  input: "yingdegailv/bias"
+  input: "yingdegailv/bias/Initializer/zeros"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/bias"
+        s: "loc:@yingdegailv/bias"
       }
     }
   }
@@ -14522,14 +14522,14 @@ node {
   }
 }
 node {
-  name: "dense_2/bias/Read/ReadVariableOp"
+  name: "yingdegailv/bias/Read/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/bias"
+  input: "yingdegailv/bias"
   attr {
     key: "_class"
     value {
       list {
-        s: "loc:@dense_2/bias"
+        s: "loc:@yingdegailv/bias"
       }
     }
   }
@@ -14541,9 +14541,9 @@ node {
   }
 }
 node {
-  name: "dense_2/MatMul/ReadVariableOp"
+  name: "yingdegailv/MatMul/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/kernel"
+  input: "yingdegailv/kernel"
   attr {
     key: "dtype"
     value {
@@ -14552,10 +14552,10 @@ node {
   }
 }
 node {
-  name: "dense_2/MatMul"
+  name: "yingdegailv/MatMul"
   op: "MatMul"
-  input: "dense_1/Elu"
-  input: "dense_2/MatMul/ReadVariableOp"
+  input: "dense/Elu"
+  input: "yingdegailv/MatMul/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -14576,9 +14576,9 @@ node {
   }
 }
 node {
-  name: "dense_2/BiasAdd/ReadVariableOp"
+  name: "yingdegailv/BiasAdd/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/bias"
+  input: "yingdegailv/bias"
   attr {
     key: "dtype"
     value {
@@ -14587,10 +14587,10 @@ node {
   }
 }
 node {
-  name: "dense_2/BiasAdd"
+  name: "yingdegailv/BiasAdd"
   op: "BiasAdd"
-  input: "dense_2/MatMul"
-  input: "dense_2/BiasAdd/ReadVariableOp"
+  input: "yingdegailv/MatMul"
+  input: "yingdegailv/BiasAdd/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -14605,9 +14605,9 @@ node {
   }
 }
 node {
-  name: "dense_2/Tanh"
+  name: "yingdegailv/Tanh"
   op: "Tanh"
-  input: "dense_2/BiasAdd"
+  input: "yingdegailv/BiasAdd"
   attr {
     key: "T"
     value {
@@ -14616,7 +14616,7 @@ node {
   }
 }
 node {
-  name: "dense_target"
+  name: "luozi_target"
   op: "Placeholder"
   attr {
     key: "dtype"
@@ -14639,7 +14639,7 @@ node {
   }
 }
 node {
-  name: "dense_2_target"
+  name: "yingdegailv_target"
   op: "Placeholder"
   attr {
     key: "dtype"
@@ -15102,7 +15102,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/Const"
+  name: "loss/luozi_loss/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -15123,7 +15123,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank"
   op: "Const"
   attr {
     key: "dtype"
@@ -15144,9 +15144,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape"
   op: "Shape"
-  input: "dense/BiasAdd"
+  input: "luozi/BiasAdd"
   attr {
     key: "T"
     value {
@@ -15161,7 +15161,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank_1"
   op: "Const"
   attr {
     key: "dtype"
@@ -15182,9 +15182,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape_1"
   op: "Shape"
-  input: "dense/BiasAdd"
+  input: "luozi/BiasAdd"
   attr {
     key: "T"
     value {
@@ -15199,7 +15199,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub/y"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub/y"
   op: "Const"
   attr {
     key: "dtype"
@@ -15220,10 +15220,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub"
   op: "Sub"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank_1"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub/y"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank_1"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub/y"
   attr {
     key: "T"
     value {
@@ -15232,9 +15232,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice/begin"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice/begin"
   op: "Pack"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub"
   attr {
     key: "N"
     value {
@@ -15255,7 +15255,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice/size"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice/size"
   op: "Const"
   attr {
     key: "dtype"
@@ -15279,11 +15279,11 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice"
   op: "Slice"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape_1"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice/begin"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice/size"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape_1"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice/begin"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice/size"
   attr {
     key: "Index"
     value {
@@ -15298,7 +15298,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat/values_0"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat/values_0"
   op: "Const"
   attr {
     key: "dtype"
@@ -15322,7 +15322,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat/axis"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat/axis"
   op: "Const"
   attr {
     key: "dtype"
@@ -15343,11 +15343,11 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat"
   op: "ConcatV2"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat/values_0"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat/axis"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat/values_0"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat/axis"
   attr {
     key: "N"
     value {
@@ -15368,10 +15368,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape"
   op: "Reshape"
-  input: "dense/BiasAdd"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat"
+  input: "luozi/BiasAdd"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat"
   attr {
     key: "T"
     value {
@@ -15386,7 +15386,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank_2"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank_2"
   op: "Const"
   attr {
     key: "dtype"
@@ -15407,9 +15407,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape_2"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape_2"
   op: "Shape"
-  input: "dense_target"
+  input: "luozi_target"
   attr {
     key: "T"
     value {
@@ -15424,7 +15424,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_1/y"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_1/y"
   op: "Const"
   attr {
     key: "dtype"
@@ -15445,10 +15445,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_1"
   op: "Sub"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank_2"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_1/y"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank_2"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_1/y"
   attr {
     key: "T"
     value {
@@ -15457,9 +15457,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1/begin"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1/begin"
   op: "Pack"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_1"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_1"
   attr {
     key: "N"
     value {
@@ -15480,7 +15480,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1/size"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1/size"
   op: "Const"
   attr {
     key: "dtype"
@@ -15504,11 +15504,11 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1"
   op: "Slice"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape_2"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1/begin"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1/size"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape_2"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1/begin"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1/size"
   attr {
     key: "Index"
     value {
@@ -15523,7 +15523,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1/values_0"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1/values_0"
   op: "Const"
   attr {
     key: "dtype"
@@ -15547,7 +15547,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1/axis"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1/axis"
   op: "Const"
   attr {
     key: "dtype"
@@ -15568,11 +15568,11 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1"
   op: "ConcatV2"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1/values_0"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_1"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1/axis"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1/values_0"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_1"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1/axis"
   attr {
     key: "N"
     value {
@@ -15593,10 +15593,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_1"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_1"
   op: "Reshape"
-  input: "dense_target"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/concat_1"
+  input: "luozi_target"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/concat_1"
   attr {
     key: "T"
     value {
@@ -15611,10 +15611,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits"
   op: "SoftmaxCrossEntropyWithLogits"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_1"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_1"
   attr {
     key: "T"
     value {
@@ -15623,7 +15623,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_2/y"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_2/y"
   op: "Const"
   attr {
     key: "dtype"
@@ -15644,10 +15644,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_2"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_2"
   op: "Sub"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Rank"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_2/y"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Rank"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_2/y"
   attr {
     key: "T"
     value {
@@ -15656,7 +15656,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2/begin"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2/begin"
   op: "Const"
   attr {
     key: "dtype"
@@ -15680,9 +15680,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2/size"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2/size"
   op: "Pack"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Sub_2"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Sub_2"
   attr {
     key: "N"
     value {
@@ -15703,11 +15703,11 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2"
   op: "Slice"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Shape"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2/begin"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2/size"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Shape"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2/begin"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2/size"
   attr {
     key: "Index"
     value {
@@ -15722,10 +15722,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_2"
+  name: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_2"
   op: "Reshape"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Slice_2"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Slice_2"
   attr {
     key: "T"
     value {
@@ -15740,7 +15740,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/Const"
+  name: "loss/luozi_loss/weighted_loss/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -15761,7 +15761,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/shape"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/shape"
   op: "Const"
   attr {
     key: "dtype"
@@ -15783,7 +15783,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/rank"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/rank"
   op: "Const"
   attr {
     key: "dtype"
@@ -15804,9 +15804,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/shape"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/shape"
   op: "Shape"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_2"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_2"
   attr {
     key: "T"
     value {
@@ -15821,7 +15821,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/rank"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/rank"
   op: "Const"
   attr {
     key: "dtype"
@@ -15842,14 +15842,14 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   op: "NoOp"
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like/Shape"
   op: "Shape"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_2"
-  input: "^loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_2"
+  input: "^loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   attr {
     key: "T"
     value {
@@ -15864,9 +15864,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like/Const"
   op: "Const"
-  input: "^loss/dense_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  input: "^loss/luozi_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   attr {
     key: "dtype"
     value {
@@ -15886,10 +15886,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like"
   op: "Fill"
-  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Shape"
-  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  input: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  input: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like/Const"
   attr {
     key: "T"
     value {
@@ -15904,10 +15904,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/broadcast_weights"
+  name: "loss/luozi_loss/weighted_loss/broadcast_weights"
   op: "Mul"
-  input: "loss/dense_loss/weighted_loss/Const"
-  input: "loss/dense_loss/weighted_loss/broadcast_weights/ones_like"
+  input: "loss/luozi_loss/weighted_loss/Const"
+  input: "loss/luozi_loss/weighted_loss/broadcast_weights/ones_like"
   attr {
     key: "T"
     value {
@@ -15916,10 +15916,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/weighted_loss/Mul"
+  name: "loss/luozi_loss/weighted_loss/Mul"
   op: "Mul"
-  input: "loss/dense_loss/softmax_cross_entropy_with_logits/Reshape_2"
-  input: "loss/dense_loss/weighted_loss/broadcast_weights"
+  input: "loss/luozi_loss/softmax_cross_entropy_with_logits/Reshape_2"
+  input: "loss/luozi_loss/weighted_loss/broadcast_weights"
   attr {
     key: "T"
     value {
@@ -15928,7 +15928,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/Const_1"
+  name: "loss/luozi_loss/Const_1"
   op: "Const"
   attr {
     key: "dtype"
@@ -15952,10 +15952,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/Sum"
+  name: "loss/luozi_loss/Sum"
   op: "Sum"
-  input: "loss/dense_loss/weighted_loss/Mul"
-  input: "loss/dense_loss/Const_1"
+  input: "loss/luozi_loss/weighted_loss/Mul"
+  input: "loss/luozi_loss/Const_1"
   attr {
     key: "T"
     value {
@@ -15976,9 +15976,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/num_elements"
+  name: "loss/luozi_loss/num_elements"
   op: "Size"
-  input: "loss/dense_loss/weighted_loss/Mul"
+  input: "loss/luozi_loss/weighted_loss/Mul"
   attr {
     key: "T"
     value {
@@ -15993,9 +15993,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/num_elements/Cast"
+  name: "loss/luozi_loss/num_elements/Cast"
   op: "Cast"
-  input: "loss/dense_loss/num_elements"
+  input: "loss/luozi_loss/num_elements"
   attr {
     key: "DstT"
     value {
@@ -16016,7 +16016,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/Const_2"
+  name: "loss/luozi_loss/Const_2"
   op: "Const"
   attr {
     key: "dtype"
@@ -16038,10 +16038,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/Sum_1"
+  name: "loss/luozi_loss/Sum_1"
   op: "Sum"
-  input: "loss/dense_loss/Sum"
-  input: "loss/dense_loss/Const_2"
+  input: "loss/luozi_loss/Sum"
+  input: "loss/luozi_loss/Const_2"
   attr {
     key: "T"
     value {
@@ -16062,10 +16062,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_loss/value"
+  name: "loss/luozi_loss/value"
   op: "DivNoNan"
-  input: "loss/dense_loss/Sum_1"
-  input: "loss/dense_loss/num_elements/Cast"
+  input: "loss/luozi_loss/Sum_1"
+  input: "loss/luozi_loss/num_elements/Cast"
   attr {
     key: "T"
     value {
@@ -16098,7 +16098,7 @@ node {
 node {
   name: "loss/Sum"
   op: "Sum"
-  input: "loss/dense_loss/value"
+  input: "loss/luozi_loss/value"
   input: "loss/Const"
   attr {
     key: "T"
@@ -16286,7 +16286,7 @@ node {
   name: "loss/mul"
   op: "Mul"
   input: "loss/mul/x"
-  input: "loss/dense_loss/value"
+  input: "loss/luozi_loss/value"
   attr {
     key: "T"
     value {
@@ -16295,10 +16295,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/SquaredDifference"
+  name: "loss/yingdegailv_loss/SquaredDifference"
   op: "SquaredDifference"
-  input: "dense_2/Tanh"
-  input: "dense_2_target"
+  input: "yingdegailv/Tanh"
+  input: "yingdegailv_target"
   attr {
     key: "T"
     value {
@@ -16307,7 +16307,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Mean/reduction_indices"
+  name: "loss/yingdegailv_loss/Mean/reduction_indices"
   op: "Const"
   attr {
     key: "dtype"
@@ -16328,10 +16328,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Mean"
+  name: "loss/yingdegailv_loss/Mean"
   op: "Mean"
-  input: "loss/dense_2_loss/SquaredDifference"
-  input: "loss/dense_2_loss/Mean/reduction_indices"
+  input: "loss/yingdegailv_loss/SquaredDifference"
+  input: "loss/yingdegailv_loss/Mean/reduction_indices"
   attr {
     key: "T"
     value {
@@ -16352,7 +16352,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/Const"
+  name: "loss/yingdegailv_loss/weighted_loss/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -16373,7 +16373,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/shape"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/shape"
   op: "Const"
   attr {
     key: "dtype"
@@ -16395,7 +16395,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/rank"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/weights/rank"
   op: "Const"
   attr {
     key: "dtype"
@@ -16416,9 +16416,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/shape"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/shape"
   op: "Shape"
-  input: "loss/dense_2_loss/Mean"
+  input: "loss/yingdegailv_loss/Mean"
   attr {
     key: "T"
     value {
@@ -16433,7 +16433,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/rank"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/values/rank"
   op: "Const"
   attr {
     key: "dtype"
@@ -16454,14 +16454,14 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   op: "NoOp"
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like/Shape"
   op: "Shape"
-  input: "loss/dense_2_loss/Mean"
-  input: "^loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  input: "loss/yingdegailv_loss/Mean"
+  input: "^loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   attr {
     key: "T"
     value {
@@ -16476,9 +16476,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like/Const"
   op: "Const"
-  input: "^loss/dense_2_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
+  input: "^loss/yingdegailv_loss/weighted_loss/broadcast_weights/assert_broadcastable/static_scalar_check_success"
   attr {
     key: "dtype"
     value {
@@ -16498,10 +16498,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like"
   op: "Fill"
-  input: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like/Shape"
-  input: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like/Const"
+  input: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like/Shape"
+  input: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like/Const"
   attr {
     key: "T"
     value {
@@ -16516,10 +16516,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/broadcast_weights"
+  name: "loss/yingdegailv_loss/weighted_loss/broadcast_weights"
   op: "Mul"
-  input: "loss/dense_2_loss/weighted_loss/Const"
-  input: "loss/dense_2_loss/weighted_loss/broadcast_weights/ones_like"
+  input: "loss/yingdegailv_loss/weighted_loss/Const"
+  input: "loss/yingdegailv_loss/weighted_loss/broadcast_weights/ones_like"
   attr {
     key: "T"
     value {
@@ -16528,10 +16528,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/weighted_loss/Mul"
+  name: "loss/yingdegailv_loss/weighted_loss/Mul"
   op: "Mul"
-  input: "loss/dense_2_loss/Mean"
-  input: "loss/dense_2_loss/weighted_loss/broadcast_weights"
+  input: "loss/yingdegailv_loss/Mean"
+  input: "loss/yingdegailv_loss/weighted_loss/broadcast_weights"
   attr {
     key: "T"
     value {
@@ -16540,7 +16540,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Const"
+  name: "loss/yingdegailv_loss/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -16564,10 +16564,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Sum"
+  name: "loss/yingdegailv_loss/Sum"
   op: "Sum"
-  input: "loss/dense_2_loss/weighted_loss/Mul"
-  input: "loss/dense_2_loss/Const"
+  input: "loss/yingdegailv_loss/weighted_loss/Mul"
+  input: "loss/yingdegailv_loss/Const"
   attr {
     key: "T"
     value {
@@ -16588,9 +16588,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/num_elements"
+  name: "loss/yingdegailv_loss/num_elements"
   op: "Size"
-  input: "loss/dense_2_loss/weighted_loss/Mul"
+  input: "loss/yingdegailv_loss/weighted_loss/Mul"
   attr {
     key: "T"
     value {
@@ -16605,9 +16605,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/num_elements/Cast"
+  name: "loss/yingdegailv_loss/num_elements/Cast"
   op: "Cast"
-  input: "loss/dense_2_loss/num_elements"
+  input: "loss/yingdegailv_loss/num_elements"
   attr {
     key: "DstT"
     value {
@@ -16628,7 +16628,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Const_1"
+  name: "loss/yingdegailv_loss/Const_1"
   op: "Const"
   attr {
     key: "dtype"
@@ -16650,10 +16650,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/Sum_1"
+  name: "loss/yingdegailv_loss/Sum_1"
   op: "Sum"
-  input: "loss/dense_2_loss/Sum"
-  input: "loss/dense_2_loss/Const_1"
+  input: "loss/yingdegailv_loss/Sum"
+  input: "loss/yingdegailv_loss/Const_1"
   attr {
     key: "T"
     value {
@@ -16674,10 +16674,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2_loss/value"
+  name: "loss/yingdegailv_loss/value"
   op: "DivNoNan"
-  input: "loss/dense_2_loss/Sum_1"
-  input: "loss/dense_2_loss/num_elements/Cast"
+  input: "loss/yingdegailv_loss/Sum_1"
+  input: "loss/yingdegailv_loss/num_elements/Cast"
   attr {
     key: "T"
     value {
@@ -16710,7 +16710,7 @@ node {
 node {
   name: "loss/Sum_1"
   op: "Sum"
-  input: "loss/dense_2_loss/value"
+  input: "loss/yingdegailv_loss/value"
   input: "loss/Const_1"
   attr {
     key: "T"
@@ -16898,7 +16898,7 @@ node {
   name: "loss/mul_1"
   op: "Mul"
   input: "loss/mul_1/x"
-  input: "loss/dense_2_loss/value"
+  input: "loss/yingdegailv_loss/value"
   attr {
     key: "T"
     value {
@@ -18823,278 +18823,6 @@ node {
   }
 }
 node {
-  name: "loss/dense_1/kernel/Regularizer/Square/ReadVariableOp"
-  op: "ReadVariableOp"
-  input: "dense_1/kernel"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/Square"
-  op: "Square"
-  input: "loss/dense_1/kernel/Regularizer/Square/ReadVariableOp"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/Const"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 2
-          }
-        }
-        tensor_content: "\000\000\000\000\001\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/Sum"
-  op: "Sum"
-  input: "loss/dense_1/kernel/Regularizer/Square"
-  input: "loss/dense_1/kernel/Regularizer/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/mul/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 9.999999747378752e-06
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/mul"
-  op: "Mul"
-  input: "loss/dense_1/kernel/Regularizer/mul/x"
-  input: "loss/dense_1/kernel/Regularizer/Sum"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/add/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer/add"
-  op: "Add"
-  input: "loss/dense_1/kernel/Regularizer/add/x"
-  input: "loss/dense_1/kernel/Regularizer/mul"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/Square/ReadVariableOp"
-  op: "ReadVariableOp"
-  input: "dense_1/bias"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/Square"
-  op: "Square"
-  input: "loss/dense_1/bias/Regularizer/Square/ReadVariableOp"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/Const"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/Sum"
-  op: "Sum"
-  input: "loss/dense_1/bias/Regularizer/Square"
-  input: "loss/dense_1/bias/Regularizer/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/mul/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 9.999999747378752e-06
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/mul"
-  op: "Mul"
-  input: "loss/dense_1/bias/Regularizer/mul/x"
-  input: "loss/dense_1/bias/Regularizer/Sum"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/add/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer/add"
-  op: "Add"
-  input: "loss/dense_1/bias/Regularizer/add/x"
-  input: "loss/dense_1/bias/Regularizer/mul"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
   name: "loss/dense/kernel/Regularizer/Square/ReadVariableOp"
   op: "ReadVariableOp"
   input: "dense/kernel"
@@ -19367,9 +19095,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/Square/ReadVariableOp"
+  name: "loss/luozi/kernel/Regularizer/Square/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/kernel"
+  input: "luozi/kernel"
   attr {
     key: "dtype"
     value {
@@ -19378,9 +19106,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/Square"
+  name: "loss/luozi/kernel/Regularizer/Square"
   op: "Square"
-  input: "loss/dense_2/kernel/Regularizer/Square/ReadVariableOp"
+  input: "loss/luozi/kernel/Regularizer/Square/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -19389,7 +19117,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/Const"
+  name: "loss/luozi/kernel/Regularizer/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -19413,10 +19141,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/Sum"
+  name: "loss/luozi/kernel/Regularizer/Sum"
   op: "Sum"
-  input: "loss/dense_2/kernel/Regularizer/Square"
-  input: "loss/dense_2/kernel/Regularizer/Const"
+  input: "loss/luozi/kernel/Regularizer/Square"
+  input: "loss/luozi/kernel/Regularizer/Const"
   attr {
     key: "T"
     value {
@@ -19437,7 +19165,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/mul/x"
+  name: "loss/luozi/kernel/Regularizer/mul/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -19458,10 +19186,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/mul"
+  name: "loss/luozi/kernel/Regularizer/mul"
   op: "Mul"
-  input: "loss/dense_2/kernel/Regularizer/mul/x"
-  input: "loss/dense_2/kernel/Regularizer/Sum"
+  input: "loss/luozi/kernel/Regularizer/mul/x"
+  input: "loss/luozi/kernel/Regularizer/Sum"
   attr {
     key: "T"
     value {
@@ -19470,7 +19198,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/add/x"
+  name: "loss/luozi/kernel/Regularizer/add/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -19491,10 +19219,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer/add"
+  name: "loss/luozi/kernel/Regularizer/add"
   op: "Add"
-  input: "loss/dense_2/kernel/Regularizer/add/x"
-  input: "loss/dense_2/kernel/Regularizer/mul"
+  input: "loss/luozi/kernel/Regularizer/add/x"
+  input: "loss/luozi/kernel/Regularizer/mul"
   attr {
     key: "T"
     value {
@@ -19503,9 +19231,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/Square/ReadVariableOp"
+  name: "loss/luozi/bias/Regularizer/Square/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/bias"
+  input: "luozi/bias"
   attr {
     key: "dtype"
     value {
@@ -19514,9 +19242,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/Square"
+  name: "loss/luozi/bias/Regularizer/Square"
   op: "Square"
-  input: "loss/dense_2/bias/Regularizer/Square/ReadVariableOp"
+  input: "loss/luozi/bias/Regularizer/Square/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -19525,7 +19253,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/Const"
+  name: "loss/luozi/bias/Regularizer/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -19549,10 +19277,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/Sum"
+  name: "loss/luozi/bias/Regularizer/Sum"
   op: "Sum"
-  input: "loss/dense_2/bias/Regularizer/Square"
-  input: "loss/dense_2/bias/Regularizer/Const"
+  input: "loss/luozi/bias/Regularizer/Square"
+  input: "loss/luozi/bias/Regularizer/Const"
   attr {
     key: "T"
     value {
@@ -19573,7 +19301,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/mul/x"
+  name: "loss/luozi/bias/Regularizer/mul/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -19594,10 +19322,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/mul"
+  name: "loss/luozi/bias/Regularizer/mul"
   op: "Mul"
-  input: "loss/dense_2/bias/Regularizer/mul/x"
-  input: "loss/dense_2/bias/Regularizer/Sum"
+  input: "loss/luozi/bias/Regularizer/mul/x"
+  input: "loss/luozi/bias/Regularizer/Sum"
   attr {
     key: "T"
     value {
@@ -19606,7 +19334,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/add/x"
+  name: "loss/luozi/bias/Regularizer/add/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -19627,10 +19355,282 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer/add"
+  name: "loss/luozi/bias/Regularizer/add"
   op: "Add"
-  input: "loss/dense_2/bias/Regularizer/add/x"
-  input: "loss/dense_2/bias/Regularizer/mul"
+  input: "loss/luozi/bias/Regularizer/add/x"
+  input: "loss/luozi/bias/Regularizer/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/Square/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "yingdegailv/kernel"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/Square"
+  op: "Square"
+  input: "loss/yingdegailv/kernel/Regularizer/Square/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\000\000\000\000\001\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/Sum"
+  op: "Sum"
+  input: "loss/yingdegailv/kernel/Regularizer/Square"
+  input: "loss/yingdegailv/kernel/Regularizer/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/mul/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 9.999999747378752e-06
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/mul"
+  op: "Mul"
+  input: "loss/yingdegailv/kernel/Regularizer/mul/x"
+  input: "loss/yingdegailv/kernel/Regularizer/Sum"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/add/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer/add"
+  op: "Add"
+  input: "loss/yingdegailv/kernel/Regularizer/add/x"
+  input: "loss/yingdegailv/kernel/Regularizer/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/Square/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "yingdegailv/bias"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/Square"
+  op: "Square"
+  input: "loss/yingdegailv/bias/Regularizer/Square/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/Sum"
+  op: "Sum"
+  input: "loss/yingdegailv/bias/Regularizer/Square"
+  input: "loss/yingdegailv/bias/Regularizer/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/mul/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 9.999999747378752e-06
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/mul"
+  op: "Mul"
+  input: "loss/yingdegailv/bias/Regularizer/mul/x"
+  input: "loss/yingdegailv/bias/Regularizer/Sum"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/add/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer/add"
+  op: "Add"
+  input: "loss/yingdegailv/bias/Regularizer/add/x"
+  input: "loss/yingdegailv/bias/Regularizer/mul"
   attr {
     key: "T"
     value {
@@ -21543,278 +21543,6 @@ node {
   }
 }
 node {
-  name: "loss/dense_1/kernel/Regularizer_1/Square/ReadVariableOp"
-  op: "ReadVariableOp"
-  input: "dense_1/kernel"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/Square"
-  op: "Square"
-  input: "loss/dense_1/kernel/Regularizer_1/Square/ReadVariableOp"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/Const"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 2
-          }
-        }
-        tensor_content: "\000\000\000\000\001\000\000\000"
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/Sum"
-  op: "Sum"
-  input: "loss/dense_1/kernel/Regularizer_1/Square"
-  input: "loss/dense_1/kernel/Regularizer_1/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/mul/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 9.999999747378752e-06
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/mul"
-  op: "Mul"
-  input: "loss/dense_1/kernel/Regularizer_1/mul/x"
-  input: "loss/dense_1/kernel/Regularizer_1/Sum"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/add/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/kernel/Regularizer_1/add"
-  op: "Add"
-  input: "loss/dense_1/kernel/Regularizer_1/add/x"
-  input: "loss/dense_1/kernel/Regularizer_1/mul"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/Square/ReadVariableOp"
-  op: "ReadVariableOp"
-  input: "dense_1/bias"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/Square"
-  op: "Square"
-  input: "loss/dense_1/bias/Regularizer_1/Square/ReadVariableOp"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/Const"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_INT32
-        tensor_shape {
-          dim {
-            size: 1
-          }
-        }
-        int_val: 0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/Sum"
-  op: "Sum"
-  input: "loss/dense_1/bias/Regularizer_1/Square"
-  input: "loss/dense_1/bias/Regularizer_1/Const"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "Tidx"
-    value {
-      type: DT_INT32
-    }
-  }
-  attr {
-    key: "keep_dims"
-    value {
-      b: false
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/mul/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 9.999999747378752e-06
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/mul"
-  op: "Mul"
-  input: "loss/dense_1/bias/Regularizer_1/mul/x"
-  input: "loss/dense_1/bias/Regularizer_1/Sum"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/add/x"
-  op: "Const"
-  attr {
-    key: "dtype"
-    value {
-      type: DT_FLOAT
-    }
-  }
-  attr {
-    key: "value"
-    value {
-      tensor {
-        dtype: DT_FLOAT
-        tensor_shape {
-        }
-        float_val: 0.0
-      }
-    }
-  }
-}
-node {
-  name: "loss/dense_1/bias/Regularizer_1/add"
-  op: "Add"
-  input: "loss/dense_1/bias/Regularizer_1/add/x"
-  input: "loss/dense_1/bias/Regularizer_1/mul"
-  attr {
-    key: "T"
-    value {
-      type: DT_FLOAT
-    }
-  }
-}
-node {
   name: "loss/dense/kernel/Regularizer_1/Square/ReadVariableOp"
   op: "ReadVariableOp"
   input: "dense/kernel"
@@ -22087,9 +21815,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/Square/ReadVariableOp"
+  name: "loss/luozi/kernel/Regularizer_1/Square/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/kernel"
+  input: "luozi/kernel"
   attr {
     key: "dtype"
     value {
@@ -22098,9 +21826,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/Square"
+  name: "loss/luozi/kernel/Regularizer_1/Square"
   op: "Square"
-  input: "loss/dense_2/kernel/Regularizer_1/Square/ReadVariableOp"
+  input: "loss/luozi/kernel/Regularizer_1/Square/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -22109,7 +21837,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/Const"
+  name: "loss/luozi/kernel/Regularizer_1/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -22133,10 +21861,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/Sum"
+  name: "loss/luozi/kernel/Regularizer_1/Sum"
   op: "Sum"
-  input: "loss/dense_2/kernel/Regularizer_1/Square"
-  input: "loss/dense_2/kernel/Regularizer_1/Const"
+  input: "loss/luozi/kernel/Regularizer_1/Square"
+  input: "loss/luozi/kernel/Regularizer_1/Const"
   attr {
     key: "T"
     value {
@@ -22157,7 +21885,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/mul/x"
+  name: "loss/luozi/kernel/Regularizer_1/mul/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -22178,10 +21906,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/mul"
+  name: "loss/luozi/kernel/Regularizer_1/mul"
   op: "Mul"
-  input: "loss/dense_2/kernel/Regularizer_1/mul/x"
-  input: "loss/dense_2/kernel/Regularizer_1/Sum"
+  input: "loss/luozi/kernel/Regularizer_1/mul/x"
+  input: "loss/luozi/kernel/Regularizer_1/Sum"
   attr {
     key: "T"
     value {
@@ -22190,7 +21918,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/add/x"
+  name: "loss/luozi/kernel/Regularizer_1/add/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -22211,10 +21939,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/kernel/Regularizer_1/add"
+  name: "loss/luozi/kernel/Regularizer_1/add"
   op: "Add"
-  input: "loss/dense_2/kernel/Regularizer_1/add/x"
-  input: "loss/dense_2/kernel/Regularizer_1/mul"
+  input: "loss/luozi/kernel/Regularizer_1/add/x"
+  input: "loss/luozi/kernel/Regularizer_1/mul"
   attr {
     key: "T"
     value {
@@ -22223,9 +21951,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/Square/ReadVariableOp"
+  name: "loss/luozi/bias/Regularizer_1/Square/ReadVariableOp"
   op: "ReadVariableOp"
-  input: "dense_2/bias"
+  input: "luozi/bias"
   attr {
     key: "dtype"
     value {
@@ -22234,9 +21962,9 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/Square"
+  name: "loss/luozi/bias/Regularizer_1/Square"
   op: "Square"
-  input: "loss/dense_2/bias/Regularizer_1/Square/ReadVariableOp"
+  input: "loss/luozi/bias/Regularizer_1/Square/ReadVariableOp"
   attr {
     key: "T"
     value {
@@ -22245,7 +21973,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/Const"
+  name: "loss/luozi/bias/Regularizer_1/Const"
   op: "Const"
   attr {
     key: "dtype"
@@ -22269,10 +21997,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/Sum"
+  name: "loss/luozi/bias/Regularizer_1/Sum"
   op: "Sum"
-  input: "loss/dense_2/bias/Regularizer_1/Square"
-  input: "loss/dense_2/bias/Regularizer_1/Const"
+  input: "loss/luozi/bias/Regularizer_1/Square"
+  input: "loss/luozi/bias/Regularizer_1/Const"
   attr {
     key: "T"
     value {
@@ -22293,7 +22021,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/mul/x"
+  name: "loss/luozi/bias/Regularizer_1/mul/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -22314,10 +22042,10 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/mul"
+  name: "loss/luozi/bias/Regularizer_1/mul"
   op: "Mul"
-  input: "loss/dense_2/bias/Regularizer_1/mul/x"
-  input: "loss/dense_2/bias/Regularizer_1/Sum"
+  input: "loss/luozi/bias/Regularizer_1/mul/x"
+  input: "loss/luozi/bias/Regularizer_1/Sum"
   attr {
     key: "T"
     value {
@@ -22326,7 +22054,7 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/add/x"
+  name: "loss/luozi/bias/Regularizer_1/add/x"
   op: "Const"
   attr {
     key: "dtype"
@@ -22347,10 +22075,282 @@ node {
   }
 }
 node {
-  name: "loss/dense_2/bias/Regularizer_1/add"
+  name: "loss/luozi/bias/Regularizer_1/add"
   op: "Add"
-  input: "loss/dense_2/bias/Regularizer_1/add/x"
-  input: "loss/dense_2/bias/Regularizer_1/mul"
+  input: "loss/luozi/bias/Regularizer_1/add/x"
+  input: "loss/luozi/bias/Regularizer_1/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/Square/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "yingdegailv/kernel"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/Square"
+  op: "Square"
+  input: "loss/yingdegailv/kernel/Regularizer_1/Square/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 2
+          }
+        }
+        tensor_content: "\000\000\000\000\001\000\000\000"
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/Sum"
+  op: "Sum"
+  input: "loss/yingdegailv/kernel/Regularizer_1/Square"
+  input: "loss/yingdegailv/kernel/Regularizer_1/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/mul/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 9.999999747378752e-06
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/mul"
+  op: "Mul"
+  input: "loss/yingdegailv/kernel/Regularizer_1/mul/x"
+  input: "loss/yingdegailv/kernel/Regularizer_1/Sum"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/add/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/kernel/Regularizer_1/add"
+  op: "Add"
+  input: "loss/yingdegailv/kernel/Regularizer_1/add/x"
+  input: "loss/yingdegailv/kernel/Regularizer_1/mul"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/Square/ReadVariableOp"
+  op: "ReadVariableOp"
+  input: "yingdegailv/bias"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/Square"
+  op: "Square"
+  input: "loss/yingdegailv/bias/Regularizer_1/Square/ReadVariableOp"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/Const"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_INT32
+        tensor_shape {
+          dim {
+            size: 1
+          }
+        }
+        int_val: 0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/Sum"
+  op: "Sum"
+  input: "loss/yingdegailv/bias/Regularizer_1/Square"
+  input: "loss/yingdegailv/bias/Regularizer_1/Const"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "Tidx"
+    value {
+      type: DT_INT32
+    }
+  }
+  attr {
+    key: "keep_dims"
+    value {
+      b: false
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/mul/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 9.999999747378752e-06
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/mul"
+  op: "Mul"
+  input: "loss/yingdegailv/bias/Regularizer_1/mul/x"
+  input: "loss/yingdegailv/bias/Regularizer_1/Sum"
+  attr {
+    key: "T"
+    value {
+      type: DT_FLOAT
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/add/x"
+  op: "Const"
+  attr {
+    key: "dtype"
+    value {
+      type: DT_FLOAT
+    }
+  }
+  attr {
+    key: "value"
+    value {
+      tensor {
+        dtype: DT_FLOAT
+        tensor_shape {
+        }
+        float_val: 0.0
+      }
+    }
+  }
+}
+node {
+  name: "loss/yingdegailv/bias/Regularizer_1/add"
+  op: "Add"
+  input: "loss/yingdegailv/bias/Regularizer_1/add/x"
+  input: "loss/yingdegailv/bias/Regularizer_1/mul"
   attr {
     key: "T"
     value {
@@ -22375,12 +22375,12 @@ node {
   input: "loss/conv2d_6/bias/Regularizer/add"
   input: "loss/conv2d_5/kernel/Regularizer/add"
   input: "loss/conv2d_5/bias/Regularizer/add"
-  input: "loss/dense_1/kernel/Regularizer/add"
-  input: "loss/dense_1/bias/Regularizer/add"
   input: "loss/dense/kernel/Regularizer/add"
   input: "loss/dense/bias/Regularizer/add"
-  input: "loss/dense_2/kernel/Regularizer/add"
-  input: "loss/dense_2/bias/Regularizer/add"
+  input: "loss/luozi/kernel/Regularizer/add"
+  input: "loss/luozi/bias/Regularizer/add"
+  input: "loss/yingdegailv/kernel/Regularizer/add"
+  input: "loss/yingdegailv/bias/Regularizer/add"
   attr {
     key: "N"
     value {
@@ -22409,112 +22409,112 @@ node {
 node {
   name: "VarIsInitializedOp"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_1/beta"
+  input: "luozi/kernel"
 }
 node {
   name: "VarIsInitializedOp_1"
   op: "VarIsInitializedOp"
-  input: "dense_2/kernel"
+  input: "batch_normalization_6/gamma"
 }
 node {
   name: "VarIsInitializedOp_2"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_6/beta"
+  input: "batch_normalization_1/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_3"
   op: "VarIsInitializedOp"
-  input: "conv2d_4/bias"
+  input: "batch_normalization_6/beta"
 }
 node {
   name: "VarIsInitializedOp_4"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_6/moving_mean"
+  input: "conv2d_6/kernel"
 }
 node {
   name: "VarIsInitializedOp_5"
   op: "VarIsInitializedOp"
-  input: "total_1"
+  input: "batch_normalization_4/gamma"
 }
 node {
   name: "VarIsInitializedOp_6"
   op: "VarIsInitializedOp"
-  input: "conv2d_6/kernel"
+  input: "batch_normalization_1/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_7"
   op: "VarIsInitializedOp"
-  input: "conv2d/kernel"
+  input: "batch_normalization_5/gamma"
 }
 node {
   name: "VarIsInitializedOp_8"
   op: "VarIsInitializedOp"
-  input: "dense/kernel"
+  input: "luozi/bias"
 }
 node {
   name: "VarIsInitializedOp_9"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_3/gamma"
+  input: "batch_normalization_4/beta"
 }
 node {
   name: "VarIsInitializedOp_10"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_1/moving_mean"
+  input: "count"
 }
 node {
   name: "VarIsInitializedOp_11"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_6/moving_variance"
+  input: "batch_normalization_5/beta"
 }
 node {
   name: "VarIsInitializedOp_12"
   op: "VarIsInitializedOp"
-  input: "batch_normalization/gamma"
+  input: "batch_normalization_6/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_13"
   op: "VarIsInitializedOp"
-  input: "conv2d_1/kernel"
+  input: "conv2d_4/kernel"
 }
 node {
   name: "VarIsInitializedOp_14"
   op: "VarIsInitializedOp"
-  input: "dense_2/bias"
+  input: "conv2d_5/kernel"
 }
 node {
   name: "VarIsInitializedOp_15"
   op: "VarIsInitializedOp"
-  input: "count_1"
+  input: "conv2d_6/bias"
 }
 node {
   name: "VarIsInitializedOp_16"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_3/beta"
+  input: "batch_normalization_1/beta"
 }
 node {
   name: "VarIsInitializedOp_17"
   op: "VarIsInitializedOp"
-  input: "batch_normalization/beta"
+  input: "batch_normalization_2/gamma"
 }
 node {
   name: "VarIsInitializedOp_18"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_1/moving_variance"
+  input: "batch_normalization_6/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_19"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_2/gamma"
+  input: "batch_normalization_4/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_20"
   op: "VarIsInitializedOp"
-  input: "conv2d_6/bias"
+  input: "batch_normalization_1/gamma"
 }
 node {
   name: "VarIsInitializedOp_21"
   op: "VarIsInitializedOp"
-  input: "dense/bias"
+  input: "batch_normalization_5/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_22"
@@ -22524,117 +22524,117 @@ node {
 node {
   name: "VarIsInitializedOp_23"
   op: "VarIsInitializedOp"
-  input: "conv2d/bias"
+  input: "conv2d_4/bias"
 }
 node {
   name: "VarIsInitializedOp_24"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_5/gamma"
+  input: "conv2d/kernel"
 }
 node {
   name: "VarIsInitializedOp_25"
   op: "VarIsInitializedOp"
-  input: "conv2d_1/bias"
+  input: "batch_normalization_3/gamma"
 }
 node {
   name: "VarIsInitializedOp_26"
   op: "VarIsInitializedOp"
-  input: "count"
+  input: "batch_normalization_4/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_27"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_3/moving_mean"
+  input: "conv2d_5/bias"
 }
 node {
   name: "VarIsInitializedOp_28"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_4/moving_variance"
+  input: "yingdegailv/kernel"
 }
 node {
   name: "VarIsInitializedOp_29"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_5/beta"
+  input: "count_1"
 }
 node {
   name: "VarIsInitializedOp_30"
   op: "VarIsInitializedOp"
-  input: "batch_normalization/moving_mean"
+  input: "conv2d_2/kernel"
 }
 node {
   name: "VarIsInitializedOp_31"
   op: "VarIsInitializedOp"
-  input: "conv2d_3/kernel"
+  input: "batch_normalization/gamma"
 }
 node {
   name: "VarIsInitializedOp_32"
   op: "VarIsInitializedOp"
-  input: "dense_1/kernel"
+  input: "batch_normalization_5/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_33"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_3/moving_variance"
+  input: "conv2d_1/kernel"
 }
 node {
   name: "VarIsInitializedOp_34"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_4/gamma"
+  input: "batch_normalization_3/beta"
 }
 node {
   name: "VarIsInitializedOp_35"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_2/moving_mean"
+  input: "batch_normalization/beta"
 }
 node {
   name: "VarIsInitializedOp_36"
   op: "VarIsInitializedOp"
-  input: "batch_normalization/moving_variance"
+  input: "conv2d_3/kernel"
 }
 node {
   name: "VarIsInitializedOp_37"
   op: "VarIsInitializedOp"
-  input: "conv2d_2/kernel"
+  input: "batch_normalization_2/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_38"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_4/beta"
+  input: "yingdegailv/bias"
 }
 node {
   name: "VarIsInitializedOp_39"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_5/moving_mean"
+  input: "total_1"
 }
 node {
   name: "VarIsInitializedOp_40"
   op: "VarIsInitializedOp"
-  input: "conv2d_3/bias"
+  input: "conv2d_2/bias"
 }
 node {
   name: "VarIsInitializedOp_41"
   op: "VarIsInitializedOp"
-  input: "dense_1/bias"
+  input: "dense/kernel"
 }
 node {
   name: "VarIsInitializedOp_42"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_2/moving_variance"
+  input: "conv2d/bias"
 }
 node {
   name: "VarIsInitializedOp_43"
   op: "VarIsInitializedOp"
-  input: "conv2d_5/kernel"
+  input: "conv2d_1/bias"
 }
 node {
   name: "VarIsInitializedOp_44"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_5/moving_variance"
+  input: "batch_normalization_2/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_45"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_6/gamma"
+  input: "batch_normalization_3/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_46"
@@ -22644,27 +22644,27 @@ node {
 node {
   name: "VarIsInitializedOp_47"
   op: "VarIsInitializedOp"
-  input: "conv2d_2/bias"
+  input: "batch_normalization/moving_mean"
 }
 node {
   name: "VarIsInitializedOp_48"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_4/moving_mean"
+  input: "conv2d_3/bias"
 }
 node {
   name: "VarIsInitializedOp_49"
   op: "VarIsInitializedOp"
-  input: "conv2d_4/kernel"
+  input: "batch_normalization_3/moving_variance"
 }
 node {
   name: "VarIsInitializedOp_50"
   op: "VarIsInitializedOp"
-  input: "conv2d_5/bias"
+  input: "dense/bias"
 }
 node {
   name: "VarIsInitializedOp_51"
   op: "VarIsInitializedOp"
-  input: "batch_normalization_1/gamma"
+  input: "batch_normalization/moving_variance"
 }
 node {
   name: "init"
@@ -22715,12 +22715,12 @@ node {
   input: "^count_1/Assign"
   input: "^dense/bias/Assign"
   input: "^dense/kernel/Assign"
-  input: "^dense_1/bias/Assign"
-  input: "^dense_1/kernel/Assign"
-  input: "^dense_2/bias/Assign"
-  input: "^dense_2/kernel/Assign"
+  input: "^luozi/bias/Assign"
+  input: "^luozi/kernel/Assign"
   input: "^total/Assign"
   input: "^total_1/Assign"
+  input: "^yingdegailv/bias/Assign"
+  input: "^yingdegailv/kernel/Assign"
 }
 versions {
   producer: 38

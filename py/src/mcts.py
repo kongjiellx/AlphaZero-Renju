@@ -1,10 +1,9 @@
 import copy
 import numpy as np
 import math
-import random
-from board import Stone, Board, Player
-import conf
-from log_util import mcts_logger as logger
+from py.src.board import Stone, Board, Player
+from py.src import conf
+from py.src.log_util import mcts_logger as logger
 
 
 class Node(object):

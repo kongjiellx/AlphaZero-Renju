@@ -4,7 +4,7 @@ win_num = 5
 num_outputs = board_size ** 2
 
 # model
-model_path = 'model/params.h5'
+model_path = '/Users/admin/repos/AlphaZero-Renju/py/model/params.h5'
 residual_blocks = 1
 batch_size = 32
 save_every_n_games = 100
@@ -27,7 +27,7 @@ data_path = 'data.pkl'
 # ui
 background_size = 630
 game_area = 540
-background = 'images/small.jpg'
+background = 'py/images/small.jpg'
 empty = int((background_size - game_area) / 2)
 per_width = int(game_area / (board_size - 1))
 stone_radius = int(per_width / 2)

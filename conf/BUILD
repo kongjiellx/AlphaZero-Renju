@@ -1,7 +1,7 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@build_stack_rules_proto//cpp:cpp_proto_library.bzl", "cpp_proto_library")
-load("@build_stack_rules_proto//python:python_proto_library.bzl", "python_proto_library")
+load("@rules_proto_grpc//python:defs.bzl", "python_proto_library")
+load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
 
 proto_library(
     name = "conf_proto",
@@ -22,6 +22,6 @@ exports_files(["conf.pbtxt"])
 
 filegroup(
     name = "graph_def",
-    srcs = ["graph/model"],
+    srcs = ["graph.pbtxt"],
 )
 

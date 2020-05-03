@@ -3,11 +3,11 @@
 
 import pygame
 import conf
-import board
+from py.src import board
 import numpy as np
-from mcts import MCTS
-from model import Net
-from utils import idx2pos, pos2idx
+from py.src.mcts import MCTS
+from py.src.model import Net
+from py.src.utils import idx2pos, pos2idx
 import time
 
 pygame.init()
@@ -16,6 +16,7 @@ screen = pygame.display.set_mode((conf.background_size, conf.background_size), 0
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+
 
 class Stone(board.Stone):
     def __init__(self, pos, player):
@@ -43,10 +44,11 @@ class Board(board.Board):
 
         for i in range(conf.board_size - 1):
             for j in range(conf.board_size - 1):
-                rect = pygame.Rect(conf.empty + (conf.per_width * i), conf.empty + (conf.per_width * j), conf.per_width, conf.per_width)
+                rect = pygame.Rect(conf.empty + (conf.per_width * i), conf.empty + (conf.per_width * j), conf.per_width,
+                                   conf.per_width)
                 pygame.draw.rect(background, BLACK, rect, 1)
 
-        screen.blit(background, (0,0))
+        screen.blit(background, (0, 0))
         pygame.display.update()
 
 
@@ -55,8 +57,9 @@ def main():
     mcts = MCTS()
     net = Net()
     net.load(conf.model_path)
+    pygame.display.update()
     while True:
-        if game_board.turn == board.Player.O: # ai
+        if game_board.turn == board.Player.O:  # ai
             p = mcts.search(
                 board=game_board,
                 net=net,
@@ -66,7 +69,7 @@ def main():
             )
             idx = np.random.choice(conf.board_size ** 2, p=p)
             pos = idx2pos(idx)
-        else: # human
+        else:  # human
             while True:
                 flag = False
                 for event in pygame.event.get():
