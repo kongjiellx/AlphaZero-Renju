@@ -5,6 +5,10 @@ build --host_cxxopt=-std=c++14
 build --action_env PYTHON_BIN_PATH="/Users/admin/.pyenv/versions/3.6.8/bin/python"
 build --action_env PYTHON_LIB_PATH="/Users/admin/.pyenv/versions/3.6.8/lib/python3.6/site-packages"
 build --python_path="/Users/admin/.pyenv/versions/3.6.8/bin/python"
+#build --action_env PYTHON_BIN_PATH="/home/liuyekuan/.pyenv/versions/3.6.8/bin/python"
+#build --action_env PYTHON_LIB_PATH="/home/liuyekuan/.pyenv/versions/3.6.8/lib/python3.6/site-packages"
+#build --action_env-python_path="/home/liuyekuan/.pyenv/versions/3.6.8/bin/python"
+
 build:xla --define with_xla_support=true
 build:opt --copt=-march=native
 build:opt --copt=-Wno-sign-compare
