@@ -12,5 +12,11 @@ py_binary(
 py_binary(
     name = "learn_tf",
     srcs = ["learn_tf.py"],
-    #    deps = [requirement("tensorflow")],
+    deps = [requirement("tensorflow")],
+)
+
+py_binary(
+    name = "train_example",
+    srcs = ["train_example.py"],
+    deps = [requirement("tensorflow")],
 )
