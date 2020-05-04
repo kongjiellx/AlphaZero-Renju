@@ -69,14 +69,32 @@ cc_binary(
     srcs = [
         "load_graph.cpp",
     ],
+    data = [
+        "//conf:graph_def",
+    ],
     deps = [
         "@org_tensorflow//tensorflow/cc:cc_ops",
         "@org_tensorflow//tensorflow/cc:client_session",
         "@org_tensorflow//tensorflow/cc:grad_ops",
         "@org_tensorflow//tensorflow/cc:gradients",
-        "@org_tensorflow//tensorflow/core:tensorflow"
+        "@org_tensorflow//tensorflow/core:tensorflow",
     ],
-    data = [
-        "//conf:graph_def"
-    ]
+)
+
+cc_binary(
+    name = "load_model",
+    srcs = [
+        "load_model.cpp",
+    ],
+    deps = [
+        #        "@org_tensorflow//tensorflow/cc:cc_ops",
+        #        "@org_tensorflow//tensorflow/cc:client_session",
+        #        "@org_tensorflow//tensorflow/cc:grad_ops",
+        #        "@org_tensorflow//tensorflow/cc:gradients",
+        "@org_tensorflow//tensorflow/cc/saved_model:loader",
+        "@org_tensorflow//tensorflow/cc/saved_model:constants",
+        "@org_tensorflow//tensorflow/cc/saved_model:signature_constants",
+        "@org_tensorflow//tensorflow/cc/saved_model:tag_constants",
+        #        "@org_tensorflow//tensorflow/core:tensorflow",
+    ],
 )
