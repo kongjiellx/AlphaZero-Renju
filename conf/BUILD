@@ -5,7 +5,7 @@ load("@rules_proto_grpc//cpp:defs.bzl", "cpp_proto_library")
 
 proto_library(
     name = "conf_proto",
-    srcs = ["conf.proto"]
+    srcs = ["conf.proto"],
 )
 
 cpp_proto_library(
@@ -15,13 +15,10 @@ cpp_proto_library(
 
 python_proto_library(
     name = "conf_py_proto",
-    deps = [":conf_proto"]
+    deps = [":conf_proto"],
 )
-
-exports_files(["conf.pbtxt"])
 
 filegroup(
-    name = "graph_def",
-    srcs = ["graph.pbtxt"],
+    name = "conf_file",
+    srcs = ["conf.pbtxt"],
 )
-

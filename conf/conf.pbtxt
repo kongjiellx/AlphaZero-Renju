@@ -4,7 +4,7 @@ game_conf: {
 }
 
 model_conf: {
-    model_path: "model/params/h5"
+    model_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/model"
     residual_blocks: 2
     batch_size: 32
     save_every_n_games: 100

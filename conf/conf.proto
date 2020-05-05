@@ -31,7 +31,7 @@ message DataConf {
     string data_path = 3;
 }
 
-message UIConf {
+message UiConf {
     int32 background_size = 1;
     int32 game_area = 2;
     string background = 3;
@@ -42,6 +42,6 @@ message Conf {
     ModelConf model_conf = 2;
     MctsConf mtcs_conf = 3;
     DataConf data_conf = 4;
-    UIConf ui_conf = 5;
+    UiConf ui_conf = 5;
 }
 

@@ -17,8 +17,11 @@ py_binary(
 py_binary(
     name = "py_model",
     srcs = ["py_model.py"],
+    data = [
+        "//conf:conf_file",
+    ],
     deps = [
         requirement("tensorflow"),
-        "//py/src:conf",
+        "//conf:conf_py_proto",
     ],
 )

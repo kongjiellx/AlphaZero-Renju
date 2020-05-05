@@ -13,15 +13,24 @@ from tensorflow.keras.layers import (
     Add
 )
 from tensorflow.keras.regularizers import l2
-from py.src import conf
+from google.protobuf import text_format
+from conf.conf_pb2 import Conf
 import numpy as np
 
 
+def load_conf():
+    with open("conf/conf.pbtxt", "r") as fp:
+        return text_format.Parse(fp.read(), Conf())
+
+
+conf = load_conf()
+
+
 def residual_block(x):
-    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(x)
+    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c), bias_regularizer=l2(conf.model_conf.l2_c))(x)
     t = BatchNormalization()(t)
     t = Activation('elu')(t)
-    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(t)
+    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c), bias_regularizer=l2(conf.model_conf.l2_c))(t)
     t = BatchNormalization()(t)
     add = Add()([x, t])
     return Activation('elu')(add)
@@ -30,35 +39,66 @@ def residual_block(x):
 class Model(tf.Module):
     def __init__(self):
         super(Model).__init__()
-        inputs = Input(shape=(conf.board_size, conf.board_size, 3), dtype=tf.float32)
+        inputs = Input(shape=(conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32)
 
-        x = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(inputs)
+        x = Conv2D(
+            filters=32,
+            kernel_size=3,
+            padding="same",
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(inputs)
         x = BatchNormalization()(x)
         x = Activation('elu')(x)
 
-        for _ in range(conf.residual_blocks):
+        for _ in range(conf.model_conf.residual_blocks):
             x = residual_block(x)
 
-        ph = Conv2D(filters=2, kernel_size=1, kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(x)
+        ph = Conv2D(
+            filters=2,
+            kernel_size=1,
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(x)
         ph = BatchNormalization()(ph)
         ph = Activation('elu')(ph)
         ph = Flatten()(ph)
-        ph = Dense(conf.num_outputs, activation="softmax", kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(ph)
+        ph = Dense(
+            conf.game_conf.board_size * conf.game_conf.board_size,
+            activation="softmax",
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(ph)
 
-        vh = Conv2D(filters=1, kernel_size=1, kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(x)
+        vh = Conv2D(
+            filters=1,
+            kernel_size=1,
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(x)
         vh = BatchNormalization()(vh)
         vh = Activation('elu')(vh)
         vh = Flatten()(vh)
-        vh = Dense(20, activation='elu', kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(vh)
-        vh = Dense(1, activation='tanh', kernel_regularizer=l2(conf.l2_c), bias_regularizer=l2(conf.l2_c))(vh)
+        vh = Dense(
+            20,
+            activation='elu',
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(vh)
+        vh = Dense(
+            1,
+            activation='tanh',
+            kernel_regularizer=l2(conf.model_conf.l2_c),
+            bias_regularizer=l2(conf.model_conf.l2_c)
+        )(vh)
 
         self.model = tf.keras.models.Model(inputs=inputs, outputs=[ph, vh])
-        self.model.build(input_shape=(None, conf.board_size, conf.board_size, 3))
+        self.model.build(input_shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3))
         self.optimizer = optimizers.Adam()
 
     @tf.function(input_signature=[
-        tf.TensorSpec(shape=(None, conf.board_size, conf.board_size, 3), dtype=tf.float32, name="x"),
-        tf.TensorSpec(shape=(None, conf.num_outputs), dtype=tf.float32, name="p"),
+        tf.TensorSpec(shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x"),
+        tf.TensorSpec(shape=(None, conf.game_conf.board_size * conf.game_conf.board_size), dtype=tf.float32, name="p"),
         tf.TensorSpec(shape=None, dtype=tf.float32, name="v"),
     ])
     def train_step(self, x, p, v):
@@ -79,11 +119,11 @@ def save():
     to_export = Model()
     tf.saved_model.save(
         to_export,
-        '/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1',
+        conf.model_conf.model_path,
         signatures={
             "train_step": to_export.train_step.get_concrete_function(
-                tf.TensorSpec(shape=(None, conf.board_size, conf.board_size, 3), dtype=tf.float32, name="x"),
-                tf.TensorSpec(shape=(None, conf.num_outputs), dtype=tf.float32, name="p"),
+                tf.TensorSpec(shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x"),
+                tf.TensorSpec(shape=(None, conf.game_conf.board_size * conf.game_conf.board_size), dtype=tf.float32, name="p"),
                 tf.TensorSpec(shape=None, dtype=tf.float32, name="v"),
             )
         }
@@ -91,7 +131,7 @@ def save():
 
 
 def load():
-    model = tf.saved_model.load('/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1')
+    model = tf.saved_model.load(conf.model_conf.model_path,)
     for i in range(100):
         x = np.ones((1, 10, 10, 3)).tolist()
         y = [0.] * 100
@@ -103,8 +143,3 @@ def load():
 if __name__ == "__main__":
     save()
     load()
-
-    # m = Model()
-    # # tf.saved_model.save(m, "/Users/admin/repos/AlphaZero-Renju/cpp/py/1")
-    # tf.saved_model.save(m, "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1",
-    #                     signatures=m.train_model.get_concrete_function())
