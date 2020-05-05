@@ -8,6 +8,7 @@ import numpy as np
 
 class Model(tf.Module):
     def __init__(self):
+        super(Model).__init__()
         input = tf.keras.layers.Input(
             shape=(2,),
             name="liuyekuan"
@@ -15,52 +16,41 @@ class Model(tf.Module):
         output = tf.keras.layers.Dense(1)(input)
         self.model = tf.keras.models.Model(inputs=input, outputs=output)
         self.model.build(input_shape=(None, 2))
-
         self.optimizer = optimizers.Adam()
-        self.loss_func = losses.MeanSquaredError()
-
-        self.train_loss = tf.keras.metrics.Mean(name='train_loss')
-        self.train_metric = tf.keras.metrics.MeanAbsoluteError(name='train_mae')
-
-        self.valid_loss = tf.keras.metrics.Mean(name='valid_loss')
-        self.valid_metric = tf.keras.metrics.MeanAbsoluteError(name='valid_mae')
 
     @tf.function(input_signature=[
-        tf.TensorSpec(shape=(None, 2), dtype=tf.int32),
-        tf.TensorSpec(shape=None, dtype=tf.int32)
+        tf.TensorSpec(shape=(None, 2), dtype=tf.int32, name="x"),
+        tf.TensorSpec(shape=None, dtype=tf.int32, name="y")
     ])
-    def train_step(self, features, labels):
+    def train_step(self, x, y):
+        loss_func = losses.MeanSquaredError()
         with tf.GradientTape() as tape:
-            predictions = self.model(features)
-            loss = self.loss_func(labels, predictions)
+            predictions = self.model(x)
+            loss = loss_func(y, predictions)
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+        return gradients
 
-        self.train_loss.update_state(loss)
-        self.train_metric.update_state(labels, predictions)
-        tf.print(self.train_loss.result())
 
-    @tf.function
-    def valid_step(self, features, labels):
-        predictions = self.model(features)
-        batch_loss = self.loss_func(labels, predictions)
-        self.valid_loss.update_state(batch_loss)
-        self.valid_metric.update_state(labels, predictions)
-        tf.print(self.valid_metric.result())
+def save():
+    to_export = Model()
+    tf.saved_model.save(
+        to_export,
+        '/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1',
+        signatures={"train_step": to_export.train_step.get_concrete_function(
+            tf.TensorSpec(shape=(None, 2), dtype=tf.int32, name="x"),
+            tf.TensorSpec(shape=None, dtype=tf.int32, name="y")
+        )}
+    )
 
-    @tf.function
-    def train_model(self):
-        self.train_step(self.model, np.array([[1, 2], [3, 4]]), [1, 2])
-        self.valid_step(self.model, np.array([[1, 2], [3, 4]]), [1, 2])
-
-    def __call__(self):
-        print(dir(self.train_step))
-        print(self.train_step.get_concrete_function(
-            tf.TensorSpec(shape=(None, 2), dtype=tf.int32),
-            tf.TensorSpec(shape=None, dtype=tf.int32)
-        ).graph)
+def load():
+    model = tf.saved_model.load('/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1')
+    print(model.signatures["train_step"](x=tf.constant([[1, 2], [3, 4]]), y=tf.constant([1, 2])))
 
 
 if __name__ == "__main__":
-    m = Model()
-    tf.saved_model.save(m, "/Users/admin/repos/AlphaZero-Renju/cpp/py/1")
+    load()
+    # m = Model()
+    # # tf.saved_model.save(m, "/Users/admin/repos/AlphaZero-Renju/cpp/py/1")
+    # tf.saved_model.save(m, "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1",
+    #                     signatures=m.train_model.get_concrete_function())
