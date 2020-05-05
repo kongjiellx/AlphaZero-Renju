@@ -1,3 +1,5 @@
+package(default_visibility = ["//visibility:public"])
+
 load("@pip_deps//:requirements.bzl", "requirement")
 
 py_library(
@@ -42,7 +44,7 @@ py_library(
         ":conf",
         ":log_util",
         requirement("tensorflow"),
-        requirement("h5py")
+        requirement("h5py"),
     ],
 )
 
@@ -72,15 +74,15 @@ py_binary(
 py_binary(
     name = "play",
     srcs = ["play.py"],
+    data = [
+        "//py/images:background",
+    ],
     deps = [
         ":board",
         ":mcts",
         ":model",
         ":utils",
         requirement("numpy"),
-        requirement("pygame")
+        requirement("pygame"),
     ],
-    data = [
-        "//py/images:background",
-    ]
 )
