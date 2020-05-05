@@ -5,8 +5,9 @@
 #ifndef ALPHAZERO_RENJU_PRODUCER_H
 #define ALPHAZERO_RENJU_PRODUCER_H
 
+#include "cpp/utils/thread.h"
 
-class producer {
+class Producer: Thread {
 
 };
 

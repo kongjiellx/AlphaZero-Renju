@@ -1,0 +1,33 @@
+cc_library(
+    name = "board_lib",
+    srcs = [
+        "board.cpp",
+        "board.h",
+    ],
+    visibility = ["//test:__pkg__"],
+    deps = [
+        "//conf:configure_cc_proto",
+    ],
+)
+
+cc_library(
+    name = "model_lib",
+    srcs = [
+        "model.h",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc/saved_model:loader",
+    ],
+)
+
+cc_library(
+    name = "resource_manager",
+    srcs = ["resource_manager.h"],
+    deps = [
+        "//conf:conf_cc_proto",
+        "//cpp/src:model_lib",
+        "//cpp/utils:fixed_deque",
+        "//cpp/utils:protobuf_utils",
+        "@com_github_gflags_gflags//:gflags",
+    ],
+)

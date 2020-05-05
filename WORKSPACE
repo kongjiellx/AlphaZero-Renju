@@ -1,6 +1,5 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
-
 ########################################################
 # tensorflow archive
 ########################################################
@@ -10,7 +9,6 @@ tensorflow_http_archive(
     sha256 = "1f4b09e6bff7f847bb1034699076055e50e87534d76008af8295ed71195b2b36",
     git_commit = "e5bf8de410005de06a7ff5393fafdf832ef1d4ad", # v2.1.0 release
 )
-
 ########################################################
 # Upstream TensorFlow dependencies
 # TensorFlow build depends on these dependencies.
@@ -36,7 +34,6 @@ http_archive(
 )
 load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
 bazel_skylib_workspace()
-
 ########################################################
 # load tensorflow workspace
 ########################################################
@@ -45,28 +42,38 @@ tf_workspace(
  path_prefix = "",
  tf_repo_name = "org_tensorflow",
 )
-
+#########################################################
+## glog
+#########################################################
+http_archive(
+    name = "com_github_gflags_gflags",
+    urls = ["https://github.com/gflags/gflags/archive/v2.2.2.tar.gz"],
+    strip_prefix = "gflags-2.2.2",
+    sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
+)
+http_archive(
+    name = "com_github_google_glog",
+    urls = ["https://github.com/google/glog/archive/v0.4.0.tar.gz"],
+    strip_prefix = "glog-0.4.0",
+    sha256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c",
+)
 ########################################################
-#    grpc proto config
+# grpc proto config
 ########################################################
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
 http_archive(
     name = "rules_proto_grpc",
     urls = ["https://github.com/rules-proto-grpc/rules_proto_grpc/archive/1.0.2.tar.gz"],
     sha256 = "5f0f2fc0199810c65a2de148a52ba0aff14d631d4e8202f41aff6a9d590a471b",
     strip_prefix = "rules_proto_grpc-1.0.2",
 )
-
 load("@rules_proto_grpc//:repositories.bzl", "rules_proto_grpc_toolchains", "rules_proto_grpc_repos")
 rules_proto_grpc_toolchains()
 rules_proto_grpc_repos()
-
 load("@rules_proto_grpc//python:repositories.bzl", rules_proto_grpc_python_repos="python_repos")
 rules_proto_grpc_python_repos()
 load("@rules_proto_grpc//cpp:repositories.bzl", rules_proto_grpc_cpp_repos="cpp_repos")
 rules_proto_grpc_cpp_repos()
-
 ########################################################
 # load pip dependencies
 ########################################################
@@ -86,7 +93,6 @@ rules_proto_grpc_cpp_repos()
 #)
 #load("@pip_deps//:requirements.bzl", "pip_install")
 #pip_install()
-
 http_archive(
     name = "com_github_ali5h_rules_pip",
     strip_prefix = "rules_pip-2.1.0",
@@ -98,6 +104,14 @@ pip_import(
    name = "pip_deps",
    requirements = "//:requirements.txt",
 )
-
 load("@pip_deps//:requirements.bzl", "pip_install")
 pip_install()
+########################################################
+# absl
+########################################################
+http_archive(
+  name = "com_google_absl",
+  urls = ["https://github.com/abseil/abseil-cpp/archive/7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72.zip"],  # 2019-03-14
+  strip_prefix = "abseil-cpp-7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72",
+  sha256 = "71d00d15fe6370220b6685552fb66e5814f4dd2e130f3836fc084c894943753f",
+)

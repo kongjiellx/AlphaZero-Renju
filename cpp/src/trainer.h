@@ -5,8 +5,9 @@
 #ifndef ALPHAZERO_RENJU_TRAINER_H
 #define ALPHAZERO_RENJU_TRAINER_H
 
+#include "cpp/utils/thread.h"
 
-class trainer {
+class Trainer: Thread {
 
 };
 

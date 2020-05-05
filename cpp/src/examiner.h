@@ -5,8 +5,9 @@
 #ifndef ALPHAZERO_RENJU_EXAMINER_H
 #define ALPHAZERO_RENJU_EXAMINER_H
 
+#include "cpp/utils/thread.h"
 
-class examiner {
+class Examiner: Thread {
 
 };
 
