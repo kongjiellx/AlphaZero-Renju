@@ -6,7 +6,7 @@
 #define ALPHAZERO_RENJU_MAIN_H
 
 #include "cpp/src/resource_manager.h"
-#include "cpp/utils/thread.h"
+#include "cpp/src/utils/thread.h"
 #include "cpp/src/producer.h"
 #include "cpp/src/trainer.h"
 #include "cpp/src/examiner.h"
@@ -17,11 +17,10 @@ DEFINE_string(conf_path, "", "conf file path");
 
 class Main {
 private:
-    ResourceManager resource_manager;
     std::vector<Thread> workers;
 public:
     Main() {
-        resource_manager.instance();
+        ResourceManager::instance().init();
     }
 
     void add_workers() {

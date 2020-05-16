@@ -6,10 +6,12 @@
 #define ALPHAZERO_RENJU_FIXED_DEQUE_H
 
 #include <deque>
+#include <vector>
 #include <thread>
 #include <chrono>
 #include <algorithm>
 #include <iostream>
+#include <random>
 #include <exception>
 #include "absl/synchronization/mutex.h"
 
@@ -22,6 +24,8 @@ private:
     absl::CondVar _can_push;
     absl::CondVar _can_pop;
     int size;
+    std::uniform_int_distribution<std::mt19937::result_type> pool_d;
+    std::mt19937 rng;
 public:
     FixedDeque(int size): size(size) {}
 
@@ -61,9 +65,20 @@ public:
 
     T operator[](int pos) {
         _mutex.ReaderLock();
-        T e(_deque[pos]);
+        T e = _deque[pos];
         _mutex.ReaderUnlock();
         return e;
+    }
+
+    std::vector<T> sample_batch(int batch_num) {
+        std::vector<T> ret;
+        _mutex.ReaderLock();
+        for (int i = 0; i < batch_num; i++) {
+            T t = _deque[pool_d(rng)];
+            ret.push_back(t);
+        }
+        _mutex.ReaderUnlock();
+        return ret;
     }
 };
 

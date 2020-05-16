@@ -5,30 +5,36 @@
 #ifndef ALPHAZERO_RENJU_RESOURCE_MANAGER_H
 #define ALPHAZERO_RENJU_RESOURCE_MANAGER_H
 
-#include "cpp/utils/fixed_deque.h"
+#include "cpp/src/utils/fixed_deque.h"
 #include "cpp/src/model.h"
 #include "conf/conf.pb.h"
-#include "cpp/utils/protobuf_utils.h"
+#include "cpp/src/utils/protobuf_utils.h"
 #include "gflags/gflags.h"
+#include "cpp/src/instance.h"
 
 DECLARE_bool(conf_path);
 
 class ResourceManager {
 private:
-    FixedDeque<int> data_pool;
-    Model train_model;
-    Model predict_model;
+    FixedDeque<Instance> data_pool;
     conf::Conf conf;
 public:
-    ResourceManager(): data_pool(10000) {
+    void init() {
+        data_pool = FixedDeque<Instance>(10000);
         conf = load_conf(FLAGS_conf_path);
-        train_model.load(conf.model_conf().model_path());
-        predict_model.load(conf.model_conf().model_path());
     }
 
     static ResourceManager& instance() {
         static ResourceManager ins;
         return ins;
+    }
+
+    FixedDeque<Instance>& get_data_pool() {
+        return data_pool;
+    }
+
+    const conf::Conf& get_conf() {
+        return conf;
     }
 };
 

@@ -6,9 +6,13 @@
 #define ALPHAZERO_RENJU_TRAINER_H
 
 #include "cpp/utils/thread.h"
+#include "cpp/src/resource_manager.h"
 
 class Trainer: Thread {
+    void run() {
+        Model& model = ResourceManager::instance().get_train_model();
 
+    }
 };
 
 
