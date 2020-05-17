@@ -1,5 +1,5 @@
 cc_library(
-    name = "board_lib",
+    name = "board",
     srcs = [
         "board.cpp",
         "board.h",
@@ -11,7 +11,7 @@ cc_library(
 )
 
 cc_library(
-    name = "model_lib",
+    name = "model",
     srcs = [
         "model.h",
     ],
@@ -25,9 +25,20 @@ cc_library(
     srcs = ["resource_manager.h"],
     deps = [
         "//conf:conf_cc_proto",
-        "//cpp/src:model_lib",
-        "//cpp/utils:fixed_deque",
-        "//cpp/utils:protobuf_utils",
+        "//cpp/src:model",
+        "//cpp/src/utils:fixed_deque",
+        "//cpp/src/utils:protobuf_utils",
         "@com_github_gflags_gflags//:gflags",
+    ],
+)
+
+cc_library(
+    name = "model_manager",
+    srcs = ["model_manager.h"],
+    deps = [
+        ":model",
+        ":resource_manager",
+        "//conf:conf_cc_proto",
+        "//cpp/src/utils:protobuf_utils",
     ],
 )

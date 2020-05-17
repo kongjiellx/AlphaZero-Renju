@@ -10,7 +10,7 @@
 #include "conf/conf.pb.h"
 #include "cpp/src/utils/protobuf_utils.h"
 #include "gflags/gflags.h"
-#include "cpp/src/instance.h"
+#include "cpp/src/data_structure/data_structure.h"
 
 DECLARE_bool(conf_path);
 
@@ -19,7 +19,7 @@ private:
     FixedDeque<Instance> data_pool;
     conf::Conf conf;
 public:
-    void init() {
+    ResourceManager() {
         data_pool = FixedDeque<Instance>(10000);
         conf = load_conf(FLAGS_conf_path);
     }

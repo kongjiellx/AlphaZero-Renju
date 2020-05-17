@@ -7,6 +7,7 @@
 
 #include "cpp/src/model.h"
 #include "cpp/src/resource_manager.h"
+#include "cpp/src/data_structure/data_structure.h"
 #include "absl/synchronization/mutex.h"
 
 class ModelManager {
@@ -16,10 +17,25 @@ private:
     Model train_model;
     Model predict_model;
 public:
-    void init() {
-        predict_model.load(ResourceManager::instance().conf.model_conf().model_path());
-
+    static ModelManager& instance() {
+        static ModelManager ins;
+        return ins;
     }
+
+    void init() {
+        predict_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
+        train_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
+    }
+
+    void train_on_batch(std::vector<Instance> instances) {}
+
+    std::tuple<float, std::vector<float>> predict(FEATURE feature,  MODEL_TYPE model_type) {
+        return std::tuple<float, std::vector<float>>(0.0, std::vector<float>{});
+    }
+
+    void set_train_model(Model& model) {}
+
+    void set_predict_model(Model& model) {}
 };
 
 

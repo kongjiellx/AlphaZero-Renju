@@ -27,7 +27,11 @@ private:
     std::uniform_int_distribution<std::mt19937::result_type> pool_d;
     std::mt19937 rng;
 public:
-    FixedDeque(int size): size(size) {}
+    FixedDeque(int size): size(size) {
+        std::random_device dev;
+        pool_d = std::uniform_int_distribution<std::mt19937::result_type>(0, size - 1);
+        rng = std::mt19937(dev());
+    }
 
     bool full() {
         return _deque.size() >= size;

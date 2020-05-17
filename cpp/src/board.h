@@ -6,10 +6,11 @@
 #include "conf/configure.pb.h"
 #include "conf/configure_cc_proto_pb/conf/configure.pb.h"
 #include <google/protobuf/text_format.h>
+#include "cpp/src/data_structure/data_structure.h"
 
 enum Player {
-    BLACK = 1,
-    WHITE = -1,
+    O = 1,
+    X = -1,
     NOONE = 0
 };
 
@@ -34,16 +35,15 @@ private:
     Player current_player;
     std::vector<int> illegal_idx;
     std::tuple<int, int> last_pos;
-    std::vector<std::vector<int>> board;
+    BOARD_STATUS board_status;
 public:
     Board(const renju::GameConf& conf);
     void do_turn();
-    std::vector<std::vector<std::vector<int>>> get_feature();
     bool is_legal(Stone stone);
     void add_stone(Stone stone);
     std::tuple<bool, Player > check_done(Stone stone);
     std::tuple<bool, Player > step(Stone stone);
-    int count_on_direction(Stone stone, int xdirection, int ydirection);
+    int count_on_direction(Stone stone, int xdirection, int ydirection, int num);
     void print();
 };
 

@@ -4,31 +4,27 @@
 Board::Board(const renju::GameConf &conf) {
     this -> size = conf.board_size();
     this -> win_num = conf.win_num();
-    this -> current_player = BLACK;
+    this -> current_player = Player::O;
     for (int i = 0; i < size; i ++) {
-        this -> board.emplace_back(size, 0);
+        this -> board_status.emplace_back(size, 0);
     }
 }
 
 void Board::do_turn() {
-    if (current_player == BLACK) {
-        current_player = WHITE;
+    if (current_player == Player::O) {
+        current_player = Player::X;
     } else {
-        current_player = BLACK;
+        current_player = Player::O;
     }
 
 }
 
-std::vector<std::vector<std::vector<int>>> Board::get_feature() {
-    return std::vector<std::vector<std::vector<int>>>();
-}
-
 bool Board::is_legal(Stone stone) {
-    return stone.player == current_player and board[stone.x][stone.y] == 0;
+    return stone.player == current_player and board_status[stone.x][stone.y] == 0;
 }
 
 void Board::add_stone(Stone stone) {
-    board[stone.x][stone.y] = stone.player;
+    board_status[stone.x][stone.y] = stone.player;
     last_pos = std::make_tuple(stone.x, stone.y);
     illegal_idx.push_back(stone.x * size + stone.y);
 }
@@ -43,13 +39,13 @@ std::tuple<bool, Player> Board::check_done(Stone stone) {
     for (auto& axis: directions) {
         int axis_count = 1;
         for (auto& xy: axis) {
-            axis_count += count_on_direction(stone, std::get<0>(xy), std::get<1>(xy));
+            axis_count += count_on_direction(stone, std::get<0>(xy), std::get<1>(xy), win_num - axis_count);
             if (axis_count >= win_num) {
                 return std::make_tuple(true, stone.player);
             }
         }
     }
-    return std::make_tuple(illegal_idx.size() >= size * size, NOONE);
+    return std::make_tuple(illegal_idx.size() >= size * size, Player::NOONE);
 }
 
 std::tuple<bool, Player> Board::step(Stone stone) {
@@ -61,9 +57,9 @@ std::tuple<bool, Player> Board::step(Stone stone) {
     return check_done(stone);
 }
 
-int Board::count_on_direction(Stone stone, int xdirection, int ydirection) {
+int Board::count_on_direction(Stone stone, int xdirection, int ydirection, int num) {
     int count = 0;
-    for (int step = 1; step < 5; step ++) {
+    for (int step = 1; step <= num; step ++) {
         if ((xdirection != 0) && (stone.y + xdirection * step < 0 || stone.y + xdirection * step >= size)) {
             break;
         }
@@ -85,13 +81,13 @@ void Board::print() {
     for (int i = 0; i < size; i ++) {
         std::string row = "";
         for (int j = 0; j < size; j ++) {
-            if (i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board[i][j] == BLACK) {
+            if (i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board_status[i][j] == Player::O) {
                 row += "O)";
-            } else if(i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board[i][j] == WHITE){
+            } else if(i == std::get<0>(last_pos) && j == std::get<1>(last_pos) && board_status[i][j] == Player::X){
                 row += "X)";
-            } else if(board[i][j] == BLACK){
+            } else if(board_status[i][j] == Player::O){
                 row += "O ";
-            } else if(board[i][j] == WHITE) {
+            } else if(board_status[i][j] == Player::X) {
                 row += "X ";
             } else {
                 row += "- ";

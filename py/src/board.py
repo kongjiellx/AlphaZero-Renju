@@ -81,11 +81,11 @@ class Board(object):
         color = stone.player
         count = 0
         for step in range(1, 5):  # 除当前位置外,朝对应方向再看4步
-            if xdirection != 0 and (j + xdirection * step < 0 or j + xdirection * step >= self.size):
+            if xdirection != 0 and (i + xdirection * step < 0 or i + xdirection * step >= self.size):
                 break
-            if ydirection != 0 and (i + ydirection * step < 0 or i + ydirection * step >= self.size):
+            if ydirection != 0 and (j + ydirection * step < 0 or j + ydirection * step >= self.size):
                 break
-            if self.board[i + ydirection * step][j + xdirection * step] == color:
+            if self.board[i + xdirection * step][j + ydirection * step] == color:
                 count += 1
             else:
                 break

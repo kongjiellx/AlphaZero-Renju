@@ -3,3 +3,9 @@
 //
 
 #include "main.h"
+
+int main() {
+    Main m;
+    m.start();
+    return 0;
+}

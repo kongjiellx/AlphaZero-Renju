@@ -3,24 +3,24 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "thread",
     srcs = [
-        "thread.h"
+        "thread.h",
     ],
     deps = [
         "@com_github_google_glog//:glog",
-    ]
+    ],
 )
 
 cc_library(
     name = "fixed_deque",
     srcs = [
-        "fixed_deque.h"
+        "fixed_deque.h",
     ],
     deps = [
-        "@com_google_absl//absl/synchronization:synchronization"
-    ]
+        "@com_google_absl//absl/synchronization",
+    ],
 )
 
-cc_binary(
+cc_library(
     name = "protobuf_utils",
     srcs = [
         "protobuf_utils.h",
@@ -28,4 +28,9 @@ cc_binary(
     deps = [
         "//conf:conf_cc_proto",
     ],
+)
+
+cc_library(
+    name = "thread_pool",
+    srcs = ["thread_pool"],
 )

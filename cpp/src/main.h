@@ -20,7 +20,7 @@ private:
     std::vector<Thread> workers;
 public:
     Main() {
-        ResourceManager::instance().init();
+        ResourceManager::instance();
     }
 
     void add_workers() {
