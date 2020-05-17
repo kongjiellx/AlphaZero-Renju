@@ -10,7 +10,7 @@
 typedef std::vector<std::vector<int>> BOARD_STATUS;
 typedef std::vector<std::vector<std::vector<float>>> FEATURE;
 
-enum Result {
+enum WINNER {
     P1_WIN,
     P2_WIN,
     TIE
@@ -22,7 +22,7 @@ struct History {
 };
 
 struct GameResult {
-    Result result;
+    WINNER winner;
     std::vector<History> history;
 };
 
@@ -37,4 +37,8 @@ enum MODEL_TYPE {
     PREDICT
 };
 
+std::vector<Instance> game_result_to_instances(GameResult& game_result) {
+    std::vector<Instance> instances;
+    return instances;
+}
 #endif //ALPHAZERO_RENJU_DATA_STRUCTURE_H

@@ -33,9 +33,9 @@ public:
         return std::tuple<float, std::vector<float>>(0.0, std::vector<float>{});
     }
 
-    void set_train_model(Model& model) {}
+    void reset_train_model() {}
 
-    void set_predict_model(Model& model) {}
+    void update_predict_model() {}
 };
 
 

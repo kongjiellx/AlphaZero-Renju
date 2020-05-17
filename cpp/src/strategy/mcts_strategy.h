@@ -8,7 +8,7 @@
 #include "cpp/src/strategy/strategy.h"
 #include "cpp/src/data_structure/data_structure.h"
 
-class MctsStrategy: Strategy {
+class MctsStrategy: public Strategy {
 public:
     MctsStrategy(MODEL_TYPE model_type) {}
 

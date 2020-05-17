@@ -24,9 +24,9 @@ public:
     }
 
     void add_workers() {
-        workers.emplace_back(Producer());
-        workers.emplace_back(Trainer());
-        workers.emplace_back(Examiner());
+        workers.push_back(Producer(10));
+        workers.push_back(Trainer());
+        workers.push_back(Examiner());
     }
 
     void start() {
