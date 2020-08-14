@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <tuple>
-#include "conf/configure.pb.h"
-#include "conf/configure_cc_proto_pb/conf/configure.pb.h"
+#include "conf/conf.pb.h"
+#include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 #include <google/protobuf/text_format.h>
 #include "cpp/src/data_structure/data_structure.h"
 
@@ -37,7 +37,7 @@ private:
     std::tuple<int, int> last_pos;
     BOARD_STATUS board_status;
 public:
-    Board(const renju::GameConf& conf);
+    Board(const conf::GameConf& conf);
     void do_turn();
     bool is_legal(Stone stone);
     void add_stone(Stone stone);

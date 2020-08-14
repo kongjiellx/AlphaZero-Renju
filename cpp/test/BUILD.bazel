@@ -22,7 +22,7 @@ cc_binary(
         "//conf:conf.pbtxt",
     ],
     deps = [
-        "//:board_lib",
+        "//cpp/src:board",
     ],
 )
 

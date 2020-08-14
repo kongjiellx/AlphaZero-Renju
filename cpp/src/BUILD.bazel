@@ -1,12 +1,14 @@
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "board",
     srcs = [
         "board.cpp",
         "board.h",
     ],
-    visibility = ["//test:__pkg__"],
     deps = [
-        "//conf:configure_cc_proto",
+        "//conf:conf_cc_proto",
+        "//cpp/src/data_structure:data_structure"
     ],
 )
 

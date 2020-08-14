@@ -37,8 +37,6 @@ enum MODEL_TYPE {
     PREDICT
 };
 
-std::vector<Instance> game_result_to_instances(GameResult& game_result) {
-    std::vector<Instance> instances;
-    return instances;
-}
+std::vector<Instance> game_result_to_instances(GameResult& game_result);
+
 #endif //ALPHAZERO_RENJU_DATA_STRUCTURE_H

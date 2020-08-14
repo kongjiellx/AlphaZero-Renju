@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "board.h"
+#include "cpp/src/board.h"
 
 
 int main() {
@@ -13,18 +13,18 @@ int main() {
     infile.close();
     std::string str = strStream.str();
 
-    renju::Configure conf;
+    conf::Conf conf;
     google::protobuf::TextFormat::ParseFromString(str, &conf);
     Board board = Board(conf.game_conf());
     board.print();
-    board.step(Stone(1, 1, BLACK));
+    board.step(Stone(1, 1, O));
     board.print();
-    board.step(Stone(1, 2, WHITE));
-    board.step(Stone(2, 1, BLACK));
-    board.step(Stone(2, 2, WHITE));
-    board.step(Stone(3, 1, BLACK));
-    board.step(Stone(3, 2, WHITE));
-    std::tuple<bool, Player> res = board.step(Stone(4, 1, BLACK));
+    board.step(Stone(1, 2, X));
+    board.step(Stone(2, 1, O));
+    board.step(Stone(2, 2, X));
+    board.step(Stone(3, 1, O));
+    board.step(Stone(3, 2, X));
+    std::tuple<bool, Player> res = board.step(Stone(4, 1, O));
     board.print();
     std::cout << std::get<0>(res) << ":" << std::get<0>(res) << std::endl;
     return 0;

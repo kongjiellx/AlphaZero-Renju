@@ -10,9 +10,7 @@
 
 class Pit {
 public:
-    GameResult play_a_game(const Strategy& p1, const Strategy& p2) {
-        return GameResult();
-    }
+    GameResult play_a_game(const Strategy& p1, const Strategy& p2);
 };
 
 

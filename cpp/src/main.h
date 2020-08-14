@@ -31,10 +31,10 @@ public:
 
     void start() {
         for (auto& thread: workers) {
-            thread.start()
+            thread.start();
         }
         for (auto& thread: workers) {
-            thread.join()
+            thread.join();
         }
     }
 

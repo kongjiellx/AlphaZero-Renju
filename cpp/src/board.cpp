@@ -1,7 +1,7 @@
 #include <iostream>
 #include "board.h"
 
-Board::Board(const renju::GameConf &conf) {
+Board::Board(const conf::GameConf &conf) {
     this -> size = conf.board_size();
     this -> win_num = conf.win_num();
     this -> current_player = Player::O;
@@ -66,7 +66,7 @@ int Board::count_on_direction(Stone stone, int xdirection, int ydirection, int n
         if ((ydirection != 0) && (stone.x + ydirection * step < 0 || stone.x + ydirection * step >= size)) {
             break;
         }
-        if (board[stone.x + ydirection * step][stone.y + xdirection * step] == stone.player) {
+        if (board_status[stone.x + ydirection * step][stone.y + xdirection * step] == stone.player) {
             count ++;
         } else {
             break;
