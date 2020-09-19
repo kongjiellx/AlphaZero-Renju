@@ -32,6 +32,6 @@ tf_cc_binary(
         "test_model.cpp",
     ],
     deps = [
-        "//:model_lib",
+        "//cpp/src:model",
     ],
 )

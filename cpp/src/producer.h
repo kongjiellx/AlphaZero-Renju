@@ -51,10 +51,10 @@ public:
             }
             for (auto&& future: futures) {
                 future.get();
-                if (ResourceManager::instance().get_data_pool().full()) {
-                    std::cout << "init data pool done!" << std::endl;
-                    return;
-                }
+            }
+            if (ResourceManager::instance().get_data_pool().full()) {
+                std::cout << "init data pool done!" << std::endl;
+                return;
             }
         }
     }
@@ -64,7 +64,7 @@ public:
         ThreadPool thread_pool(thread_pool_size);
         std::vector<std::future<void>> futures;
         for(size_t i = 0; i < thread_pool_size; i++) {
-            futures.emplace_back(thread_pool.enqueue(&Producer::play_endless(), this));
+            futures.emplace_back(thread_pool.enqueue(&Producer::play_endless, this));
         }
     }
 

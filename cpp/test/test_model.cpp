@@ -3,10 +3,24 @@
 //
 
 #include "cpp/src/model.h"
+#include <vector>
 
 int main() {
-    Model model;
-    model.create_graph();
-    model.train();
+    Model model(10);
+    model.load("/Users/admin/repos/AlphaZero-Renju/cpp/model");
+    std::vector<float> x_data;
+    std::vector<float> p_data;
+    std::vector<float> v_data;
+
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; i < 10 * 10; j++) {
+            for (int k = 0; k < 3; k++) {
+                x_data.push_back(0.1);
+            }
+            p_data.push_back(0.01);
+        }
+        v_data.push_back(0.5);
+    }
+    model.train(x_data, p_data, v_data);
     return 0;
 }
