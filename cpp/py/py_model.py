@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from tensorflow.keras import optimizers, losses, metrics
+import numpy as np
 import tensorflow as tf
-from tensorflow.keras.models import Model
+from conf.conf_pb2 import Conf
+from google.protobuf import text_format
+from tensorflow.keras import optimizers, losses
 from tensorflow.keras.layers import (
     Input,
     Conv2D,
@@ -12,10 +14,8 @@ from tensorflow.keras.layers import (
     Dense,
     Add
 )
+from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
-from google.protobuf import text_format
-from conf.conf_pb2 import Conf
-import numpy as np
 
 
 def load_conf():
@@ -27,10 +27,12 @@ conf = load_conf()
 
 
 def residual_block(x):
-    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c), bias_regularizer=l2(conf.model_conf.l2_c))(x)
+    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c),
+               bias_regularizer=l2(conf.model_conf.l2_c))(x)
     t = BatchNormalization()(t)
     t = Activation('elu')(t)
-    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c), bias_regularizer=l2(conf.model_conf.l2_c))(t)
+    t = Conv2D(filters=32, kernel_size=3, padding="same", kernel_regularizer=l2(conf.model_conf.l2_c),
+               bias_regularizer=l2(conf.model_conf.l2_c))(t)
     t = BatchNormalization()(t)
     add = Add()([x, t])
     return Activation('elu')(add)
@@ -96,11 +98,7 @@ class Model(tf.Module):
         self.model.build(input_shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3))
         self.optimizer = optimizers.Adam()
 
-    @tf.function(input_signature=[
-        tf.TensorSpec(shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x"),
-        tf.TensorSpec(shape=(None, conf.game_conf.board_size * conf.game_conf.board_size), dtype=tf.float32, name="p"),
-        tf.TensorSpec(shape=None, dtype=tf.float32, name="v"),
-    ])
+    @tf.function
     def train_step(self, x, p, v):
         p_loss_func = losses.CategoricalCrossentropy()
         v_loss_func = losses.MeanSquaredError()
@@ -114,6 +112,11 @@ class Model(tf.Module):
         self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
         return loss
 
+    @tf.function
+    def predict_func(self, x):
+        predictions = self.model(x)
+        return predictions
+
 
 def save():
     to_export = Model()
@@ -122,22 +125,29 @@ def save():
         conf.model_conf.model_path,
         signatures={
             "train_step": to_export.train_step.get_concrete_function(
-                tf.TensorSpec(shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x"),
-                tf.TensorSpec(shape=(None, conf.game_conf.board_size * conf.game_conf.board_size), dtype=tf.float32, name="p"),
+                tf.TensorSpec(
+                    shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x"),
+                tf.TensorSpec(
+                    shape=(None, conf.game_conf.board_size * conf.game_conf.board_size), dtype=tf.float32, name="p"),
                 tf.TensorSpec(shape=None, dtype=tf.float32, name="v"),
+            ),
+            "predict_func": to_export.predict_func.get_concrete_function(
+                tf.TensorSpec(
+                    shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32, name="x")
             )
         }
     )
 
 
 def load():
-    model = tf.saved_model.load(conf.model_conf.model_path,)
+    model = tf.saved_model.load(conf.model_conf.model_path, )
     for i in range(100):
         x = np.ones((1, 10, 10, 3)).tolist()
         y = [0.] * 100
         y[3] = 1.
         y = [y]
         print(model.signatures["train_step"](x=tf.constant(x), p=tf.constant(y), v=tf.constant(1.)))
+        print(model.signatures["predict_func"](x=tf.constant(x)))
 
 
 if __name__ == "__main__":

@@ -9,33 +9,25 @@
 #include <iostream>
 #include <vector>
 #include "tensorflow/cc/saved_model/loader.h"
+#include "conf/conf.pb.h"
+//#include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 
 class Model {
 private:
     tensorflow::SavedModelBundle bundle;
+    std::string train_x_name;
+    std::string train_p_name;
+    std::string train_v_name;
+    std::string train_loss_name;
+    std::string predict_x_name;
+    int board_size;
 public:
-    Model() {}
+    Model(int board_size);
 
-    void train(tensorflow::Tensor x_data, tensorflow::Tensor p_data, tensorflow::Tensor v_data) {
-        auto sigs = bundle.GetSignatures();
-        const auto &signature_def = bundle.GetSignatures().at("train_step");
-        const std::string x_name = signature_def.inputs().at("x").name();
-        const std::string p_name = signature_def.inputs().at("p").name();
-        const std::string v_name = signature_def.inputs().at("v").name();
-        const std::string output_name = signature_def.outputs().at("output_0").name();
-
-        std::vector<tensorflow::Tensor> outputs;
-        bundle.session->Run({{x_name, x_data}, {p_name, p_data}, {v_name, v_data}}, {output_name}, {}, &outputs);
-    }
-    void predict(std::vector<float> data) {}
-
-    void load(std::string export_dir) {
-        ::tensorflow::SessionOptions session_options;
-        ::tensorflow::RunOptions run_options;
-        LoadSavedModel(session_options, run_options, export_dir, {"serve"}, &bundle);
-    }
-
-    void save(std::string path) {}
+    void train(std::vector<float> x_data, std::vector<float> p_data, std::vector<float> v_data);
+    void predict(std::vector<float> data);
+    void load(std::string export_dir);
+    void save(std::string path);
 };
 
 #endif //ALPHAZERO_RENJU_MODEL_H

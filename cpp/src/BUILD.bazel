@@ -16,9 +16,11 @@ cc_library(
     name = "model",
     srcs = [
         "model.h",
+        "model.cpp"
     ],
     deps = [
         "@org_tensorflow//tensorflow/cc/saved_model:loader",
+        "//conf:conf_cc_proto",
     ],
 )
 

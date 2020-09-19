@@ -2,7 +2,7 @@
 // Created by liuyekuan on 19-11-9.
 //
 
-#include "model.h"
+#include "cpp/src/model.h"
 
 int main() {
     Model model;

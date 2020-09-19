@@ -4,7 +4,6 @@
 #include <vector>
 #include <tuple>
 #include "conf/conf.pb.h"
-#include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 #include <google/protobuf/text_format.h>
 #include "cpp/src/data_structure/data_structure.h"
 
