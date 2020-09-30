@@ -13,7 +13,7 @@ int main() {
     std::vector<float> v_data;
 
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; i < 10 * 10; j++) {
+        for (int j = 0; j < 10 * 10; j++) {
             for (int k = 0; k < 3; k++) {
                 x_data.push_back(0.1);
             }

@@ -26,6 +26,7 @@ void Model::train(std::vector<float> x_data, std::vector<float> p_data, std::vec
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
+    std::cout << "loss:" << outputs[0].scalar<float>() << std::endl;
     std::cout << "1" << std::endl;
 }
 
