@@ -24,9 +24,6 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: ngalaiko/bazel-action@ad5c8499ac2945bb7cc56587ed9da4a96b4fbb84
         uses: holvonix-open/setup-bazelisk@v0.6.0
-        with:
-          # Arguments to the bazel command
-          bazeliskVersion: 2.0.0
           
       - name: test
-        run: bazelisk run //cpp/test:test_board
+        run: export USE_BAZEL_VERSION=2.0.0 && bazelisk run //cpp/test:test_board
