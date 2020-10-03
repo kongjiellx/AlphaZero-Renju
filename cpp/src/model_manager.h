@@ -17,25 +17,17 @@ private:
     Model train_model;
     Model predict_model;
 public:
-    static ModelManager& instance() {
-        static ModelManager ins;
-        return ins;
-    }
+    static ModelManager& instance();
 
-    void init() {
-        predict_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
-        train_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
-    }
+    void init();
 
     void train_on_batch(std::vector<Instance> instances) {}
 
-    std::tuple<float, std::vector<float>> predict(FEATURE feature,  MODEL_TYPE model_type) {
-        return std::tuple<float, std::vector<float>>(0.0, std::vector<float>{});
-    }
+    std::tuple<float, std::vector<float>> predict(FEATURE feature,  MODEL_TYPE model_type);
 
-    void reset_train_model() {}
+    void reset_train_model();
 
-    void update_predict_model() {}
+    void update_predict_model();
 };
 
 

@@ -19,23 +19,13 @@ private:
     FixedDeque<Instance> data_pool;
     conf::Conf conf;
 public:
-    ResourceManager() {
-        data_pool = FixedDeque<Instance>(10000);
-        conf = load_conf(FLAGS_conf_path);
-    }
+    ResourceManager();
 
-    static ResourceManager& instance() {
-        static ResourceManager ins;
-        return ins;
-    }
+    static ResourceManager& instance();
 
-    FixedDeque<Instance>& get_data_pool() {
-        return data_pool;
-    }
+    FixedDeque<Instance>& get_data_pool();
 
-    const conf::Conf& get_conf() {
-        return conf;
-    }
+    const conf::Conf& get_conf();
 };
 
 #endif //ALPHAZERO_RENJU_RESOURCE_MANAGER_H

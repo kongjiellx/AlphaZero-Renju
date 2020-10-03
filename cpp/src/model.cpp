@@ -7,8 +7,7 @@
 
 Model::Model(int board_size): board_size(board_size) {}
 
-void Model::train(std::vector<float> x_data, std::vector<float> p_data, std::vector<float> v_data) {
-    std::cout << "model train!" << std::endl;
+float Model::train(std::vector<float> x_data, std::vector<float> p_data, std::vector<float> v_data) {
     int batch_size = v_data.size();
     tensorflow::Tensor x_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                  tensorflow::TensorShape{batch_size, board_size, board_size, 3});
@@ -26,8 +25,7 @@ void Model::train(std::vector<float> x_data, std::vector<float> p_data, std::vec
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
-    std::cout << "loss:" << outputs[0].scalar<float>() << std::endl;
-    std::cout << "1" << std::endl;
+    return outputs[0].scalar<float>();
 }
 
 void Model::predict(std::vector<float> data) {}

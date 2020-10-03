@@ -24,7 +24,7 @@ private:
 public:
     Model(int board_size);
 
-    void train(std::vector<float> x_data, std::vector<float> p_data, std::vector<float> v_data);
+    float train(std::vector<float> x_data, std::vector<float> p_data, std::vector<float> v_data);
     void predict(std::vector<float> data);
     void load(std::string export_dir);
     void save(std::string path);
