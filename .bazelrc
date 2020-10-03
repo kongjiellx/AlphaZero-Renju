@@ -23,4 +23,4 @@ test --build_tag_filters=-gpu,-nomac,-no_mac
 build --action_env TF_CONFIGURE_IOS="0"
 
 build --verbose_failures
-build --disk_cache=/Users/admin/bazel_cache/az
+build --disk_cache=.cache
