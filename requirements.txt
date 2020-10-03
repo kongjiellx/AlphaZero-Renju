@@ -1,5 +1,5 @@
 tensorflow==2.1.0
-#loguru
+loguru==0.4.1
 protobuf==3.8.0
-#pygame==2.0.0.dev3
-#h5py==2.10.0
+pygame==2.0.0.dev3
+h5py==2.10.0
