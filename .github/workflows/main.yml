@@ -20,10 +20,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: bazel_test
+      - name: bazel_cache
+        id: cache-bazel
+        uses: actions/cache@v2
+        with:
+          path: .cache
+          key: AlphaZero
+
+      - name: install_bazelisk
         # You may pin to the exact commit or the version.
         # uses: ngalaiko/bazel-action@ad5c8499ac2945bb7cc56587ed9da4a96b4fbb84
         uses: holvonix-open/setup-bazelisk@v0.6.0
           
-      - name: test
+      - name: bazel_run
         run: export USE_BAZEL_VERSION=2.0.0 && bazelisk run //cpp/test:test_board
