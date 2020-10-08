@@ -46,3 +46,10 @@ cc_library(
         "//cpp/src/utils:protobuf_utils",
     ],
 )
+
+
+cc_library(
+    name = "engine",
+    srcs = ["engine.h", "engine.cpp"],
+    deps = [],
+)

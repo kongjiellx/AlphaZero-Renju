@@ -9,7 +9,7 @@
 #include "cpp/src/resource_manager.h"
 #include "cpp/src/model_manager.h"
 #include "cpp/src/utils/thread_pool.h"
-#include "cpp/src/strategy/mcts_strategy.h"
+#include "cpp/src/strategy/strategy.h"
 #include "cpp/src/pit.h"
 
 class Producer: public Thread {

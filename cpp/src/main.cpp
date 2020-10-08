@@ -6,6 +6,7 @@
 
 int main() {
     Engine m;
+    m.add_workers();
     m.start();
     return 0;
 }

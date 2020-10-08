@@ -17,8 +17,10 @@ void Producer::play_a_game() {
 }
 
 void Producer::play_endless() {
-    MctsStrategy stg1(MODEL_TYPE::PREDICT);
-    MctsStrategy stg2(MODEL_TYPE::PREDICT);
+//    MctsStrategy stg1(MODEL_TYPE::PREDICT);
+//    MctsStrategy stg2(MODEL_TYPE::PREDICT);
+    RandomStrategy stg1;
+    RandomStrategy stg2;
     while(true) {
         GameResult result = pit.play_a_game(stg1, stg2);
         for (auto instance: game_result_to_instances(result)) {

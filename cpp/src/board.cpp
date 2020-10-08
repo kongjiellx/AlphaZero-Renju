@@ -97,3 +97,7 @@ void Board::print() {
     }
     std::cout << str;
 }
+
+BOARD_STATUS Board::get_current_status() {
+    return board_status;
+}

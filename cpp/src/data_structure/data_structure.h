@@ -16,14 +16,14 @@ enum WINNER {
     TIE
 };
 
-struct History {
+struct StepRecord {
     BOARD_STATUS status;
     std::tuple<int, int> point;
 };
 
 struct GameResult {
     WINNER winner;
-    std::vector<History> history;
+    std::vector<StepRecord> records;
 };
 
 struct Instance {
