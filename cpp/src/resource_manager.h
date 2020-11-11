@@ -6,13 +6,12 @@
 #define ALPHAZERO_RENJU_RESOURCE_MANAGER_H
 
 #include "cpp/src/utils/fixed_deque.h"
-#include "cpp/src/model.h"
 #include "conf/conf.pb.h"
 #include "cpp/src/utils/protobuf_utils.h"
 #include "gflags/gflags.h"
 #include "cpp/src/data_structure/data_structure.h"
 
-DECLARE_bool(conf_path);
+DECLARE_string(conf_path);
 
 class ResourceManager {
 private:

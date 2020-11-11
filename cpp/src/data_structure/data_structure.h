@@ -10,10 +10,10 @@
 typedef std::vector<std::vector<int>> BOARD_STATUS;
 typedef std::vector<std::vector<std::vector<float>>> FEATURE;
 
-enum WINNER {
-    P1_WIN,
-    P2_WIN,
-    TIE
+enum Player {
+    O = 1,
+    X = -1,
+    NOONE = 0
 };
 
 struct StepRecord {
@@ -22,7 +22,7 @@ struct StepRecord {
 };
 
 struct GameResult {
-    WINNER winner;
+    Player winner;
     std::vector<StepRecord> records;
 };
 

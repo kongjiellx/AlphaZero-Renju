@@ -7,11 +7,12 @@
 
 #include <tuple>
 #include "cpp/src/data_structure/data_structure.h"
+#include "cpp/src/board.h"
 #include <random>
 
 class Strategy {
 public:
-    virtual std::tuple<int, int> step() = 0 const;
+    virtual std::tuple<int, int> step(const Board& board) = 0;
 };
 
 class RandomStrategy: public Strategy {
@@ -20,14 +21,14 @@ private:
 public:
     RandomStrategy();
 
-    std::tuple<int, int> step() override;
+    std::tuple<int, int> step(const Board& board) override;
 };
 
 class MctsStrategy: public Strategy {
 public:
     MctsStrategy(MODEL_TYPE model_type);
 
-    std::tuple<int, int> step() override;
+    std::tuple<int, int> step(const Board& board) override;
 };
 
 #endif //ALPHAZERO_RENJU_STRATEGY_H

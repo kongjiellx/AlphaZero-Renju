@@ -24,6 +24,7 @@ cc_library(
     name = "protobuf_utils",
     srcs = [
         "protobuf_utils.h",
+        "protobuf_utils.cpp"
     ],
     deps = [
         "//conf:conf_cc_proto",

@@ -26,14 +26,21 @@ cc_library(
 
 cc_library(
     name = "resource_manager",
-    srcs = ["resource_manager.h"],
+    srcs = ["resource_manager.h", "resource_manager.cpp"],
     deps = [
         "//conf:conf_cc_proto",
-        "//cpp/src:model",
         "//cpp/src/utils:fixed_deque",
         "//cpp/src/utils:protobuf_utils",
         "@com_github_gflags_gflags//:gflags",
+        "//cpp/src/data_structure:data_structure"
     ],
+)
+
+cc_library(
+    name = "pit",
+    srcs = ["pit.h", "pit.cpp"],
+    deps = [":resource_manager",
+            "//cpp/src/strategy:strategy"],
 )
 
 cc_library(

@@ -1,0 +1,14 @@
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "strategy",
+    srcs = [
+        "strategy.cpp",
+        "strategy.h",
+    ],
+    deps = [
+        "//cpp/src/data_structure:data_structure",
+        "//cpp/src:board",
+        "//cpp/src:resource_manager"
+    ],
+)

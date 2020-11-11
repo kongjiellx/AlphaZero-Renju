@@ -35,3 +35,14 @@ cc_binary(
         "//cpp/src:model",
     ],
 )
+
+cc_binary(
+    name = "test_play",
+    srcs = [
+        "test_play.cpp",
+    ],
+    deps = [
+        "//cpp/src:pit",
+         "@com_github_gflags_gflags//:gflags",
+    ],
+)

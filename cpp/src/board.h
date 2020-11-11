@@ -7,12 +7,6 @@
 #include <google/protobuf/text_format.h>
 #include "cpp/src/data_structure/data_structure.h"
 
-enum Player {
-    O = 1,
-    X = -1,
-    NOONE = 0
-};
-
 class Stone {
 public:
     int x;
