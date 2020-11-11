@@ -11,8 +11,10 @@ RandomStrategy::RandomStrategy() {
 
 std::tuple<int, int> RandomStrategy::step(const Board& board) {
     int board_size = ResourceManager().instance().get_conf().game_conf().board_size();
-    auto rand_g = std::uniform_int_distribution<int>(0, board_size - 1);
-    return std::tuple<int, int>(rand_g(rng), rand_g(rng));
+    auto legal_idx = board.get_legal_idx();
+    auto rand_g = std::uniform_int_distribution<int>(0, legal_idx.size() - 1);
+    auto rand_idx = legal_idx[rand_g(rng)];
+    return std::tuple<int, int>(rand_idx / board_size, rand_idx % board_size);
 }
 
 MctsStrategy::MctsStrategy(MODEL_TYPE model_type) {}

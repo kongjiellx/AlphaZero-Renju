@@ -8,6 +8,9 @@ Board::Board(const conf::GameConf &conf) {
     for (int i = 0; i < size; i ++) {
         this -> board_status.emplace_back(size, 0);
     }
+    for (int i = 0; i < size * size; i++) {
+        legal_idx.push_back(i);
+    }
 }
 
 void Board::do_turn() {
@@ -27,6 +30,7 @@ void Board::add_stone(Stone stone) {
     board_status[stone.x][stone.y] = stone.player;
     last_pos = std::make_tuple(stone.x, stone.y);
     illegal_idx.push_back(stone.x * size + stone.y);
+    legal_idx.erase(std::find(legal_idx.begin(), legal_idx.end(), stone.x * size + stone.y));
 }
 
 std::tuple<bool, Player> Board::check_done(Stone stone) {
@@ -100,4 +104,12 @@ void Board::print() {
 
 BOARD_STATUS Board::get_current_status() {
     return board_status;
+}
+
+const std::vector<int> &Board::get_legal_idx() const {
+    return legal_idx;
+}
+
+const std::vector<int> &Board::get_illegal_idx() const {
+    return illegal_idx;
 }

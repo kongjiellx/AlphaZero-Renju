@@ -6,6 +6,7 @@
 #include "conf/conf.pb.h"
 #include <google/protobuf/text_format.h>
 #include "cpp/src/data_structure/data_structure.h"
+#include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 
 class Stone {
 public:
@@ -26,6 +27,9 @@ private:
     int size;
     int win_num;
     std::vector<int> illegal_idx;
+    std::vector<int> legal_idx;
+
+private:
     std::tuple<int, int> last_pos;
     BOARD_STATUS board_status;
 
@@ -40,6 +44,8 @@ public:
     Board(const conf::GameConf& conf);
     std::tuple<bool, Player > step(Stone stone);
     void print();
+    const std::vector<int> &get_illegal_idx() const;
+    const std::vector<int> &get_legal_idx() const;
 };
 
 

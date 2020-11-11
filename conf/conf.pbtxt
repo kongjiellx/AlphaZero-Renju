@@ -1,6 +1,6 @@
 game_conf: {
     board_size: 10
-    win_num: 4
+    win_num: 5
 }
 
 model_conf: {
