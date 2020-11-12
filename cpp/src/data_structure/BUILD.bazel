@@ -2,6 +2,9 @@ package(default_visibility = ["//visibility:public"])
 
 cc_library(
     name = "data_structure",
-    srcs = ["data_structure.h", "data_structure.cpp"],
+    srcs = [
+        "data_structure.cpp",
+        "data_structure.h",
+    ],
     deps = [],
 )

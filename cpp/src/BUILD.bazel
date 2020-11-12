@@ -8,39 +8,47 @@ cc_library(
     ],
     deps = [
         "//conf:conf_cc_proto",
-        "//cpp/src/data_structure:data_structure"
+        "//cpp/src/data_structure",
     ],
 )
 
 cc_library(
     name = "model",
     srcs = [
+        "model.cpp",
         "model.h",
-        "model.cpp"
     ],
     deps = [
-        "@org_tensorflow//tensorflow/cc/saved_model:loader",
         "//conf:conf_cc_proto",
+        "@org_tensorflow//tensorflow/cc/saved_model:loader",
     ],
 )
 
 cc_library(
     name = "resource_manager",
-    srcs = ["resource_manager.h", "resource_manager.cpp"],
+    srcs = [
+        "resource_manager.cpp",
+        "resource_manager.h",
+    ],
     deps = [
         "//conf:conf_cc_proto",
+        "//cpp/src/data_structure",
         "//cpp/src/utils:fixed_deque",
         "//cpp/src/utils:protobuf_utils",
         "@com_github_gflags_gflags//:gflags",
-        "//cpp/src/data_structure:data_structure"
     ],
 )
 
 cc_library(
     name = "pit",
-    srcs = ["pit.h", "pit.cpp"],
-    deps = [":resource_manager",
-            "//cpp/src/strategy:strategy"],
+    srcs = [
+        "pit.cpp",
+        "pit.h",
+    ],
+    deps = [
+        ":resource_manager",
+        "//cpp/src/strategy",
+    ],
 )
 
 cc_library(
@@ -54,9 +62,11 @@ cc_library(
     ],
 )
 
-
 cc_library(
     name = "engine",
-    srcs = ["engine.h", "engine.cpp"],
+    srcs = [
+        "engine.cpp",
+        "engine.h",
+    ],
     deps = [],
 )

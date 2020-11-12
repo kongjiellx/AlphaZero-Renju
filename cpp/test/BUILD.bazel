@@ -43,6 +43,6 @@ cc_binary(
     ],
     deps = [
         "//cpp/src:pit",
-         "@com_github_gflags_gflags//:gflags",
+        "@com_github_gflags_gflags//:gflags",
     ],
 )

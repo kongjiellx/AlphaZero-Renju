@@ -7,8 +7,8 @@ cc_library(
         "strategy.h",
     ],
     deps = [
-        "//cpp/src/data_structure:data_structure",
         "//cpp/src:board",
-        "//cpp/src:resource_manager"
+        "//cpp/src:resource_manager",
+        "//cpp/src/data_structure",
     ],
 )
