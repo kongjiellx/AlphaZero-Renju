@@ -3,7 +3,10 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "strategy",
     srcs = [
-        "strategy.cpp",
+        "mcts_strategy.cpp",
+        "mcts_strategy.h",
+        "random_strategy.cpp",
+        "random_strategy.h",
         "strategy.h",
     ],
     deps = [

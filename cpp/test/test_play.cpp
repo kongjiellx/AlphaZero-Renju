@@ -3,6 +3,7 @@
 //
 #include "cpp/src/pit.h"
 #include "gflags/gflags.h"
+#include "cpp/src/strategy/random_strategy.h"
 
 DEFINE_string(conf_path, "", "conf file path");
 int main(int argc, char *argv[]) {

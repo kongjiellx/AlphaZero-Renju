@@ -35,3 +35,9 @@ cc_library(
     name = "thread_pool",
     srcs = ["thread_pool.h"],
 )
+
+cc_library(
+    name = "dirichlet",
+    srcs = ["dirichlet.h"],
+    deps = [],
+)

@@ -46,3 +46,13 @@ cc_binary(
         "@com_github_gflags_gflags//:gflags",
     ],
 )
+
+cc_binary(
+    name = "test_dirichlet",
+    srcs = [
+        "test_dirichlet.cpp",
+    ],
+    deps = [
+        "//cpp/src/utils:dirichlet",
+    ],
+)

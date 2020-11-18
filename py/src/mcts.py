@@ -26,7 +26,7 @@ class Node(object):
         nb = sum([child.N for action, child in self.children.items()])
         max_qu = -1
         for idx, child in self.children.items():
-            U = conf.CPUCT * child.P  * math.sqrt(nb) / (1 + child.N)
+            U = conf.CPUCT * child.P * math.sqrt(nb) / (1 + child.N)
             if child.Q + U > max_qu:
                 max_qu = U + child.Q
                 select_action = idx
