@@ -25,11 +25,13 @@ public:
 class Board {
 private:
     int size;
+public:
+    int get_size() const;
+
+private:
     int win_num;
     std::vector<int> illegal_idx;
     std::vector<int> legal_idx;
-
-private:
     std::tuple<int, int> last_pos;
     BOARD_STATUS board_status;
 
@@ -42,6 +44,7 @@ public:
     Player current_player;
     BOARD_STATUS get_current_status();
     Board(const conf::GameConf& conf);
+
     std::tuple<bool, Player > step(Stone stone);
     void print();
     const std::vector<int> &get_illegal_idx() const;

@@ -42,9 +42,10 @@ public:
 class MctsStrategy: public Strategy {
 private:
     Node* root;
+    int current_step;
     conf::MctsConf mcts_conf;
-    std::vector<float> dirichlet_noise(std::vector<float> ps);
-    std::vector<float> search(Board& board, int simulate_num, int T, bool add_dirichlet_noise);
+    void dirichlet_noise(std::vector<float>& ps);
+    std::vector<float> search(const Board& board, int simulate_num, int T, bool add_dirichlet_noise);
     void change_root(int action);
 public:
     MctsStrategy(conf::MctsConf mcts_conf);

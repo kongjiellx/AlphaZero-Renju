@@ -113,3 +113,7 @@ const std::vector<int> &Board::get_legal_idx() const {
 const std::vector<int> &Board::get_illegal_idx() const {
     return illegal_idx;
 }
+
+int Board::get_size() const {
+    return size;
+}

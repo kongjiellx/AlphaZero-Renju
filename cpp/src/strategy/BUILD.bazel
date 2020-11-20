@@ -13,5 +13,6 @@ cc_library(
         "//cpp/src:board",
         "//cpp/src:resource_manager",
         "//cpp/src/data_structure",
+        "//cpp/src/utils:dirichlet"
     ],
 )
