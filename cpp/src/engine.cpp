@@ -9,22 +9,22 @@ Engine::Engine() {
 }
 
 void Engine::add_workers() {
-    workers.push_back(Producer(10));
-    workers.push_back(Trainer());
-    workers.push_back(Examiner());
+    workers.push_back(new Producer(10));
+//    workers.push_back(Trainer());
+//    workers.push_back(Examiner());
 }
 
 void Engine::start() {
     for (auto& thread: workers) {
-        thread.start();
+        thread -> start();
     }
     for (auto& thread: workers) {
-        thread.join();
+        thread -> join();
     }
 }
 
 void Engine::stop() {
     for (auto& thread: workers) {
-        thread.stop();
+        thread -> stop();
     }
 }

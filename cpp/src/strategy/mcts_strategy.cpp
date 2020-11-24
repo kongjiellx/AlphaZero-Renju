@@ -104,7 +104,7 @@ std::tuple<int, int> MctsStrategy::step(const Board& board) {
     } else {
         t = 0.5;
     }
-    auto ps = search(board, 1000, t, true);
+    auto ps = search(board, 100, t, true);
     std::random_device rd;
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());
@@ -114,12 +114,13 @@ std::tuple<int, int> MctsStrategy::step(const Board& board) {
 }
 
 void MctsStrategy::change_root(int action) {
-    if (root -> getChildren().find(action) != root->getChildren().end()) {
-        root = root->getChildren()[action];
-        root->setParent(nullptr);
+    if (current_root -> getChildren().find(action) != root->getChildren().end()) {
+        current_root = current_root->getChildren()[action];
+        current_root->setParent(nullptr);
     } else {
         root -> ~Node();
         root = new Node(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
+        current_root = root;
     }
 
 }
@@ -129,7 +130,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
     for (int i = 0; i < simulate_num; i++) {
         DLOG(INFO) << "simulate: " << i;
         Board copy_board(board);
-        Node *node = root;
+        Node *node = current_root;
         std::tuple<bool, Player> status;
         while (!node->is_leaf()) {
             auto node_action = node->select();
@@ -171,7 +172,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
         node->backup(v);
     }
     std::vector<float> ret(board.get_size() * board.get_size(), 0);
-    for (auto it: root->getChildren()) {
+    for (auto it: current_root->getChildren()) {
         ret[it.first] = it.second->getN();
     }
     auto denominators(ret);

@@ -63,10 +63,31 @@ cc_library(
 )
 
 cc_library(
+    name = "producer",
+    srcs = [
+        "producer.cpp",
+        "producer.h",
+    ],
+    deps = [
+        ":pit",
+        ":resource_manager",
+        "//cpp/src/strategy",
+        "//cpp/src/utils:thread",
+        "//cpp/src/utils:thread_pool",
+    ],
+)
+
+cc_library(
     name = "engine",
     srcs = [
         "engine.cpp",
         "engine.h",
     ],
-    deps = [],
+    deps = [":producer"],
+)
+
+cc_binary(
+    name = "main",
+    srcs = ["main.cpp"],
+    deps = [":engine"],
 )

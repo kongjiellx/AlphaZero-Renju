@@ -7,7 +7,7 @@
 
 #include "cpp/src/utils/thread.h"
 #include "cpp/src/resource_manager.h"
-#include "cpp/src/model_manager.h"
+//#include "cpp/src/model_manager.h"
 #include "cpp/src/utils/thread_pool.h"
 #include "cpp/src/strategy/strategy.h"
 #include "cpp/src/pit.h"
@@ -17,7 +17,7 @@ private:
     int thread_pool_size;
     Pit pit;
 public:
-    explicit Producer(int thread_pool_size);
+    Producer(int thread_pool_size);
 
     void play_a_game();
 
@@ -25,9 +25,11 @@ public:
 
     void init_data_pool();
 
-    void run();
+    void run() override ;
 
-    void stop() {}
+    ~Producer() override;
+
+    void stop() override;
 };
 
 
