@@ -13,20 +13,14 @@
 class Node {
 private:
     Node* parent;
-public:
-    void setParent(Node *parent);
-
-private:
     int N;
     float W;
     float P;
     Player player;
-public:
-    Player getPlayer() const;
-
-private:
     std::unordered_map<int, Node*> children;
 public:
+    Player getPlayer() const;
+    void setParent(Node *parent);
     std::unordered_map<int, Node *> &getChildren();
     Node(Node* parent, float p, Player player);
     ~Node();
@@ -42,6 +36,7 @@ public:
 class MctsStrategy: public Strategy {
 private:
     Node* root;
+    Node* current_root;
     int current_step;
     conf::MctsConf mcts_conf;
     void dirichlet_noise(std::vector<float>& ps);
@@ -49,6 +44,9 @@ private:
     void change_root(int action);
 public:
     MctsStrategy(conf::MctsConf mcts_conf);
+    ~MctsStrategy();
+
+    void post_process(const Board &board) override;
 
     std::tuple<int, int> step(const Board& board) override;
 };

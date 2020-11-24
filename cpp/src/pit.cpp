@@ -17,6 +17,8 @@ GameResult Pit::play_a_game(Strategy *p1, Strategy *p2) {
         auto status = board.step(
                 Stone(std::get<0>(position), std::get<1>(position), board.current_player));
         board.print();
+        p1->post_process(board);
+        p2->post_process(board);
         if (std::get<0>(status)) {
             ret.winner = std::get<1>(status);
             break;

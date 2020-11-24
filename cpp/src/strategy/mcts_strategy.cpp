@@ -4,9 +4,11 @@
 
 #include "mcts_strategy.h"
 #include "cpp/src/utils/dirichlet.h"
+#include "glog/logging.h"
 #include <numeric>
 #include <random>
 #include <iostream>
+#include <sstream>
 
 Node::Node(Node *parent, float p, Player player)
 :parent(parent), N(0), W(0), P(p), player(player) {
@@ -29,15 +31,23 @@ float Node::Q() {
 }
 
 void Node::expand(std::vector<float> ps, Player player) {
+    int num = 0;
+    std::stringstream dstr;
     for (int i = 0; i < ps.size(); i++) {
-        children[i] = new Node(this, ps[i], player);
+        if (ps[i] > 0) {
+            num ++;
+            dstr << i << ",";
+            children[i] = new Node(this, ps[i], player);
+        }
     }
+    DLOG(INFO) << "NUM: " << num;
+    DLOG(INFO) << "expend: " << dstr.str();
 }
 
 void Node::backup(float v) {
     N += 1;
     W += v;
-    if (parent != NULL) {
+    if (parent != nullptr) {
         parent -> backup(v);
     }
 }
@@ -51,7 +61,6 @@ std::tuple<Node*, int> Node::select() {
     for (auto it: children) {
         nb += it.second->getN();
     }
-    int i = 0;
     float max_qu = -1;
     int select_action = -1;
     for (auto it: children) {
@@ -59,9 +68,8 @@ std::tuple<Node*, int> Node::select() {
         float child_q = it.second->Q();
         if (child_q + U > max_qu) {
             max_qu = U + child_q;
-            select_action = i;
+            select_action = it.first;
         }
-        i++;
     }
     return std::tuple<Node*, int>(children[select_action], select_action);
 }
@@ -87,7 +95,7 @@ Player Node::getPlayer() const {
 }
 
 MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf)
-: root(new Node(nullptr, 0, Player::O)), mcts_conf(mcts_conf), current_step(0) {}
+: root(new Node(nullptr, 0, Player::O)), current_root(root), mcts_conf(mcts_conf), current_step(0) {}
 
 std::tuple<int, int> MctsStrategy::step(const Board& board) {
     float t;
@@ -96,33 +104,38 @@ std::tuple<int, int> MctsStrategy::step(const Board& board) {
     } else {
         t = 0.5;
     }
-    auto ps = search(board, 100, t, true);
+    auto ps = search(board, 1000, t, true);
     std::random_device rd;
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());
     auto pos = distribution(gen);
-    std::cout << pos << std::endl;
+    change_root(pos);
     return std::tuple<int, int>(pos / board.get_size(), pos % board.get_size());
 }
 
 void MctsStrategy::change_root(int action) {
-    if (root->getChildren().find(action) != root->getChildren().end()) {
+    if (root -> getChildren().find(action) != root->getChildren().end()) {
         root = root->getChildren()[action];
+        root->setParent(nullptr);
     } else {
-        root = new Node(nullptr, 0, root->getPlayer() == Player::X ? Player::O : Player::X);
+        root -> ~Node();
+        root = new Node(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
     }
+
 }
 
 std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise) {
+    DLOG(INFO) << "Search start!";
     for (int i = 0; i < simulate_num; i++) {
-        std::cout << i << std::endl;
-        Board copy_board = Board(board);
+        DLOG(INFO) << "simulate: " << i;
+        Board copy_board(board);
         Node *node = root;
         std::tuple<bool, Player> status;
         while (!node->is_leaf()) {
             auto node_action = node->select();
             node = std::get<0>(node_action);
             int action = std::get<1>(node_action);
+            DLOG(INFO) << "select action: " << action;
             status = copy_board.step(Stone(
                     action / copy_board.get_size(),
                     action % copy_board.get_size(),
@@ -131,21 +144,28 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
         float v;
         if (std::get<0>(status)) {
             v = std::get<1>(status);
+            DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
             std::vector<float> ps(
                     copy_board.get_size() * copy_board.get_size(),
-                    1.0f / copy_board.get_size() * copy_board.get_size());
+                    1.0f / (copy_board.get_size() * copy_board.get_size()));
             v = 0.5;
+            DLOG(INFO) << "Get leaf, v: " << v;
+
             if (add_dirichlet_noise && i == 0) {
                 dirichlet_noise(ps);
             }
+
+            std::stringstream ill_str;
             for (auto& idx: copy_board.get_illegal_idx()) {
                 ps[idx] = 0;
+                ill_str << idx << ",";
             }
-            auto sum = std::accumulate(ps.begin(), ps.end(), 0);
+            auto sum = std::accumulate(ps.begin(), ps.end(), 0.0);
             for (auto& p: ps) {
                 p /= sum;
             }
+            DLOG(INFO) << "illegal_idx: " << ill_str.str();
             node->expand(ps, copy_board.current_player);
         }
         node->backup(v);
@@ -162,6 +182,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
     for (auto &it: ret) {
         it = std::pow(it, 1.0 / T) / sum;
     }
+
     return ret;
 }
 
@@ -175,4 +196,13 @@ void MctsStrategy::dirichlet_noise(std::vector<float>& ps) {
     for (int i = 0; i < dim; i++) {
         ps[i] = (1 - mcts_conf.dirichlet_esp()) * ps[i] + mcts_conf.dirichlet_esp() * dirichlet_noise[i];
     }
+}
+
+MctsStrategy::~MctsStrategy() {
+    root -> ~Node();
+}
+
+void MctsStrategy::post_process(const Board &board) {
+    auto pos = board.get_last_pos();
+    change_root(std::get<0>(pos) * board.get_size() + std::get<1>(pos));
 }

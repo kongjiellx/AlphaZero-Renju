@@ -79,7 +79,7 @@ class MCTS(object):
             while not node.is_leaf():
                 node, action = node.select()
                 logger.info("select action: %s, select node info: %s" % (action, node))
-                pos = (action // conf.board_size, action% conf.board_size)
+                pos = (action // conf.board_size, action % conf.board_size)
                 is_done, winner = cp_board.step(Stone(pos, cp_board.turn))
                 logger.info("board %s" % cp_board)
             if is_done:

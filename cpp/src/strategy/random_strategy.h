@@ -15,6 +15,8 @@ public:
     RandomStrategy();
 
     std::tuple<int, int> step(const Board& board) override;
+
+    void post_process(const Board &board) override;
 };
 
 

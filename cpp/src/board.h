@@ -25,10 +25,6 @@ public:
 class Board {
 private:
     int size;
-public:
-    int get_size() const;
-
-private:
     int win_num;
     std::vector<int> illegal_idx;
     std::vector<int> legal_idx;
@@ -49,6 +45,8 @@ public:
     void print();
     const std::vector<int> &get_illegal_idx() const;
     const std::vector<int> &get_legal_idx() const;
+    int get_size() const;
+    const std::tuple<int, int> &get_last_pos() const;
 };
 
 

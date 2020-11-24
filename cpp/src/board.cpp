@@ -1,12 +1,10 @@
 #include <iostream>
 #include "board.h"
 
-Board::Board(const conf::GameConf &conf) {
-    this -> size = conf.board_size();
-    this -> win_num = conf.win_num();
-    this -> current_player = Player::O;
+Board::Board(const conf::GameConf &conf)
+:size(conf.board_size()), win_num(conf.win_num()), current_player(Player::O) {
     for (int i = 0; i < size; i ++) {
-        this -> board_status.emplace_back(size, 0);
+        board_status.emplace_back(size, 0);
     }
     for (int i = 0; i < size * size; i++) {
         legal_idx.push_back(i);
@@ -116,4 +114,8 @@ const std::vector<int> &Board::get_illegal_idx() const {
 
 int Board::get_size() const {
     return size;
+}
+
+const std::tuple<int, int> &Board::get_last_pos() const {
+    return last_pos;
 }

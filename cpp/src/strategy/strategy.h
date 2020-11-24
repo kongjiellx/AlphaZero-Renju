@@ -13,6 +13,7 @@
 class Strategy {
 public:
     virtual std::tuple<int, int> step(const Board& board) = 0;
+    virtual void post_process(const Board& board) = 0;
 };
 
 #endif //ALPHAZERO_RENJU_STRATEGY_H

@@ -13,6 +13,7 @@ cc_library(
         "//cpp/src:board",
         "//cpp/src:resource_manager",
         "//cpp/src/data_structure",
-        "//cpp/src/utils:dirichlet"
+        "//cpp/src/utils:dirichlet",
+        "@com_github_google_glog//:glog",
     ],
 )
