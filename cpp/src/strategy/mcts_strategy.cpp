@@ -94,10 +94,10 @@ Player Node::getPlayer() const {
     return player;
 }
 
-MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf)
-: root(new Node(nullptr, 0, Player::O)), current_root(root), mcts_conf(mcts_conf), current_step(0) {}
+MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player)
+: Strategy(player), root(new Node(nullptr, 0, player)), current_root(root), mcts_conf(mcts_conf), current_step(0) {}
 
-std::tuple<int, int> MctsStrategy::step(const Board& board) {
+std::tuple<int, int> MctsStrategy::step(const Board& board, StepRecord& record) {
     float t;
     if (current_step < mcts_conf.explore_steps()) {
         t = 1;
@@ -105,6 +105,7 @@ std::tuple<int, int> MctsStrategy::step(const Board& board) {
         t = 0.5;
     }
     auto ps = search(board, 100, t, true);
+    record.distribution = ps;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());

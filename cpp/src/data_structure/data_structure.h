@@ -13,12 +13,14 @@ typedef std::vector<std::vector<std::vector<float>>> FEATURE;
 enum Player {
     O = 1,
     X = -1,
-    NOONE = 0
+    NONE = 0
 };
 
 struct StepRecord {
     BOARD_STATUS status;
+    std::vector<float> distribution;
     std::tuple<int, int> point;
+    Player current_player;
 };
 
 struct GameResult {
@@ -30,6 +32,8 @@ struct Instance {
     FEATURE features;
     std::vector<float> label_p;
     float label_v;
+    Instance(int board_size)
+    :features(board_size, std::vector<std::vector<float>>(board_size, std::vector<float>(3, 0))) {}
 };
 
 enum MODEL_TYPE {

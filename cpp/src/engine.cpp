@@ -9,7 +9,7 @@ Engine::Engine() {
 }
 
 void Engine::add_workers() {
-    workers.push_back(new Producer(10));
+    workers.push_back(new Producer(1));
 //    workers.push_back(Trainer());
 //    workers.push_back(Examiner());
 }

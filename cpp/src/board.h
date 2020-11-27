@@ -42,7 +42,7 @@ public:
     Board(const conf::GameConf& conf);
 
     std::tuple<bool, Player > step(Stone stone);
-    void print();
+    std::string to_str();
     const std::vector<int> &get_illegal_idx() const;
     const std::vector<int> &get_legal_idx() const;
     int get_size() const;

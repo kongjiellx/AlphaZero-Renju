@@ -47,7 +47,7 @@ std::tuple<bool, Player> Board::check_done(Stone stone) {
             }
         }
     }
-    return std::make_tuple(illegal_idx.size() >= size * size, Player::NOONE);
+    return std::make_tuple(illegal_idx.size() >= size * size, Player::NONE);
 }
 
 std::tuple<bool, Player> Board::step(Stone stone) {
@@ -77,8 +77,7 @@ int Board::count_on_direction(Stone stone, int xdirection, int ydirection, int n
     return count;
 }
 
-void Board::print() {
-    std::cout << "=======board=======" << std::endl;
+std::string Board::to_str() {
     std::string str = "";
     for (int i = 0; i < size; i ++) {
         std::string row = "";
@@ -97,7 +96,7 @@ void Board::print() {
         }
         str += (row + "\n");
     }
-    std::cout << str;
+    return str;
 }
 
 BOARD_STATUS Board::get_current_status() {

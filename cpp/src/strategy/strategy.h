@@ -11,9 +11,17 @@
 
 
 class Strategy {
+protected:
+    Player player;
 public:
-    virtual std::tuple<int, int> step(const Board& board) = 0;
+    Strategy(Player player): player(player) {}
+    Player getPlayer() const {
+        return player;
+    }
+
+    virtual std::tuple<int, int> step(const Board& board, StepRecord& record) = 0;
     virtual void post_process(const Board& board) = 0;
+
 };
 
 #endif //ALPHAZERO_RENJU_STRATEGY_H

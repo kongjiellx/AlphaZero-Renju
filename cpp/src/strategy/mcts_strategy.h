@@ -43,12 +43,12 @@ private:
     std::vector<float> search(const Board& board, int simulate_num, int T, bool add_dirichlet_noise);
     void change_root(int action);
 public:
-    MctsStrategy(conf::MctsConf mcts_conf);
+    MctsStrategy(conf::MctsConf mcts_conf, Player player);
     ~MctsStrategy();
 
     void post_process(const Board &board) override;
 
-    std::tuple<int, int> step(const Board& board) override;
+    std::tuple<int, int> step(const Board& board, StepRecord& record) override;
 };
 
 

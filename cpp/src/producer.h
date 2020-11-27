@@ -19,9 +19,9 @@ private:
 public:
     Producer(int thread_pool_size);
 
-    void play_a_game();
+    void produce_one();
 
-    void play_endless();
+    void produce_endless();
 
     void init_data_pool();
 
