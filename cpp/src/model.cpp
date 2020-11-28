@@ -25,7 +25,7 @@ float Model::train(std::vector<float> x_data, std::vector<float> p_data, std::ve
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
-    return outputs[0].scalar<float>();
+    return outputs[0].scalar<float>().data()[0];
 }
 
 void Model::predict(std::vector<float> data) {}

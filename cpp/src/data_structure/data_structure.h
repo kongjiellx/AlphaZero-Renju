@@ -6,6 +6,7 @@
 #define ALPHAZERO_RENJU_DATA_STRUCTURE_H
 
 #include <vector>
+#include <tuple>
 
 typedef std::vector<std::vector<int>> BOARD_STATUS;
 typedef std::vector<std::vector<std::vector<float>>> FEATURE;

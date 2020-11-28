@@ -16,7 +16,6 @@ Node::Node(Node *parent, float p, Player player)
 
 Node::~Node() {
     for(auto it: children) {
-        it.second -> ~Node();
         delete it.second;
     }
     children.clear();
@@ -119,9 +118,9 @@ void MctsStrategy::change_root(int action) {
         current_root = current_root->getChildren()[action];
         current_root->setParent(nullptr);
     } else {
-        root -> ~Node();
-        root = new Node(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
-        current_root = root;
+        current_root = new Node(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
+        delete root;
+        root = current_root;
     }
 
 }
@@ -201,7 +200,7 @@ void MctsStrategy::dirichlet_noise(std::vector<float>& ps) {
 }
 
 MctsStrategy::~MctsStrategy() {
-    root -> ~Node();
+    delete root;
 }
 
 void MctsStrategy::post_process(const Board &board) {

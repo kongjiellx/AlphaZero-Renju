@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
             );
 //    Strategy *stg2 = new RandomStrategy();
     Strategy *stg2 = new MctsStrategy(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
-    auto ret = pit.play_a_game(stg1, stg2);
+    auto ret = pit.play_a_game(stg1, stg2, true);
     LOG(INFO) << "winner: " << ret.winner;
     for (auto& record: ret.records) {
         LOG(INFO) << std::get<0>(record.point) << ":" << std::get<1>(record.point);

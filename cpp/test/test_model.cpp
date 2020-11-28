@@ -7,7 +7,7 @@
 
 int main() {
     Model model(10);
-    model.load("/Users/admin/repos/AlphaZero-Renju/cpp/model");
+    model.load("/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/model");
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
