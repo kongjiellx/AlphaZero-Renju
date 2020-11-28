@@ -2,18 +2,25 @@
 // Created by 刘也宽 on 2020/10/3.
 //
 #include "examiner.h"
+#include "glog/logging.h"
+#include "cpp/src/pit.h"
+#include "cpp/src/strategy/mcts_strategy.h"
+#include "cpp/src/resource_manager.h"
+//#include "cpp/src/model_manager.h"
+#include <chrono>
 
 void Examiner::run() {
+    LOG(INFO) << "examiner start";
     Pit pit;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(5));
-        MctsStrategy old_stg(MODEL_TYPE::PREDICT);
-        MctsStrategy new_stg(MODEL_TYPE::TRAIN);
-        GameResult result = pit.play_a_game(old_stg, new_stg);
-        if (result.winner == WINNER::P1_WIN) {
-            ModelManager::instance().reset_train_model();
-        } else if (result.winner == WINNER::P2_WIN) {
-            ModelManager::instance().update_predict_model();
+        std::this_thread::sleep_for(std::chrono::minutes(1));
+        MctsStrategy stg1(ResourceManager::instance().get_conf().mtcs_conf(), Player::O);
+        MctsStrategy stg2(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
+        GameResult result = pit.play_a_game(&stg1, &stg2, true);
+        if (result.winner == Player::O) {
+//            ModelManager::instance().reset_train_model();
+        } else if (result.winner == Player::X) {
+//            ModelManager::instance().update_predict_model();
         }
     }
 }

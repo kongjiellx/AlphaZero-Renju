@@ -8,18 +8,19 @@
 Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size){
     LOG(INFO) << "start init data pool";
     init_data_pool();
-    LOG(INFO) << "init data pool: " << ResourceManager().instance().get_data_pool().get_size();
+    LOG(INFO) << "init data pool: " << ResourceManager::instance().get_data_pool().get_real_size();
 }
 
 void Producer::produce_one() {
-    auto& conf = ResourceManager().get_conf();
-    MctsStrategy stg1(conf.mtcs_conf());
-    MctsStrategy stg2(conf.mtcs_conf());
-    GameResult result = pit.play_a_game((Strategy*)&stg1, (Strategy*)&stg2);
-    LOG(INFO) << "done:" << result.winner;
+    auto& conf = ResourceManager::instance().get_conf();
+    MctsStrategy stg1(conf.mtcs_conf(), Player::O);
+    MctsStrategy stg2(conf.mtcs_conf(), Player::X);
+    GameResult result = pit.play_a_game((Strategy*)&stg1, (Strategy*)&stg2, false);
+//    LOG(INFO) << "done:" << result.winner;
     for(auto instance: game_result_to_instances(result)) {
         ResourceManager::instance().get_data_pool().push_back(instance);
     }
+//    LOG(INFO) << "produce instance num: " << ResourceManager::instance().get_data_pool().get_real_size();
 }
 
 void Producer::produce_endless() {
@@ -29,7 +30,6 @@ void Producer::produce_endless() {
 }
 
 void Producer::init_data_pool() {
-    FixedDeque<Instance>& pool = ResourceManager::instance().get_data_pool();
     ThreadPool thread_pool(thread_pool_size);
     std::vector<std::future<void>> futures;
     while(true) {
@@ -39,14 +39,16 @@ void Producer::init_data_pool() {
         for (auto&& future: futures) {
             future.get();
         }
+        futures.clear();
         if (ResourceManager::instance().get_data_pool().full()) {
-            std::cout << "init data pool done!" << std::endl;
+            LOG(INFO) << "init data pool done!";
             return;
         }
     }
 }
 
 void Producer::run() {
+    LOG(INFO) << "producer start!";
     ThreadPool thread_pool(thread_pool_size);
     std::vector<std::future<void>> futures;
     for(size_t i = 0; i < thread_pool_size; i++) {

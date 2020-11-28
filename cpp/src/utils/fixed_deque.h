@@ -67,6 +67,10 @@ public:
         return size;
     }
 
+    int get_real_size() {
+        return _deque.size();
+    }
+
     T operator[](int pos) {
         _mutex.ReaderLock();
         T e = _deque[pos];

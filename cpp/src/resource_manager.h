@@ -17,9 +17,8 @@ class ResourceManager {
 private:
     FixedDeque<Instance> data_pool;
     conf::Conf conf;
-public:
     ResourceManager();
-
+public:
     static ResourceManager& instance();
 
     FixedDeque<Instance>& get_data_pool();

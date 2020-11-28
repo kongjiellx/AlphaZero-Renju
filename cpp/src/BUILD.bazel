@@ -78,12 +78,28 @@ cc_library(
 )
 
 cc_library(
+    name = "examiner",
+    srcs = [
+        "examiner.cpp",
+        "examiner.h",
+    ],
+    deps = [
+        ":pit",
+        "//cpp/src/strategy",
+        "//cpp/src/utils:thread",
+    ],
+)
+
+cc_library(
     name = "engine",
     srcs = [
         "engine.cpp",
         "engine.h",
     ],
-    deps = [":producer"],
+    deps = [
+        ":examiner",
+        ":producer",
+    ],
 )
 
 cc_binary(

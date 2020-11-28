@@ -11,7 +11,7 @@ RandomStrategy::RandomStrategy(Player player): Strategy(player) {
 }
 
 std::tuple<int, int> RandomStrategy::step(const Board& board, StepRecord& record) {
-    int board_size = ResourceManager().instance().get_conf().game_conf().board_size();
+    int board_size = ResourceManager::instance().get_conf().game_conf().board_size();
     auto legal_idx = board.get_legal_idx();
     auto rand_g = std::uniform_int_distribution<int>(0, legal_idx.size() - 1);
     auto rand_idx = legal_idx[rand_g(rng)];

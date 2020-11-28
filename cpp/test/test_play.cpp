@@ -15,11 +15,11 @@ int main(int argc, char *argv[]) {
     Pit pit;
 
     Strategy *stg1 = new MctsStrategy(
-            ResourceManager().instance().get_conf().mtcs_conf(),
+            ResourceManager::instance().get_conf().mtcs_conf(),
             Player::O
             );
 //    Strategy *stg2 = new RandomStrategy();
-    Strategy *stg2 = new MctsStrategy(ResourceManager().instance().get_conf().mtcs_conf(), Player::X);
+    Strategy *stg2 = new MctsStrategy(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
     auto ret = pit.play_a_game(stg1, stg2);
     LOG(INFO) << "winner: " << ret.winner;
     for (auto& record: ret.records) {

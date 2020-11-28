@@ -9,7 +9,7 @@
 #include "cpp/src/utils/thread.h"
 #include "cpp/src/producer.h"
 //#include "cpp/src/trainer.h"
-//#include "cpp/src/examiner.h"
+#include "cpp/src/examiner.h"
 #include <vector>
 
 

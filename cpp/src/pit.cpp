@@ -3,7 +3,7 @@
 #include "cpp/src/resource_manager.h"
 #include "glog/logging.h"
 
-GameResult Pit::play_a_game(Strategy *p1, Strategy *p2) {
+GameResult Pit::play_a_game(Strategy *p1, Strategy *p2, bool print) {
     GameResult ret;
     Board board(ResourceManager::instance().get_conf().game_conf());
     auto current_stg = p1;
@@ -17,7 +17,7 @@ GameResult Pit::play_a_game(Strategy *p1, Strategy *p2) {
 
         auto status = board.step(
                 Stone(std::get<0>(position), std::get<1>(position), board.current_player));
-        LOG(INFO) << "======board======\n" + board.to_str();
+        LOG_IF(INFO, print) << "======board======\n" + board.to_str();
         p1->post_process(board);
         p2->post_process(board);
         if (std::get<0>(status)) {
