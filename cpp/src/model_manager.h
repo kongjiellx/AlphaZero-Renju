@@ -15,13 +15,15 @@ private:
     absl::Mutex train_model_mutex;
     absl::Mutex predict_model_mutex;
     Model train_model;
-    Model predict_model;
+//    Model predict_model;
 public:
     static ModelManager& instance();
 
+    ModelManager(int board_size);
+
     void init();
 
-    void train_on_batch(std::vector<Instance> instances);
+    void train_on_batch(std::vector<Instance>& instances);
 
     std::tuple<float, std::vector<float>> predict(FEATURE feature);
 

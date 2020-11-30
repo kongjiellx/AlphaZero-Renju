@@ -1,8 +1,12 @@
 #include "model_manager.h"
 
 ModelManager &ModelManager::instance() {
-    static ModelManager ins;
+    static ModelManager ins(ResourceManager::instance().get_conf().game_conf().board_size());
     return ins;
+}
+
+ModelManager::ModelManager(int board_size): train_model(board_size) {
+
 }
 
 void ModelManager::init() {
@@ -22,6 +26,7 @@ void ModelManager::reset_train_model() {
 
 void ModelManager::update_predict_model() {}
 
-void ModelManager::train_on_batch(std::vector<Instance> instances) {
+void ModelManager::train_on_batch(std::vector<Instance>& instances) {
     train_model.train(instances);
 }
+

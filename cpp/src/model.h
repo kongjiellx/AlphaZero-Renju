@@ -21,13 +21,15 @@ private:
     std::string train_v_name;
     std::string train_loss_name;
     std::string predict_x_name;
+    std::string predict_p_name;
+    std::string predict_v_name;
     int board_size;
 public:
     Model(int board_size);
 
     float train(std::vector<float>& x_data, std::vector<float>& p_data, std::vector<float>& v_data);
-    float train(std::vector<Instance> instances);
-    void predict(std::vector<float> data);
+    float train(std::vector<Instance>& instances);
+    std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float>& data);
     void load(std::string export_dir);
     void save(std::string path);
 };

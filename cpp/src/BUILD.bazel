@@ -54,7 +54,10 @@ cc_library(
 
 cc_library(
     name = "model_manager",
-    srcs = ["model_manager.h"],
+    srcs = [
+        "model_manager.cpp",
+        "model_manager.h",
+    ],
     deps = [
         ":model",
         ":resource_manager",

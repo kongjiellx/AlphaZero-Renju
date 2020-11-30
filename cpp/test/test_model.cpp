@@ -7,7 +7,7 @@
 
 int main() {
     Model model(10);
-    model.load("/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/model");
+    model.load("/home/ubuntu/AlphaZero-Renju/cpp/model");
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
@@ -19,8 +19,10 @@ int main() {
             }
             p_data.push_back(0.01);
         }
-        v_data.push_back(0.5);
+        v_data.push_back(1);
     }
     model.train(x_data, p_data, v_data);
+    model.predict(x_data);
+
     return 0;
 }
