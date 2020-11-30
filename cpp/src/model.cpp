@@ -12,23 +12,21 @@ float Model::train(std::vector<float>& x_data, std::vector<float>& p_data, std::
     tensorflow::Tensor x_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                  tensorflow::TensorShape{batch_size, board_size, board_size, 3});
     std::copy_n(x_data.begin(), x_data.size(), x_tensor.flat<float>().data());
-
     tensorflow::Tensor p_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                  tensorflow::TensorShape{batch_size, board_size * board_size});
     std::copy_n(p_data.begin(), p_data.size(), p_tensor.flat<float>().data());
-
     tensorflow::Tensor v_tensor(tensorflow::DataTypeToEnum<float>::v(), tensorflow::TensorShape{batch_size});
     std::copy_n(v_data.begin(), v_data.size(), v_tensor.flat<float>().data());
-
     std::vector<tensorflow::Tensor> outputs;
     bundle.session -> Run({{train_x_name, x_tensor},
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
+    LOG(INFO) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
     return outputs[0].scalar<float>().data()[0];
 }
 
-float Model::train(std::vector<Instance> instances) {
+float Model::train(std::vector<Instance>& instances) {
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
@@ -58,7 +56,7 @@ void Model::load(std::string export_dir) {
 
     const auto& predict_signature_def = bundle.GetSignatures().at("predict_func");
     predict_x_name = predict_signature_def.inputs().at("x").name();
-    std::cout << "model loaded!" << std::endl;
+    LOG(INFO) << "model loaded!";
 }
 
 void Model::save(std::string path) {

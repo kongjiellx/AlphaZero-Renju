@@ -6,6 +6,7 @@
 
 Engine::Engine() {
     ResourceManager::instance();
+    ModelManager::instance().init();
 }
 
 void Engine::add_workers() {

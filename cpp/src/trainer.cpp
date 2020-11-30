@@ -10,7 +10,6 @@ void Trainer::run() {
     while (true) {
         std::vector<Instance> instances = ResourceManager::instance().get_data_pool().sample_batch(batch_size);
         ModelManager::instance().train_on_batch(instances);
-        LOG(INFO) << "train batch";
     }
 }
 
