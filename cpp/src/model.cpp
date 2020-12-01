@@ -22,7 +22,11 @@ float Model::train(std::vector<float>& x_data, std::vector<float>& p_data, std::
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
+<<<<<<< HEAD
     LOG_EVERY_N(INFO, 1000) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
+=======
+    LOG(INFO) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
+>>>>>>> c890d6b391e39da48bed504d3b49870851bbf42a
     return outputs[0].scalar<float>().data()[0];
 }
 
