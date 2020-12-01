@@ -4,6 +4,7 @@
 
 #include "mcts_strategy.h"
 #include "cpp/src/utils/dirichlet.h"
+#include "cpp/src/model_manager.h"
 #include "glog/logging.h"
 #include <numeric>
 #include <random>
@@ -122,7 +123,6 @@ void MctsStrategy::change_root(int action) {
         delete root;
         root = current_root;
     }
-
 }
 
 std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise) {
@@ -147,10 +147,10 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             v = std::get<1>(status);
             DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
-            std::vector<float> ps(
-                    copy_board.get_size() * copy_board.get_size(),
-                    1.0f / (copy_board.get_size() * copy_board.get_size()));
-            v = 0.5;
+            FEATURE features = board_status_to_feature(copy_board.get_current_status(), copy_board.current_player);
+            auto pv = ModelManager::instance().predict(features);
+            std::vector<float> ps = std::get<0>(pv);
+            v = std::get<1>(pv);
             DLOG(INFO) << "Get leaf, v: " << v;
 
             if (add_dirichlet_noise && i == 0) {

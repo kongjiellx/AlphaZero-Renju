@@ -22,11 +22,7 @@ float Model::train(std::vector<float>& x_data, std::vector<float>& p_data, std::
                          {train_p_name, p_tensor},
                          {train_v_name, v_tensor}},
                         {train_loss_name}, {}, &outputs);
-<<<<<<< HEAD
     LOG_EVERY_N(INFO, 1000) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
-=======
-    LOG(INFO) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
->>>>>>> c890d6b391e39da48bed504d3b49870851bbf42a
     return outputs[0].scalar<float>().data()[0];
 }
 
@@ -46,7 +42,7 @@ float Model::train(std::vector<Instance>& instances) {
     return train(x_data, p_data, v_data);
 }
 
-std::vector<std::tuple<std::vector<float>, float>> Model::predict(std::vector<float>& data) {
+const std::vector<std::tuple<std::vector<float>, float>> Model::predict(std::vector<float>& data) {
     int batch_size = data.size() / (board_size * board_size * 3);
     tensorflow::Tensor x_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                 tensorflow::TensorShape{batch_size, board_size, board_size, 3});
@@ -63,6 +59,16 @@ std::vector<std::tuple<std::vector<float>, float>> Model::predict(std::vector<fl
         ret.push_back(std::make_tuple(ps, outputs[0].matrix<float>().data()[i]));
     }
     return ret;
+}
+
+const std::tuple<std::vector<float>, float> Model::predict(const FEATURE& feature) {
+    std::vector<float> data;
+    for (auto& plane: feature) {
+        for (auto& row: plane) {
+            data.insert(data.end(), row.begin(), row.end());
+        }
+    }
+    return predict(data)[0];
 }
 
 void Model::load(std::string export_dir) {

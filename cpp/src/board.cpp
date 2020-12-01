@@ -99,7 +99,7 @@ std::string Board::to_str() {
     return str;
 }
 
-BOARD_STATUS Board::get_current_status() {
+const BOARD_STATUS Board::get_current_status() {
     return board_status;
 }
 

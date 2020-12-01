@@ -22,7 +22,10 @@ int main() {
         v_data.push_back(1);
     }
     model.train(x_data, p_data, v_data);
-    model.predict(x_data);
+    auto ret = model.predict(x_data);
+    for (auto i: std::get<0>(ret[0])) {
+        std::cout << i << std::endl;
+    }
 
     return 0;
 }

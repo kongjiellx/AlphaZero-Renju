@@ -14,11 +14,8 @@ void ModelManager::init() {
     train_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
 }
 
-std::tuple<float, std::vector<float>> ModelManager::predict(FEATURE feature) {
-    predict_model_mutex.ReaderLock();
-    auto ret = std::tuple<float, std::vector<float>>(0.0, std::vector<float>{});
-    predict_model_mutex.ReaderUnlock();
-    return ret;
+const std::tuple<std::vector<float>, float> ModelManager::predict(FEATURE& feature) {
+    return train_model.predict(feature);
 }
 
 void ModelManager::reset_train_model() {

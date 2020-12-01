@@ -29,7 +29,8 @@ public:
 
     float train(std::vector<float>& x_data, std::vector<float>& p_data, std::vector<float>& v_data);
     float train(std::vector<Instance>& instances);
-    std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float>& data);
+    const std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float>& data);
+    const std::tuple<std::vector<float>, float> predict(const FEATURE& feature);
     void load(std::string export_dir);
     void save(std::string path);
 };

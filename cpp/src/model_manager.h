@@ -25,7 +25,7 @@ public:
 
     void train_on_batch(std::vector<Instance>& instances);
 
-    std::tuple<float, std::vector<float>> predict(FEATURE feature);
+    const std::tuple<std::vector<float>, float> predict(FEATURE& feature);
 
     void reset_train_model();
 

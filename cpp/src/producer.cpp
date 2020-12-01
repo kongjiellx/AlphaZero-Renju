@@ -16,11 +16,9 @@ void Producer::produce_one() {
     MctsStrategy stg1(conf.mtcs_conf(), Player::O);
     MctsStrategy stg2(conf.mtcs_conf(), Player::X);
     GameResult result = pit.play_a_game((Strategy*)&stg1, (Strategy*)&stg2, false);
-//    LOG(INFO) << "done:" << result.winner;
     for(auto instance: game_result_to_instances(result)) {
         ResourceManager::instance().get_data_pool().push_back(instance);
     }
-//    LOG(INFO) << "produce instance num: " << ResourceManager::instance().get_data_pool().get_real_size();
 }
 
 void Producer::produce_endless() {

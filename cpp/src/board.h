@@ -38,7 +38,7 @@ private:
     int count_on_direction(Stone stone, int xdirection, int ydirection, int num);
 public:
     Player current_player;
-    BOARD_STATUS get_current_status();
+    const BOARD_STATUS get_current_status();
     Board(const conf::GameConf& conf);
 
     std::tuple<bool, Player > step(Stone stone);
