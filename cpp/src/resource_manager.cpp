@@ -3,7 +3,7 @@
 //
 #include "resource_manager.h"
 
-ResourceManager::ResourceManager():data_pool(1000) {
+ResourceManager::ResourceManager():data_pool(10000) {
     conf = load_conf(FLAGS_conf_path);
 }
 

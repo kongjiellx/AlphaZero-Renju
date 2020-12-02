@@ -147,7 +147,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             v = std::get<1>(status);
             DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
-            FEATURE features = board_status_to_feature(copy_board.get_current_status(), copy_board.current_player);
+            const FEATURE features = board_status_to_feature(copy_board.get_current_status(), copy_board.current_player);
             auto pv = ModelManager::instance().predict(features);
             std::vector<float> ps = std::get<0>(pv);
             v = std::get<1>(pv);

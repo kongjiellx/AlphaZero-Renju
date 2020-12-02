@@ -2,8 +2,9 @@
 // Created by 刘也宽 on 2020/8/14.
 //
 #include "data_structure.h"
+#include "glog/logging.h"
 
-const FEATURE& board_status_to_feature(const BOARD_STATUS& status, Player player) {
+const FEATURE board_status_to_feature(const BOARD_STATUS& status, Player player) {
     FEATURE features(status.size(), std::vector<std::vector<float>>(status.size(), std::vector<float>(3, 0)));
     for (auto i = 0; i < status.size(); i++) {
         for (auto j = 0; j < status.size(); j++) {

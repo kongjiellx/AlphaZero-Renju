@@ -40,7 +40,7 @@ enum MODEL_TYPE {
     PREDICT
 };
 
-const FEATURE& board_status_to_feature(const BOARD_STATUS& status, Player player);
+const FEATURE board_status_to_feature(const BOARD_STATUS& status, Player player);
 const std::vector<Instance> game_result_to_instances(GameResult& game_result);
 
 #endif //ALPHAZERO_RENJU_DATA_STRUCTURE_H
