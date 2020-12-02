@@ -13,7 +13,7 @@ void Examiner::run() {
     LOG(INFO) << "examiner start";
     Pit pit;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(1));
+        std::this_thread::sleep_for(std::chrono::minutes(10));
         MctsStrategy stg1(ResourceManager::instance().get_conf().mtcs_conf(), Player::O);
         MctsStrategy stg2(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
         GameResult result = pit.play_a_game(&stg1, &stg2, true);

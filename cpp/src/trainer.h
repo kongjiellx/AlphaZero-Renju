@@ -9,8 +9,11 @@
 #include "cpp/src/model_manager.h"
 #include "cpp/src/utils/thread.h"
 #include "cpp/src/data_structure/data_structure.h"
+#include <atomic>
 
 class Trainer: public Thread {
+private:
+    std::atomic<int> total_consume_num;
 public:
     void run();
 

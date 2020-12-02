@@ -7,15 +7,16 @@
 
 #include "cpp/src/utils/thread.h"
 #include "cpp/src/resource_manager.h"
-//#include "cpp/src/model_manager.h"
 #include "cpp/src/utils/thread_pool.h"
 #include "cpp/src/strategy/strategy.h"
 #include "cpp/src/pit.h"
+#include  <atomic>
 
 class Producer: public Thread {
 private:
     int thread_pool_size;
     Pit pit;
+    std::atomic<int> total_produce_num;
 public:
     Producer(int thread_pool_size);
 

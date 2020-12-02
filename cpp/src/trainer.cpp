@@ -11,6 +11,8 @@ void Trainer::run() {
     while (true) {
         std::vector<Instance> instances = ResourceManager::instance().get_data_pool().sample_batch(batch_size);
         ModelManager::instance().train_on_batch(instances);
+        total_consume_num += instances.size();
+        LOG_EVERY_N(INFO, 1000) << "total_consume_num: " << total_consume_num;
     }
 }
 
