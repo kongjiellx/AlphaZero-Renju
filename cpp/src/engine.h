@@ -15,7 +15,7 @@
 
 class Engine {
 private:
-    std::vector<Thread*> workers;
+    std::vector<Thread *> workers;
 public:
     Engine();
 

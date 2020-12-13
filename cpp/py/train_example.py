@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import tensorflow as tf
-from tensorflow.keras import models, layers, optimizers, losses, metrics
-
-import numpy as np
+from tensorflow.keras import optimizers, losses
 
 
 class Model(tf.Module):
@@ -42,6 +40,7 @@ def save():
             tf.TensorSpec(shape=None, dtype=tf.int32, name="y")
         )}
     )
+
 
 def load():
     model = tf.saved_model.load('/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/py/1')

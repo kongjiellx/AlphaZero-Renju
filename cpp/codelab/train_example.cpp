@@ -55,10 +55,12 @@ namespace tensorflow {
 
             // A = [3 2; -1 0].  Using Const<float> means the result will be a
             // float tensor even though the initializer has integers.
-            auto a = Const<float>(root, {{3, 2}, {-1, 0}});
+            auto a = Const<float>(root, {{3,  2},
+                                         {-1, 0}});
 
             // x = [1.0; 1.0]
-            auto x = Const(root.WithOpName("x"), {{1.f}, {1.f}});
+            auto x = Const(root.WithOpName("x"), {{1.f},
+                                                  {1.f}});
 
             // y = A * x
             auto y = MatMul(root.WithOpName("y"), a, x);
@@ -83,7 +85,7 @@ namespace tensorflow {
             return def;
         }
 
-        string DebugString(const Tensor& x, const Tensor& y) {
+        string DebugString(const Tensor &x, const Tensor &y) {
             CHECK_EQ(x.NumElements(), 2);
             CHECK_EQ(y.NumElements(), 2);
             auto x_flat = x.flat<float>();
@@ -96,7 +98,7 @@ namespace tensorflow {
                                    lambda(), x_flat(0), x_flat(1), y_flat(0), y_flat(1));
         }
 
-        void ConcurrentSteps(const Options* opts, int session_index) {
+        void ConcurrentSteps(const Options *opts, int session_index) {
             // Creates a session.
             SessionOptions options;
             std::unique_ptr<Session> session(NewSession(options));
@@ -130,8 +132,8 @@ namespace tensorflow {
                                 session->Run({{"x", x}}, {"y:0", "y_normalized:0"}, {}, &outputs));
                         CHECK_EQ(size_t{2}, outputs.size());
 
-                        const Tensor& y = outputs[0];
-                        const Tensor& y_norm = outputs[1];
+                        const Tensor &y = outputs[0];
+                        const Tensor &y_norm = outputs[1];
                         // Print out lambda, x, and y.
                         std::printf("%06d/%06d %s\n", session_index, step,
                                     DebugString(x, y).c_str());
@@ -149,7 +151,7 @@ namespace tensorflow {
     }  // end namespace example
 }  // end namespace tensorflow
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     tensorflow::example::Options opts;
     tensorflow::example::ConcurrentSteps(&opts, 0);
 }

@@ -12,43 +12,59 @@
 
 class Node {
 private:
-    Node* parent;
+    Node *parent;
     int N;
     float W;
     float P;
     Player player;
-    std::unordered_map<int, Node*> children;
+    std::unordered_map<int, Node *> children;
 public:
     Player getPlayer() const;
+
     void setParent(Node *parent);
+
     std::unordered_map<int, Node *> &getChildren();
-    Node(Node* parent, float p, Player player);
+
+    Node(Node *parent, float p, Player player);
+
     ~Node();
+
     float Q();
+
     int getN();
+
     float getP();
-    std::tuple<Node*, int> select();
+
+    std::tuple<Node *, int> select();
+
     void expand(std::vector<float> ps, Player player);
+
     void backup(float v);
+
     bool is_leaf();
 };
 
-class MctsStrategy: public Strategy {
+class MctsStrategy : public Strategy {
 private:
-    Node* root;
-    Node* current_root;
+    Node *root;
+    Node *current_root;
     int current_step;
     conf::MctsConf mcts_conf;
-    void dirichlet_noise(std::vector<float>& ps);
-    std::vector<float> search(const Board& board, int simulate_num, int T, bool add_dirichlet_noise);
+
+    void dirichlet_noise(std::vector<float> &ps);
+
+    std::vector<float> search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise);
+
     void change_root(int action);
+
 public:
     MctsStrategy(conf::MctsConf mcts_conf, Player player);
+
     ~MctsStrategy();
 
     void post_process(const Board &board) override;
 
-    std::tuple<int, int> step(const Board& board, StepRecord& record) override;
+    std::tuple<int, int> step(const Board &board, StepRecord &record) override;
 };
 
 

@@ -8,22 +8,18 @@
 using namespace tensorflow;
 using namespace tensorflow::ops;
 
-Input XavierInit(Scope scope, int in_chan, int out_chan, int filter_side)
-{
+Input XavierInit(Scope scope, int in_chan, int out_chan, int filter_side) {
     float std;
     Tensor t;
-    if(filter_side == 0)
-    { //Dense
-        std = sqrt(6.f/(in_chan+out_chan));
+    if (filter_side == 0) { //Dense
+        std = sqrt(6.f / (in_chan + out_chan));
         Tensor ts(DT_INT64, {2});
         auto v = ts.vec<int64>();
         v(0) = in_chan;
         v(1) = out_chan;
         t = ts;
-    }
-    else
-    { //Conv
-        std = sqrt(6.f/(filter_side*filter_side*(in_chan+out_chan)));
+    } else { //Conv
+        std = sqrt(6.f / (filter_side * filter_side * (in_chan + out_chan)));
         Tensor ts(DT_INT64, {4});
         auto v = ts.vec<int64>();
         v(0) = filter_side;
@@ -33,7 +29,7 @@ Input XavierInit(Scope scope, int in_chan, int out_chan, int filter_side)
         t = ts;
     }
     auto rand = RandomUniform(scope, t, DT_FLOAT);
-    return Multiply(scope, Sub(scope, rand, 0.5f), std*2.f);
+    return Multiply(scope, Sub(scope, rand, 0.5f), std * 2.f);
 }
 
 int main() {
@@ -51,7 +47,7 @@ int main() {
     std::vector<Output> grad_outputs;
     TF_CHECK_OK(AddSymbolicGradients(scope, {loss}, {w1}, &grad_outputs));
 
-    auto apply_w1 = ApplyGradientDescent(scope, w1, Cast(scope, 0.0001,  DT_FLOAT), {grad_outputs[0]});
+    auto apply_w1 = ApplyGradientDescent(scope, w1, Cast(scope, 0.0001, DT_FLOAT), {grad_outputs[0]});
     ClientSession session(scope);
     std::vector<Tensor> outputs;
 
@@ -67,10 +63,12 @@ int main() {
     Tensor y_data(DataTypeToEnum<float>::v(), TensorShape{3, 1});
     copy_n(dy.begin(), dy.size(), y_data.flat<float>().data());
 
-    for(auto i = 0; i < 1000; i++) {
-        TF_CHECK_OK(session.Run({{x, x_data}, {y, y_data}}, {loss}, &outputs));
+    for (auto i = 0; i < 1000; i++) {
+        TF_CHECK_OK(session.Run({{x, x_data},
+                                 {y, y_data}}, {loss}, &outputs));
         std::cout << "Loss: " << outputs[0].scalar<float>() << std::endl;
-        TF_CHECK_OK(session.Run({{x, x_data}, {y, y_data}}, {apply_w1}, nullptr));
+        TF_CHECK_OK(session.Run({{x, x_data},
+                                 {y, y_data}}, {apply_w1}, nullptr));
     }
     return 0;
 

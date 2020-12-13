@@ -15,5 +15,4 @@
 conf::Conf load_conf(const std::string path);
 
 
-
 #endif //ALPHAZERO_RENJU_PROTOBUF_UTILS_H

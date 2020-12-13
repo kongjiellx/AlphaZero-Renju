@@ -20,7 +20,7 @@ public:
         _thread = std::thread([this]() {
             try {
                 this->run();
-            } catch (std::exception& e) {
+            } catch (std::exception &e) {
                 LOG(ERROR) << "exception: " << e.what();
             } catch (...) {
                 LOG(ERROR) << "unknown exception";
@@ -36,6 +36,7 @@ public:
     }
 
     virtual void run() = 0;
+
     virtual void stop() = 0;
 
 protected:

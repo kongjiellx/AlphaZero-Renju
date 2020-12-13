@@ -13,6 +13,8 @@ model_conf: {
     l2_c: 0.00001
     lr: 0.01
     validation_split: 0.2
+    train_model_weight_save_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/weights/train"
+    predict_model_weight_save_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/weights/predict"
 }
 
 mtcs_conf: {

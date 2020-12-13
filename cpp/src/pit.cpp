@@ -12,7 +12,7 @@ GameResult Pit::play_a_game(Strategy *p1, Strategy *p2, bool print) {
         step_record.status = board.get_current_status();
         auto position = current_stg->step(board, step_record);
         step_record.point = position;
-        step_record.current_player = current_stg -> getPlayer();
+        step_record.current_player = current_stg->getPlayer();
         ret.records.push_back(step_record);
 
         auto status = board.step(

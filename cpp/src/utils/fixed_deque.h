@@ -16,7 +16,7 @@
 #include "absl/synchronization/mutex.h"
 
 
-template <class T>
+template<class T>
 class FixedDeque {
 private:
     std::deque<T> _deque;
@@ -27,7 +27,7 @@ private:
     std::uniform_int_distribution<std::mt19937::result_type> pool_d;
     std::mt19937 rng;
 public:
-    FixedDeque(int size): size(size) {
+    FixedDeque(int size) : size(size) {
         std::random_device dev;
         pool_d = std::uniform_int_distribution<std::mt19937::result_type>(0, size - 1);
         rng = std::mt19937(dev());
@@ -37,7 +37,7 @@ public:
         return _deque.size() >= size;
     }
 
-    void push_back(const T& e) {
+    void push_back(const T &e) {
         _mutex.Lock();
         if (_deque.size() >= size) {
             _deque.pop_front();

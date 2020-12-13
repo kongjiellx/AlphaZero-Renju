@@ -12,7 +12,7 @@
 #include "cpp/src/pit.h"
 #include  <atomic>
 
-class Producer: public Thread {
+class Producer : public Thread {
 private:
     int thread_pool_size;
     Pit pit;
@@ -26,7 +26,7 @@ public:
 
     void init_data_pool();
 
-    void run() override ;
+    void run() override;
 
     ~Producer() override;
 

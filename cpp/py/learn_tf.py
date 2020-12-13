@@ -2,7 +2,6 @@
 
 import tensorflow as tf
 from tensorflow import keras
-import numpy as np
 
 
 def save_model(save_path):

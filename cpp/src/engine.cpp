@@ -16,17 +16,17 @@ void Engine::add_workers() {
 }
 
 void Engine::start() {
-    for (auto& thread: workers) {
-        thread -> start();
+    for (auto &thread: workers) {
+        thread->start();
     }
-    for (auto& thread: workers) {
-        thread -> join();
+    for (auto &thread: workers) {
+        thread->join();
     }
 }
 
 void Engine::stop() {
     for (auto &thread: workers) {
-        thread -> stop();
+        thread->stop();
         delete thread;
     }
 }

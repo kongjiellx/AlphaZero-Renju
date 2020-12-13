@@ -8,8 +8,9 @@
 #include "cpp/src/utils/thread.h"
 
 
-class Examiner: public Thread {
+class Examiner : public Thread {
     void run() override;
+
     void stop() override;
 };
 

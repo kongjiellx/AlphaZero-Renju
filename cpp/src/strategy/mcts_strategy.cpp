@@ -12,11 +12,11 @@
 #include <sstream>
 
 Node::Node(Node *parent, float p, Player player)
-:parent(parent), N(0), W(0), P(p), player(player) {
+        : parent(parent), N(0), W(0), P(p), player(player) {
 }
 
 Node::~Node() {
-    for(auto it: children) {
+    for (auto it: children) {
         delete it.second;
     }
     children.clear();
@@ -35,7 +35,7 @@ void Node::expand(std::vector<float> ps, Player player) {
     std::stringstream dstr;
     for (int i = 0; i < ps.size(); i++) {
         if (ps[i] > 0) {
-            num ++;
+            num++;
             dstr << i << ",";
             children[i] = new Node(this, ps[i], player);
         }
@@ -48,7 +48,7 @@ void Node::backup(float v) {
     N += 1;
     W += v;
     if (parent != nullptr) {
-        parent -> backup(v);
+        parent->backup(v);
     }
 }
 
@@ -56,14 +56,14 @@ bool Node::is_leaf() {
     return children.size() == 0;
 }
 
-std::tuple<Node*, int> Node::select() {
+std::tuple<Node *, int> Node::select() {
     int nb = 0;
-    for (auto& it: children) {
+    for (auto &it: children) {
         nb += it.second->getN();
     }
     float max_qu = -1;
     int select_action = -1;
-    for (auto& it: children) {
+    for (auto &it: children) {
         float U = 5 * it.second->getP() * std::sqrt(nb) / (1 + it.second->getN());
         float child_q = it.second->Q();
         if (child_q + U > max_qu) {
@@ -71,7 +71,7 @@ std::tuple<Node*, int> Node::select() {
             select_action = it.first;
         }
     }
-    return std::tuple<Node*, int>(children[select_action], select_action);
+    return std::make_tuple(children[select_action], select_action);
 }
 
 int Node::getN() {
@@ -95,27 +95,28 @@ Player Node::getPlayer() const {
 }
 
 MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player)
-: Strategy(player), root(new Node(nullptr, 0, player)), current_root(root), mcts_conf(mcts_conf), current_step(0) {}
+        : Strategy(player), root(new Node(nullptr, 0, player)), current_root(root), mcts_conf(mcts_conf),
+          current_step(0) {}
 
-std::tuple<int, int> MctsStrategy::step(const Board& board, StepRecord& record) {
+std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) {
     float t;
     if (current_step < mcts_conf.explore_steps()) {
         t = 1;
     } else {
         t = 0.5;
     }
-    const auto& ps = search(board, 50, t, true);
+    const auto &ps = search(board, 50, t, true);
     record.distribution = ps;
     std::random_device rd;
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());
     auto pos = distribution(gen);
     change_root(pos);
-    return std::tuple<int, int>(pos / board.get_size(), pos % board.get_size());
+    return std::make_tuple(pos / board.get_size(), pos % board.get_size());
 }
 
 void MctsStrategy::change_root(int action) {
-    if (current_root -> getChildren().find(action) != root->getChildren().end()) {
+    if (current_root->getChildren().find(action) != root->getChildren().end()) {
         current_root = current_root->getChildren()[action];
         current_root->setParent(nullptr);
     } else {
@@ -147,7 +148,8 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             v = std::get<1>(status);
             DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
-            const FEATURE& features = board_status_to_feature(copy_board.get_current_status(), copy_board.current_player);
+            const FEATURE &features = board_status_to_feature(copy_board.get_current_status(),
+                                                              copy_board.current_player);
             const auto pv = ModelManager::instance().predict(features);
             std::vector<float> ps = std::get<0>(pv);
             v = std::get<1>(pv);
@@ -158,12 +160,12 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             }
 
             std::stringstream ill_str;
-            for (auto& idx: copy_board.get_illegal_idx()) {
+            for (auto &idx: copy_board.get_illegal_idx()) {
                 ps[idx] = 0;
                 ill_str << idx << ",";
             }
             auto sum = std::accumulate(ps.begin(), ps.end(), 0.0);
-            for (auto& p: ps) {
+            for (auto &p: ps) {
                 p /= sum;
             }
             DLOG(INFO) << "illegal_idx: " << ill_str.str();
@@ -187,7 +189,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
     return ret;
 }
 
-void MctsStrategy::dirichlet_noise(std::vector<float>& ps) {
+void MctsStrategy::dirichlet_noise(std::vector<float> &ps) {
     int dim = ps.size();
 
     std::random_device rd;

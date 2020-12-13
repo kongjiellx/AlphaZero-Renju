@@ -14,9 +14,9 @@ int main() {
     LoadSavedModel(session_options, run_options, export_dir, {"serve"},
                    &bundle);
     auto sigs = bundle.GetSignatures();
-    const auto& signature_def = bundle.GetSignatures().at("train_step");
-    for (auto i = signature_def.outputs().begin();i!=signature_def.outputs().end();i++) {
-        std::cout<<i->first<<std::endl;
+    const auto &signature_def = bundle.GetSignatures().at("train_step");
+    for (auto i = signature_def.outputs().begin(); i != signature_def.outputs().end(); i++) {
+        std::cout << i->first << std::endl;
     }
     const std::string x = signature_def.inputs().at("x").name();
     const std::string p = signature_def.inputs().at("p").name();
@@ -43,7 +43,7 @@ int main() {
     tensorflow::Tensor v_data(tensorflow::DataTypeToEnum<float>::v(), tensorflow::TensorShape{1});
     std::copy_n(dv.begin(), dv.size(), v_data.flat<float>().data());
 
-    std::cout<<"1" <<std::endl;
+    std::cout << "1" << std::endl;
     std::vector<tensorflow::Tensor> outputs;
     for (int i = 0; i < 100; i++) {
         bundle.session->Run({{x, x_data},
@@ -51,7 +51,7 @@ int main() {
                              {v, v_data}}, {output_name}, {}, &outputs);
         std::cout << outputs[0].scalar<float>() << std::endl;
     }
-    std::cout<<"2" <<std::endl;
+    std::cout << "2" << std::endl;
 
 //    tensorflow::Session* session = bundle.GetSession();
     return 0;

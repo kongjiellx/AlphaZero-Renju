@@ -17,19 +17,21 @@ private:
     Model train_model;
 //    Model predict_model;
 public:
-    static ModelManager& instance();
+    static ModelManager &instance();
 
     ModelManager(int board_size);
 
     void init();
 
-    void train_on_batch(std::vector<Instance>& instances);
+    void train_on_batch(std::vector<Instance> &instances);
 
-    const std::tuple<std::vector<float>, float> predict(const FEATURE& feature);
+    const std::tuple<std::vector<float>, float> predict(const FEATURE &feature);
 
     void reset_train_model();
 
     void update_predict_model();
+
+    void save_model(MODEL_TYPE model_type);
 };
 
 

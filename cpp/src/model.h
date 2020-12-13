@@ -11,7 +11,6 @@
 #include "tensorflow/cc/saved_model/loader.h"
 #include "conf/conf.pb.h"
 #include "cpp/src/data_structure/data_structure.h"
-//#include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 
 class Model {
 private:
@@ -27,11 +26,16 @@ private:
 public:
     Model(int board_size);
 
-    float train(std::vector<float>& x_data, std::vector<float>& p_data, std::vector<float>& v_data);
-    float train(std::vector<Instance>& instances);
-    const std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float>& data);
-    const std::tuple<std::vector<float>, float> predict(const FEATURE& feature);
+    float train(std::vector<float> &x_data, std::vector<float> &p_data, std::vector<float> &v_data);
+
+    float train(std::vector<Instance> &instances);
+
+    const std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float> &data);
+
+    const std::tuple<std::vector<float>, float> predict(const FEATURE &feature);
+
     void load(std::string export_dir);
+
     void save(std::string path);
 };
 
