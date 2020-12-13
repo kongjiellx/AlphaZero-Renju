@@ -9,8 +9,8 @@
 
 
 class Examiner: public Thread {
-    void run();
-    void stop();
+    void run() override;
+    void stop() override;
 };
 
 

@@ -15,9 +15,9 @@ class Trainer: public Thread {
 private:
     std::atomic<int> total_consume_num;
 public:
-    void run();
+    void run() override;
 
-    void stop();
+    void stop() override;
 };
 
 

@@ -18,7 +18,7 @@ private:
     Pit pit;
     std::atomic<int> total_produce_num;
 public:
-    Producer(int thread_pool_size);
+    explicit Producer(int thread_pool_size);
 
     void produce_one();
 

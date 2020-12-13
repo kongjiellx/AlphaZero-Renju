@@ -25,7 +25,7 @@ void Engine::start() {
 }
 
 void Engine::stop() {
-    for (auto& thread: workers) {
+    for (auto &thread: workers) {
         thread -> stop();
         delete thread;
     }
