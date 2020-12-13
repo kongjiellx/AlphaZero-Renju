@@ -1,6 +1,13 @@
 #include <iostream>
 #include "board.h"
 
+const std::vector<std::vector<std::tuple<int, int>>> directions {
+    {{-1, 0}, {1, 0}},
+    {{0, -1}, {0, 1}},
+    {{-1, 1}, {1, -1}},
+    {{-1, -1}, {1, 1}}
+};
+
 Board::Board(const conf::GameConf &conf)
 :size(conf.board_size()), win_num(conf.win_num()), current_player(Player::O) {
     for (int i = 0; i < size; i ++) {
@@ -20,24 +27,18 @@ void Board::do_turn() {
 
 }
 
-bool Board::is_legal(Stone stone) {
+bool Board::is_legal(const Stone &stone) {
     return stone.player == current_player and board_status[stone.x][stone.y] == 0;
 }
 
-void Board::add_stone(Stone stone) {
+void Board::add_stone(const Stone &stone) {
     board_status[stone.x][stone.y] = stone.player;
     last_pos = std::make_tuple(stone.x, stone.y);
     illegal_idx.push_back(stone.x * size + stone.y);
     legal_idx.erase(std::find(legal_idx.begin(), legal_idx.end(), stone.x * size + stone.y));
 }
 
-std::tuple<bool, Player> Board::check_done(Stone stone) {
-    std::vector<std::vector<std::tuple<int, int>>> directions {
-            {{-1, 0}, {1, 0}},
-            {{0, -1}, {0, 1}},
-            {{-1, 1}, {1, -1}},
-            {{-1, -1}, {1, 1}}
-    };
+std::tuple<bool, Player> Board::check_done(const Stone &stone) {
     for (auto& axis: directions) {
         int axis_count = 1;
         for (auto& xy: axis) {
@@ -50,7 +51,7 @@ std::tuple<bool, Player> Board::check_done(Stone stone) {
     return std::make_tuple(illegal_idx.size() >= size * size, Player::NONE);
 }
 
-std::tuple<bool, Player> Board::step(Stone stone) {
+std::tuple<bool, Player> Board::step(const Stone &stone) {
     if (!is_legal(stone)) {
         throw std::runtime_error("illegal idx");
     }
@@ -59,7 +60,7 @@ std::tuple<bool, Player> Board::step(Stone stone) {
     return check_done(stone);
 }
 
-int Board::count_on_direction(Stone stone, int xdirection, int ydirection, int num) {
+int Board::count_on_direction(const Stone &stone, int xdirection, int ydirection, int num) {
     int count = 0;
     for (int step = 1; step <= num; step ++) {
         if ((xdirection != 0) && (stone.y + xdirection * step < 0 || stone.y + xdirection * step >= size)) {
@@ -99,7 +100,7 @@ std::string Board::to_str() {
     return str;
 }
 
-const BOARD_STATUS Board::get_current_status() {
+const BOARD_STATUS& Board::get_current_status() {
     return board_status;
 }
 

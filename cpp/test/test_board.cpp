@@ -16,16 +16,16 @@ int main() {
     conf::Conf conf;
     google::protobuf::TextFormat::ParseFromString(str, &conf);
     Board board = Board(conf.game_conf());
-    board.print();
+    std::cout << board.to_str();
     board.step(Stone(1, 1, O));
-    board.print();
+    std::cout << board.to_str();
     board.step(Stone(1, 2, X));
     board.step(Stone(2, 1, O));
     board.step(Stone(2, 2, X));
     board.step(Stone(3, 1, O));
     board.step(Stone(3, 2, X));
     std::tuple<bool, Player> res = board.step(Stone(4, 1, O));
-    board.print();
+    std::cout << board.to_str();
     std::cout << std::get<0>(res) << ":" << std::get<0>(res) << std::endl;
     return 0;
 }

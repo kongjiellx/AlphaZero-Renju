@@ -16,7 +16,7 @@ void Producer::produce_one() {
     auto& conf = ResourceManager::instance().get_conf();
     MctsStrategy stg1(conf.mtcs_conf(), Player::O);
     MctsStrategy stg2(conf.mtcs_conf(), Player::X);
-    GameResult result = pit.play_a_game((Strategy*)&stg1, (Strategy*)&stg2, false);
+    GameResult result = pit.play_a_game(static_cast<Strategy*>(&stg1), static_cast<Strategy*>(&stg2), false);
     total_produce_num += result.records.size();
     for(auto instance: game_result_to_instances(result)) {
         ResourceManager::instance().get_data_pool().push_back(instance);

@@ -58,12 +58,12 @@ bool Node::is_leaf() {
 
 std::tuple<Node*, int> Node::select() {
     int nb = 0;
-    for (auto it: children) {
+    for (auto& it: children) {
         nb += it.second->getN();
     }
     float max_qu = -1;
     int select_action = -1;
-    for (auto it: children) {
+    for (auto& it: children) {
         float U = 5 * it.second->getP() * std::sqrt(nb) / (1 + it.second->getN());
         float child_q = it.second->Q();
         if (child_q + U > max_qu) {
@@ -148,7 +148,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
             const FEATURE& features = board_status_to_feature(copy_board.get_current_status(), copy_board.current_player);
-            const auto& pv = ModelManager::instance().predict(features);
+            const auto pv = ModelManager::instance().predict(features);
             std::vector<float> ps = std::get<0>(pv);
             v = std::get<1>(pv);
             DLOG(INFO) << "Get leaf, v: " << v;

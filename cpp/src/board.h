@@ -32,16 +32,16 @@ private:
     BOARD_STATUS board_status;
 
     void do_turn();
-    bool is_legal(Stone stone);
-    void add_stone(Stone stone);
-    std::tuple<bool, Player > check_done(Stone stone);
-    int count_on_direction(Stone stone, int xdirection, int ydirection, int num);
+    bool is_legal(const Stone &stone);
+    void add_stone(const Stone &stone);
+    std::tuple<bool, Player > check_done(const Stone &stone);
+    int count_on_direction(const Stone &stone, int xdirection, int ydirection, int num);
 public:
     Player current_player;
-    const BOARD_STATUS get_current_status();
+    const BOARD_STATUS& get_current_status();
     Board(const conf::GameConf& conf);
 
-    std::tuple<bool, Player > step(Stone stone);
+    std::tuple<bool, Player> step(const Stone &stone);
     std::string to_str();
     const std::vector<int> &get_illegal_idx() const;
     const std::vector<int> &get_legal_idx() const;
