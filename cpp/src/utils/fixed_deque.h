@@ -42,7 +42,7 @@ public:
         if (_deque.size() >= size) {
             _deque.pop_front();
         }
-        _deque.push_back(e);
+        _deque.push_back(std::move(e));
         _can_pop.Signal();
         _mutex.Unlock();
     }
