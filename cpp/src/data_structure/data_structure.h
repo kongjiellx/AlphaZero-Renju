@@ -7,6 +7,11 @@
 
 #include <vector>
 #include <tuple>
+#include <memory>
+
+using std::make_shared;
+using std::make_move_iterator;
+using std::shared_ptr;
 
 typedef std::vector<std::vector<int>> BOARD_STATUS;
 typedef std::vector<std::vector<std::vector<float>>> FEATURE;
@@ -40,8 +45,8 @@ enum MODEL_TYPE {
     PREDICT
 };
 
-const FEATURE board_status_to_feature(const BOARD_STATUS &status, Player player);
+shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player player);
 
-const std::vector<Instance> game_result_to_instances(GameResult &game_result);
+shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult> game_result);
 
 #endif //ALPHAZERO_RENJU_DATA_STRUCTURE_H

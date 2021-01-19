@@ -14,12 +14,12 @@ void Examiner::run() {
     Pit pit;
     while (true) {
         std::this_thread::sleep_for(std::chrono::minutes(10));
-        MctsStrategy stg1(ResourceManager::instance().get_conf().mtcs_conf(), Player::O);
-        MctsStrategy stg2(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
-        GameResult result = pit.play_a_game(&stg1, &stg2, true);
-        if (result.winner == Player::O) {
+        auto stg1 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::O);
+        auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::X);
+        auto result = pit.play_a_game(stg1, stg2, true);
+        if (result->winner == Player::O) {
 //            ModelManager::instance().reset_train_model();
-        } else if (result.winner == Player::X) {
+        } else if (result->winner == Player::X) {
 //            ModelManager::instance().update_predict_model();
         }
     }

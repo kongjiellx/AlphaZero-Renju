@@ -7,10 +7,13 @@
 
 #include "cpp/src/strategy/strategy.h"
 #include "cpp/src/data_structure/data_structure.h"
+using std::make_shared;
+using std::make_move_iterator;
+using std::shared_ptr;
 
 class Pit {
 public:
-    GameResult play_a_game(Strategy *p1, Strategy *p2, bool print);
+    shared_ptr<GameResult> play_a_game(shared_ptr<Strategy> p1, shared_ptr<Strategy> p2, bool print);
 };
 
 
