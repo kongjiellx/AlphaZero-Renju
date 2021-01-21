@@ -14,8 +14,8 @@ void ModelManager::init() {
     train_model.init(ResourceManager::instance().get_conf().model_conf().model_path());
 }
 
-const std::tuple<std::vector<float>, float> ModelManager::predict(const FEATURE &feature) {
-    return train_model.predict(feature);
+shared_ptr<tuple<vector<float>, float>> ModelManager::predict(const FEATURE &feature) {
+    return train_model.predict({std::move(feature)});
 }
 
 void ModelManager::reset_train_model() {

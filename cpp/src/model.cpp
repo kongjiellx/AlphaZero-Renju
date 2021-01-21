@@ -7,73 +7,54 @@
 
 Model::Model(int board_size) : board_size(board_size) {}
 
-float Model::train(std::vector<float> &x_data, std::vector<float> &p_data, std::vector<float> &v_data) {
+float Model::train(const vector<float> &x_data, const vector<float> &p_data, const vector<float> &v_data) {
     int batch_size = v_data.size();
     tensorflow::Tensor x_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                 tensorflow::TensorShape{batch_size, board_size, board_size, 3});
-    std::copy_n(x_data.begin(), x_data.size(), x_tensor.flat<float>().data());
+    std::copy_n(make_move_iterator(x_data.begin()), x_data.size(), x_tensor.flat<float>().data());
     tensorflow::Tensor p_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                 tensorflow::TensorShape{batch_size, board_size * board_size});
-    std::copy_n(p_data.begin(), p_data.size(), p_tensor.flat<float>().data());
+    std::copy_n(make_move_iterator(p_data.begin()), p_data.size(), p_tensor.flat<float>().data());
     tensorflow::Tensor v_tensor(tensorflow::DataTypeToEnum<float>::v(), tensorflow::TensorShape{batch_size});
-    std::copy_n(v_data.begin(), v_data.size(), v_tensor.flat<float>().data());
+    std::copy_n(make_move_iterator(v_data.begin()), v_data.size(), v_tensor.flat<float>().data());
     std::vector<tensorflow::Tensor> outputs;
-    bundle.session->Run({{train_x_name, x_tensor},
-                         {train_p_name, p_tensor},
-                         {train_v_name, v_tensor}},
+    bundle.session->Run({{train_x_name, std::move(x_tensor)},
+                         {train_p_name, std::move(p_tensor)},
+                         {train_v_name, std::move(v_tensor)}},
                         {train_loss_name}, {}, &outputs);
     LOG_EVERY_N(INFO, 1000) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
     return outputs[0].scalar<float>().data()[0];
 }
 
-float Model::train(std::vector<Instance> &instances) {
+float Model::train(const vector<Instance> &instances) {
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
     for (auto &instance: instances) {
-        for (auto &row: instance.features) {
-            for (auto &col: row) {
-                x_data.insert(x_data.end(), col.begin(), col.end());
-            }
-        }
-        p_data.insert(p_data.end(), instance.label_p.begin(), instance.label_p.end());
+        x_data.insert(x_data.end(), make_move_iterator(instance.features.begin()), make_move_iterator(instance.features.end()));
+        p_data.insert(p_data.end(), make_move_iterator(instance.label_p.begin()), make_move_iterator(instance.label_p.end()));
         v_data.push_back(instance.label_v);
     }
     return train(x_data, p_data, v_data);
 }
 
-const std::vector<std::tuple<std::vector<float>, float>> Model::predict(std::vector<float> &data) {
+shared_ptr<tuple<vector<float>, float>> Model::predict(const vector<float> &data) {
     int batch_size = data.size() / (board_size * board_size * 3);
+    assert(batch_size == 1);
     tensorflow::Tensor x_tensor(tensorflow::DataTypeToEnum<float>::v(),
                                 tensorflow::TensorShape{batch_size, board_size, board_size, 3});
-    std::copy_n(data.begin(), data.size(), x_tensor.flat<float>().data());
+    std::copy_n(make_move_iterator(data.begin()), data.size(), x_tensor.flat<float>().data());
     std::vector<tensorflow::Tensor> outputs;
-    bundle.session->Run({{predict_x_name, x_tensor}},
+    bundle.session->Run({{predict_x_name, std::move(x_tensor)}},
                         {predict_p_name, predict_v_name}, {}, &outputs);
-    std::vector<std::tuple<std::vector<float>, float>> ret;
-    for (int i = 0; i < batch_size; i++) {
-        std::vector<float> ps;
-        for (int j = 0; j < board_size * board_size; j++) {
-            ps.push_back(outputs[0].matrix<float>().data()[i * board_size * board_size + j]);
-        }
-        ret.push_back(std::make_tuple(ps, outputs[0].matrix<float>().data()[i]));
-    }
-    return ret;
+    auto begin = make_move_iterator(outputs[0].flat<float>().data());
+    std::vector<float> ps(begin, begin + board_size * board_size);
+    return make_shared<std::tuple<std::vector<float>, float>>(std::move(ps), outputs[1].flat<float>().data()[0]);
 }
 
-const std::tuple<std::vector<float>, float> Model::predict(const FEATURE &feature) {
-    std::vector<float> data;
-    for (auto &plane: feature) {
-        for (auto &row: plane) {
-            data.insert(data.end(), row.begin(), row.end());
-        }
-    }
-    return predict(data)[0];
-}
-
-void Model::init(std::string export_dir) {
-    ::tensorflow::SessionOptions session_options;
-    ::tensorflow::RunOptions run_options;
+void Model::init(string export_dir) {
+    tensorflow::SessionOptions session_options;
+    tensorflow::RunOptions run_options;
     LoadSavedModel(session_options, run_options, export_dir, {"serve"}, &bundle);
     const auto &train_signature_def = bundle.GetSignatures().at("train_step");
     train_x_name = train_signature_def.inputs().at("x").name();
@@ -88,14 +69,14 @@ void Model::init(std::string export_dir) {
     LOG(INFO) << "model loaded!";
 }
 
-void Model::save(std::string path) {
+void Model::save(string path) {
     tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
     checkpointPathTensor.scalar<std::string>()() = path + "/weights";
     bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}},
             {}, {bundle.meta_graph_def.saver_def().save_tensor_name()}, nullptr);
 }
 
-void Model::load(std::string path) {
+void Model::load(string path) {
     tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
     checkpointPathTensor.scalar<std::string>()() = path + "/weights";
     bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}}

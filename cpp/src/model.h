@@ -15,30 +15,28 @@
 class Model {
 private:
     tensorflow::SavedModelBundle bundle;
-    std::string train_x_name;
-    std::string train_p_name;
-    std::string train_v_name;
-    std::string train_loss_name;
-    std::string predict_x_name;
-    std::string predict_p_name;
-    std::string predict_v_name;
+    string train_x_name;
+    string train_p_name;
+    string train_v_name;
+    string train_loss_name;
+    string predict_x_name;
+    string predict_p_name;
+    string predict_v_name;
     int board_size;
 public:
     Model(int board_size);
 
-    float train(std::vector<float> &x_data, std::vector<float> &p_data, std::vector<float> &v_data);
+    float train(const vector<float> &x_data, const vector<float> &p_data, const vector<float> &v_data);
 
-    float train(std::vector<Instance> &instances);
+    float train(const vector<Instance> &instances);
 
-    const std::vector<std::tuple<std::vector<float>, float>> predict(std::vector<float> &data);
+    shared_ptr<tuple<vector<float>, float>> predict(const vector<float> &data);
 
-    const std::tuple<std::vector<float>, float> predict(const FEATURE &feature);
+    void init(string export_dir);
 
-    void init(std::string export_dir);
+    void save(string path);
 
-    void save(std::string path);
-
-    void load(std::string path);
+    void load(string path);
 };
 
 #endif //ALPHAZERO_RENJU_MODEL_H

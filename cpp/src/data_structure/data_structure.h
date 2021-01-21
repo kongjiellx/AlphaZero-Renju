@@ -12,9 +12,12 @@
 using std::make_shared;
 using std::make_move_iterator;
 using std::shared_ptr;
+using std::vector;
+using std::string;
+using std::tuple;
 
-typedef std::vector<std::vector<int>> BOARD_STATUS;
-typedef std::vector<std::vector<std::vector<float>>> FEATURE;
+typedef vector<vector<int>> BOARD_STATUS;
+typedef vector<float> FEATURE;
 
 enum Player {
     O = 1,

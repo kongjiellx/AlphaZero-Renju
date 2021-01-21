@@ -5,16 +5,16 @@
 #include "glog/logging.h"
 
 shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player player) {
-    auto features = make_shared<FEATURE>(status.size(), std::vector<std::vector<float>>(status.size(), std::vector<float>(3, 0)));
+    auto features = make_shared<FEATURE>(status.size() * status.size() * 3, 0);
     for (auto i = 0; i < status.size(); i++) {
         for (auto j = 0; j < status.size(); j++) {
             if (status[i][j] == Player::O) {
-                (*features)[i][j][0] = 1;
+                (*features)[(i * status.size() + j) * 3 + 0] = 1.0;
             } else if (status[i][j] == Player::X) {
-                (*features)[i][j][1] = 1;
+                (*features)[(i * status.size() + j) * 3 + 1] = 1.0;
             }
             if (player == Player::O) {
-                (*features)[i][j][2] = 1;
+                (*features)[(i * status.size() + j) * 3 + 2] = 1.0;
             }
         }
     }
