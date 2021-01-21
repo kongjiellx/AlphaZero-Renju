@@ -7,7 +7,7 @@
 
 int main() {
     Model model(10);
-    model.load("/home/ubuntu/AlphaZero-Renju/cpp/model");
+    model.init("/home/ubuntu/AlphaZero-Renju/cpp/model");
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
@@ -21,11 +21,33 @@ int main() {
         }
         v_data.push_back(1);
     }
-    model.train(x_data, p_data, v_data);
+//    auto ret = model.predict(x_data);
+//    for (auto i: std::get<0>(ret[0])) {
+//        std::cout << i << ",";
+//    }
+//    std::cout << std::endl;
+//    auto loss = model.train(x_data, p_data, v_data);
+//
+//    ret = model.predict(x_data);
+//    for (auto i: std::get<0>(ret[0])) {
+//        std::cout << i << ",";
+//    }
+//    std::cout << std::endl;
+//
+//    model.save("/home/ubuntu/AlphaZero-Renju/weights");
+    model.load("/home/ubuntu/AlphaZero-Renju/weights");
     auto ret = model.predict(x_data);
     for (auto i: std::get<0>(ret[0])) {
-        std::cout << i << std::endl;
+        std::cout << i << ",";
     }
+    std::cout << std::endl;
 
+    auto loss = model.train(x_data, p_data, v_data);
+
+    ret = model.predict(x_data);
+    for (auto i: std::get<0>(ret[0])) {
+        std::cout << i << ",";
+    }
+    std::cout << std::endl;
     return 0;
 }

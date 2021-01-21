@@ -11,7 +11,7 @@ ModelManager::ModelManager(int board_size) : train_model(board_size) {
 
 void ModelManager::init() {
 //    predict_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
-    train_model.load(ResourceManager::instance().get_conf().model_conf().model_path());
+    train_model.init(ResourceManager::instance().get_conf().model_conf().model_path());
 }
 
 const std::tuple<std::vector<float>, float> ModelManager::predict(const FEATURE &feature) {

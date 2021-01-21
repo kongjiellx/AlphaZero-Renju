@@ -71,7 +71,7 @@ const std::tuple<std::vector<float>, float> Model::predict(const FEATURE &featur
     return predict(data)[0];
 }
 
-void Model::load(std::string export_dir) {
+void Model::init(std::string export_dir) {
     ::tensorflow::SessionOptions session_options;
     ::tensorflow::RunOptions run_options;
     LoadSavedModel(session_options, run_options, export_dir, {"serve"}, &bundle);
@@ -89,6 +89,17 @@ void Model::load(std::string export_dir) {
 }
 
 void Model::save(std::string path) {
+    tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+    checkpointPathTensor.scalar<std::string>()() = path + "/weights";
+    bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}},
+            {}, {bundle.meta_graph_def.saver_def().save_tensor_name()}, nullptr);
+}
+
+void Model::load(std::string path) {
+    tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
+    checkpointPathTensor.scalar<std::string>()() = path + "/weights";
+    bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}}
+    , {}, {bundle.meta_graph_def.saver_def().restore_op_name()}, nullptr);
 }
 
 

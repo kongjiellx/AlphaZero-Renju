@@ -98,3 +98,15 @@ cc_binary(
         #        "@org_tensorflow//tensorflow/core:tensorflow",
     ],
 )
+
+cc_binary(
+    name = "save_model",
+    srcs = [
+        "save_model.cpp",
+    ],
+    deps = [
+        "@org_tensorflow//tensorflow/cc/saved_model:loader",
+#        "@org_tensorflow//tensorflow/core:tensorflow",
+        "@org_tensorflow//tensorflow/cc:cc_ops",
+    ],
+)
