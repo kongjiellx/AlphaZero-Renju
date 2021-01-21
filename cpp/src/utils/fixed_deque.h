@@ -78,12 +78,10 @@ public:
         return e;
     }
 
-    std::vector<T> sample_batch(int batch_num) {
-        std::vector<T> ret;
+    std::vector<T> sample_batch(std::vector<T> &ret, int batch_num) {
         _mutex.ReaderLock();
         for (int i = 0; i < batch_num; i++) {
-            T t = _deque[pool_d(rng)];
-            ret.push_back(t);
+            ret.emplace_back(_deque[pool_d(rng)]);
         }
         _mutex.ReaderUnlock();
         return ret;

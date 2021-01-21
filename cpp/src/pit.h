@@ -7,9 +7,6 @@
 
 #include "cpp/src/strategy/strategy.h"
 #include "cpp/src/data_structure/data_structure.h"
-using std::make_shared;
-using std::make_move_iterator;
-using std::shared_ptr;
 
 class Pit {
 public:
