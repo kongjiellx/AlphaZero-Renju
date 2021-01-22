@@ -11,15 +11,8 @@
 #include <iostream>
 #include <sstream>
 
-Node::Node(Node *parent, float p, Player player)
+Node::Node(shared_ptr<Node> parent, float p, Player player)
         : parent(parent), N(0), W(0), P(p), player(player) {
-}
-
-Node::~Node() {
-    for (auto it: children) {
-        delete it.second;
-    }
-    children.clear();
 }
 
 float Node::Q() {
@@ -30,14 +23,14 @@ float Node::Q() {
     }
 }
 
-void Node::expand(std::vector<float> ps, Player player) {
+void Node::expand(vector<float> ps, Player player) {
     int num = 0;
     std::stringstream dstr;
     for (int i = 0; i < ps.size(); i++) {
         if (ps[i] > 0) {
             num++;
             dstr << i << ",";
-            children[i] = new Node(this, ps[i], player);
+            children[i] = make_shared<Node>(shared_from_this(), ps[i], player);
         }
     }
     DLOG(INFO) << "NUM: " << num;
@@ -56,7 +49,7 @@ bool Node::is_leaf() {
     return children.size() == 0;
 }
 
-std::tuple<Node *, int> Node::select() {
+tuple<shared_ptr<Node>, int> Node::select() {
     int nb = 0;
     for (auto &it: children) {
         nb += it.second->getN();
@@ -82,12 +75,12 @@ float Node::getP() {
     return P;
 }
 
-std::unordered_map<int, Node *> &Node::getChildren() {
+std::unordered_map<int, shared_ptr<Node>> &Node::getChildren() {
     return children;
 }
 
-void Node::setParent(Node *parent) {
-    Node::parent = parent;
+void Node::setParent(shared_ptr<Node> parent) {
+    this->parent = parent;
 }
 
 Player Node::getPlayer() const {
@@ -120,8 +113,7 @@ void MctsStrategy::change_root(int action) {
         current_root = current_root->getChildren()[action];
         current_root->setParent(nullptr);
     } else {
-        current_root = new Node(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
-        delete root;
+        current_root = make_shared<Node>(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
         root = current_root;
     }
 }
@@ -131,7 +123,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
     for (int i = 0; i < simulate_num; i++) {
         DLOG(INFO) << "simulate: " << i;
         Board copy_board(board);
-        Node *node = current_root;
+        shared_ptr<Node> node = current_root;
         std::tuple<bool, Player> status;
         while (!node->is_leaf()) {
             auto node_action = node->select();
@@ -199,10 +191,6 @@ void MctsStrategy::dirichlet_noise(std::vector<float> &ps) {
     for (int i = 0; i < dim; i++) {
         ps[i] = (1 - mcts_conf.dirichlet_esp()) * ps[i] + mcts_conf.dirichlet_esp() * dirichlet_noise[i];
     }
-}
-
-MctsStrategy::~MctsStrategy() {
-    delete root;
 }
 
 void MctsStrategy::post_process(const Board &board) {

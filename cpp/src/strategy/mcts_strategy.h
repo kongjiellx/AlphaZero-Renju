@@ -10,24 +10,22 @@
 #include <tuple>
 #include <unordered_map>
 
-class Node {
+class Node: public std::enable_shared_from_this<Node> {
 private:
-    Node *parent;
+    shared_ptr<Node> parent;
     int N;
     float W;
     float P;
     Player player;
-    std::unordered_map<int, Node *> children;
+    std::unordered_map<int, shared_ptr<Node>> children;
 public:
     Player getPlayer() const;
 
-    void setParent(Node *parent);
+    void setParent(shared_ptr<Node> parent);
 
-    std::unordered_map<int, Node *> &getChildren();
+    std::unordered_map<int, shared_ptr<Node>> &getChildren();
 
-    Node(Node *parent, float p, Player player);
-
-    ~Node();
+    Node(shared_ptr<Node> parent, float p, Player player);
 
     float Q();
 
@@ -35,9 +33,9 @@ public:
 
     float getP();
 
-    std::tuple<Node *, int> select();
+    tuple<shared_ptr<Node>, int> select();
 
-    void expand(std::vector<float> ps, Player player);
+    void expand(vector<float> ps, Player player);
 
     void backup(float v);
 
@@ -46,8 +44,8 @@ public:
 
 class MctsStrategy : public Strategy {
 private:
-    Node *root;
-    Node *current_root;
+    shared_ptr<Node> root;
+    shared_ptr<Node> current_root;
     int current_step;
     conf::MctsConf mcts_conf;
 
@@ -59,8 +57,6 @@ private:
 
 public:
     MctsStrategy(conf::MctsConf mcts_conf, Player player);
-
-    ~MctsStrategy();
 
     void post_process(const Board &board) override;
 
