@@ -12,7 +12,7 @@
 
 class Node: public std::enable_shared_from_this<Node> {
 private:
-    shared_ptr<Node> parent;
+    weak_ptr<Node> parent;
     int N;
     float W;
     float P;
@@ -21,11 +21,11 @@ private:
 public:
     Player getPlayer() const;
 
-    void setParent(shared_ptr<Node> parent);
+    void setParent(weak_ptr<Node> parent);
 
     std::unordered_map<int, shared_ptr<Node>> &getChildren();
 
-    Node(shared_ptr<Node> parent, float p, Player player);
+    Node(weak_ptr<Node> parent, float p, Player player);
 
     float Q();
 
@@ -48,6 +48,7 @@ private:
     shared_ptr<Node> current_root;
     int current_step;
     conf::MctsConf mcts_conf;
+    MODEL_TYPE model_type;
 
     void dirichlet_noise(std::vector<float> &ps);
 
@@ -56,7 +57,7 @@ private:
     void change_root(int action);
 
 public:
-    MctsStrategy(conf::MctsConf mcts_conf, Player player);
+    MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type);
 
     void post_process(const Board &board) override;
 

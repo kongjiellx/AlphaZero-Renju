@@ -17,6 +17,7 @@ message ModelConf {
     float validation_split = 7;
     string train_model_weight_save_path = 8;
     string predict_model_weight_save_path = 9;
+    bool load_pre = 10;
 }
 
 message MctsConf {

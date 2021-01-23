@@ -15,7 +15,7 @@ private:
     absl::Mutex train_model_mutex;
     absl::Mutex predict_model_mutex;
     Model train_model;
-//    Model predict_model;
+    Model predict_model;
 public:
     static ModelManager &instance();
 
@@ -25,13 +25,15 @@ public:
 
     void train_on_batch(std::vector<Instance> &instances);
 
-    shared_ptr<tuple<vector<float>, float>> predict(const FEATURE &feature);
+    shared_ptr<tuple<vector<float>, float>> predict(const FEATURE &feature, MODEL_TYPE model_type);
 
     void reset_train_model();
 
     void update_predict_model();
 
     void save_model(MODEL_TYPE model_type);
+
+    void load_model(MODEL_TYPE model_type);
 };
 
 

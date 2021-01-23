@@ -11,7 +11,7 @@
 #include <iostream>
 #include <sstream>
 
-Node::Node(shared_ptr<Node> parent, float p, Player player)
+Node::Node(weak_ptr<Node> parent, float p, Player player)
         : parent(parent), N(0), W(0), P(p), player(player) {
 }
 
@@ -40,8 +40,9 @@ void Node::expand(vector<float> ps, Player player) {
 void Node::backup(float v) {
     N += 1;
     W += v;
-    if (parent != nullptr) {
-        parent->backup(v);
+    auto p = parent.lock();
+    if (p) {
+        p->backup(v);
     }
 }
 
@@ -79,7 +80,7 @@ std::unordered_map<int, shared_ptr<Node>> &Node::getChildren() {
     return children;
 }
 
-void Node::setParent(shared_ptr<Node> parent) {
+void Node::setParent(weak_ptr<Node> parent) {
     this->parent = parent;
 }
 
@@ -87,9 +88,9 @@ Player Node::getPlayer() const {
     return player;
 }
 
-MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player)
-        : Strategy(player), root(new Node(nullptr, 0, player)), current_root(root), mcts_conf(mcts_conf),
-          current_step(0) {}
+MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type)
+        : Strategy(player), root(new Node(weak_ptr<Node>(), 0, player)), current_root(root), mcts_conf(mcts_conf),
+          current_step(0), model_type(model_type) {}
 
 std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) {
     float t;
@@ -111,9 +112,9 @@ std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) 
 void MctsStrategy::change_root(int action) {
     if (current_root->getChildren().find(action) != root->getChildren().end()) {
         current_root = current_root->getChildren()[action];
-        current_root->setParent(nullptr);
+        current_root->setParent(weak_ptr<Node>());
     } else {
-        current_root = make_shared<Node>(nullptr, 0, root->getPlayer() == Player::O ? Player::X : Player::O);
+        current_root = make_shared<Node>(weak_ptr<Node>(), 0, root->getPlayer() == Player::O ? Player::X : Player::O);
         root = current_root;
     }
 }
@@ -142,7 +143,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
         } else {
             auto features = board_status_to_feature(copy_board.get_current_status(),
                                                               copy_board.current_player);
-            auto pv = ModelManager::instance().predict(*features);
+            auto pv = ModelManager::instance().predict(*features, model_type);
             std::vector<float> ps = std::get<0>(*pv);
             v = std::get<1>(*pv);
             DLOG(INFO) << "Get leaf, v: " << v;

@@ -9,16 +9,17 @@ model_conf: {
     model_path: "/home/ubuntu/AlphaZero-Renju/cpp/model"
     residual_blocks: 2
     batch_size: 4
-    save_every_n_games: 100
+    save_every_n_games: 10000
     l2_c: 0.00001
     lr: 0.01
     validation_split: 0.2
-    train_model_weight_save_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/weights/train"
-    predict_model_weight_save_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/weights/predict"
+    train_model_weight_save_path: "/home/ubuntu/AlphaZero-Renju/cpp/weights/train"
+    predict_model_weight_save_path: "/home/ubuntu/AlphaZero-Renju/cpp/weights/predict"
+    load_pre: false
 }
 
 mtcs_conf: {
-    simulate_num: 100
+    simulate_num: 200
     c_puct: 5
     explore_steps: 4
     dirichlet_esp: 0.25

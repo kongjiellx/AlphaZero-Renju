@@ -12,6 +12,7 @@
 using std::make_shared;
 using std::make_move_iterator;
 using std::shared_ptr;
+using std::weak_ptr;
 using std::vector;
 using std::string;
 using std::tuple;

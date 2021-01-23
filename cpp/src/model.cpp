@@ -66,7 +66,7 @@ void Model::init(string export_dir) {
     predict_x_name = predict_signature_def.inputs().at("x").name();
     predict_p_name = predict_signature_def.outputs().at("output_0").name();
     predict_v_name = predict_signature_def.outputs().at("output_1").name();
-    LOG(INFO) << "model loaded!";
+    LOG(INFO) << "model inited!";
 }
 
 void Model::save(string path) {

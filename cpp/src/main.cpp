@@ -10,6 +10,7 @@ DEFINE_string(conf_path, "", "conf file path");
 
 void signal_callback_handler(int signum) {
     ModelManager::instance().save_model(MODEL_TYPE::TRAIN);
+    ModelManager::instance().save_model(MODEL_TYPE::PREDICT);
     exit(signum);
 }
 

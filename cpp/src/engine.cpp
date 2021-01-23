@@ -7,6 +7,11 @@
 Engine::Engine() {
     ResourceManager::instance();
     ModelManager::instance().init();
+    if (ResourceManager::instance().get_conf().model_conf().load_pre()) {
+        LOG(INFO) << "load pre trained model!";
+        ModelManager::instance().load_model(MODEL_TYPE::TRAIN);
+        ModelManager::instance().load_model(MODEL_TYPE::PREDICT);
+    }
 }
 
 void Engine::add_workers() {
