@@ -106,6 +106,7 @@ cc_library(
         ":pit",
         "//cpp/src/strategy",
         "//cpp/src/utils:thread",
+        "//cpp/src/utils:thread_pool",
     ],
 )
 

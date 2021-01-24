@@ -51,6 +51,10 @@ enum MODEL_TYPE {
 
 shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player player);
 
+shared_ptr<FEATURE> board_status_to_feature_with_augmentation(const BOARD_STATUS &status, Player player);
+
 shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult> game_result);
+
+
 
 #endif //ALPHAZERO_RENJU_DATA_STRUCTURE_H

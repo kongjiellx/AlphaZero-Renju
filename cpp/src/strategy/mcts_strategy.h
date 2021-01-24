@@ -49,6 +49,7 @@ private:
     int current_step;
     conf::MctsConf mcts_conf;
     MODEL_TYPE model_type;
+    bool with_lock;
 
     void dirichlet_noise(std::vector<float> &ps);
 
@@ -57,7 +58,7 @@ private:
     void change_root(int action);
 
 public:
-    MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type);
+    MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock=true);
 
     void post_process(const Board &board) override;
 

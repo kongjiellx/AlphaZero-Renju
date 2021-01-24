@@ -21,6 +21,10 @@ shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player p
     return features;
 }
 
+shared_ptr<FEATURE> board_status_to_feature_with_augmentation(const BOARD_STATUS &status, Player player) {
+    return shared_ptr<FEATURE>();
+}
+
 shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult> game_result) {
     auto instances = make_shared<std::vector<Instance>>();
     for (auto &record: game_result->records) {
@@ -32,3 +36,4 @@ shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult
     }
     return instances;
 }
+

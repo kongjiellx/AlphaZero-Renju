@@ -15,9 +15,9 @@ Engine::Engine() {
 }
 
 void Engine::add_workers() {
-    workers.push_back(new Producer(12));
-    workers.push_back(new Trainer());
-    workers.push_back(new Examiner());
+    workers.push_back(make_shared<Producer>(13));
+    workers.push_back(make_shared<Trainer>());
+    workers.push_back(make_shared<Examiner>(13, 50));
 }
 
 void Engine::start() {
@@ -32,6 +32,5 @@ void Engine::start() {
 void Engine::stop() {
     for (auto &thread: workers) {
         thread->stop();
-        delete thread;
     }
 }

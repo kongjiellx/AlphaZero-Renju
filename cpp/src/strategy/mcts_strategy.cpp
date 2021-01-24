@@ -9,7 +9,6 @@
 #include <numeric>
 #include <random>
 #include <iostream>
-#include <sstream>
 
 Node::Node(weak_ptr<Node> parent, float p, Player player)
         : parent(parent), N(0), W(0), P(p), player(player) {
@@ -88,9 +87,10 @@ Player Node::getPlayer() const {
     return player;
 }
 
-MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type)
+MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock)
         : Strategy(player), root(new Node(weak_ptr<Node>(), 0, player)), current_root(root), mcts_conf(mcts_conf),
-          current_step(0), model_type(model_type) {}
+          current_step(0), model_type(model_type), with_lock(with_lock) {}
+
 
 std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) {
     float t;
@@ -99,7 +99,7 @@ std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) 
     } else {
         t = 0.5;
     }
-    const auto &ps = search(board, 50, t, true);
+    const auto &ps = search(board, mcts_conf.simulate_num(), t, true);
     record.distribution = ps;
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -143,7 +143,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
         } else {
             auto features = board_status_to_feature(copy_board.get_current_status(),
                                                               copy_board.current_player);
-            auto pv = ModelManager::instance().predict(*features, model_type);
+            auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
             std::vector<float> ps = std::get<0>(*pv);
             v = std::get<1>(*pv);
             DLOG(INFO) << "Get leaf, v: " << v;
@@ -187,7 +187,7 @@ void MctsStrategy::dirichlet_noise(std::vector<float> &ps) {
 
     std::random_device rd;
     std::mt19937 gen(rd());
-    dirichlet_distribution<std::mt19937> d(std::vector<double>(dim, 1));
+    dirichlet_distribution<std::mt19937> d(std::vector<double>(dim, mcts_conf.dirichlet_alpha()));
     auto dirichlet_noise = d(gen);
     for (int i = 0; i < dim; i++) {
         ps[i] = (1 - mcts_conf.dirichlet_esp()) * ps[i] + mcts_conf.dirichlet_esp() * dirichlet_noise[i];
@@ -198,3 +198,4 @@ void MctsStrategy::post_process(const Board &board) {
     auto pos = board.get_last_pos();
     change_root(std::get<0>(pos) * board.get_size() + std::get<1>(pos));
 }
+

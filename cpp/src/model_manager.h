@@ -25,7 +25,7 @@ public:
 
     void train_on_batch(std::vector<Instance> &instances);
 
-    shared_ptr<tuple<vector<float>, float>> predict(const FEATURE &feature, MODEL_TYPE model_type);
+    shared_ptr<tuple<vector<float>, float>> predict(const FEATURE &feature, MODEL_TYPE model_type, bool with_lock=true);
 
     void reset_train_model();
 
@@ -34,6 +34,10 @@ public:
     void save_model(MODEL_TYPE model_type);
 
     void load_model(MODEL_TYPE model_type);
+
+    absl::Mutex &get_train_model_mutex();
+
+    absl::Mutex &get_predict_model_mutex();
 };
 
 

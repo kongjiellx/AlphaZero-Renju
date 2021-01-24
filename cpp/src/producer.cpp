@@ -14,8 +14,8 @@ Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), t
 
 void Producer::produce_one() {
     auto &conf = ResourceManager::instance().get_conf();
-    auto stg1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, MODEL_TYPE::PREDICT);
-    auto stg2 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::X, MODEL_TYPE::PREDICT);
+    auto stg1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, MODEL_TYPE::PREDICT, true);
+    auto stg2 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::X, MODEL_TYPE::PREDICT, true);
     auto result = pit.play_a_game(stg1, stg2, false);
     total_produce_num += result->records.size();
     auto instances = game_result_to_instances(result);
