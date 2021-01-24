@@ -16,3 +16,5 @@
 
 - Training about 48 hours, each move with 400 mcts simulations:
 ![renju](https://raw.githubusercontent.com/kongjiellx/AlphaZero-Renju/master/py/gif/525.gif)
+
+test
