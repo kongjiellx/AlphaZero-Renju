@@ -9,6 +9,4 @@
 
 Eigen::MatrixXi rotation90(int n, const Eigen::MatrixXi &matrix);
 
-Eigen::MatrixXi rotation90(int n, const Eigen::MatrixXi &matrix);
-
 #endif //ALPHAZERO_RENJU_MATRIX_H
