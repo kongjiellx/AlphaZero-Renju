@@ -8,6 +8,7 @@
 #include <vector>
 #include <tuple>
 #include <memory>
+#include "cpp/src/utils/matrix.h"
 
 using std::make_shared;
 using std::make_move_iterator;
@@ -50,8 +51,6 @@ enum MODEL_TYPE {
 };
 
 shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player player);
-
-shared_ptr<FEATURE> board_status_to_feature_with_augmentation(const BOARD_STATUS &status, Player player);
 
 shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult> game_result);
 

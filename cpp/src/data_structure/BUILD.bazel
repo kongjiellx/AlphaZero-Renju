@@ -6,5 +6,8 @@ cc_library(
         "data_structure.cpp",
         "data_structure.h",
     ],
-    deps = ["@com_github_google_glog//:glog"],
+    deps = [
+        "@com_github_google_glog//:glog",
+        "//cpp/src/third_party/eigen-3.3.9:eigen"
+    ],
 )

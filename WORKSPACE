@@ -141,3 +141,14 @@ http_archive(
     strip_prefix = "abseil-cpp-7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72",
     urls = ["https://github.com/abseil/abseil-cpp/archive/7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72.zip"],  # 2019-03-14
 )
+
+#########################################################
+## eigen 3.3.9
+#########################################################
+#http_archive(
+#    name = "eigen",
+#    sha256 = "7985975b787340124786f092b3a07d594b2e9cd53bbfe5f3d9b1daee7d55f56f",
+#    strip_prefix = "eigen-3.3.9",
+#    urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz"],
+#    build_file = "//eigen.BUILD"
+#)

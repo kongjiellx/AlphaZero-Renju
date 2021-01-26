@@ -8,3 +8,9 @@ py_binary(
         requirement("opt_einsum"),
     ],
 )
+
+py_binary(
+    name = "test_numpy",
+    srcs = ["test_numpy.py"],
+    deps = [],
+)

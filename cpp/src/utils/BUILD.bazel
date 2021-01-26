@@ -41,3 +41,14 @@ cc_library(
     srcs = ["dirichlet.h"],
     deps = [],
 )
+
+cc_binary(
+    name = "matrix",
+    srcs = [
+        "matrix.cpp",
+        "matrix.h",
+    ],
+    deps = [
+        "//cpp/src/third_party/eigen-3.3.9:eigen",
+    ],
+)

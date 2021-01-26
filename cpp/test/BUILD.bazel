@@ -57,3 +57,13 @@ cc_binary(
         "//cpp/src/utils:dirichlet",
     ],
 )
+
+cc_binary(
+    name = "test_eigen",
+    srcs = [
+        "test_eigen.cpp",
+    ],
+    deps = [
+        "//cpp/src/third_party/eigen-3.3.9:eigen",
+    ],
+)

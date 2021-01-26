@@ -1,0 +1,18 @@
+//
+// Created by 刘也宽 on 2021/1/26.
+//
+
+#include "matrix.h"
+
+Eigen::MatrixXi rotation90(int n, const Eigen::MatrixXi &matrix) {
+    n = n % 4;
+    if (n == 0) {
+        return matrix;
+    } else if (n == 1) {
+        return matrix.transpose().rowwise().reverse();
+    } else if (n == 2) {
+        return matrix.rowwise().reverse().colwise().reverse();
+    } else {
+        return matrix.transpose().colwise().reverse();
+    }
+}
