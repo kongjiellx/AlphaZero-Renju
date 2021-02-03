@@ -15,7 +15,7 @@ void Examiner::run() {
     LOG(INFO) << "examiner start";
     Pit pit;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(1));
+        std::this_thread::sleep_for(std::chrono::minutes(5));
 
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();

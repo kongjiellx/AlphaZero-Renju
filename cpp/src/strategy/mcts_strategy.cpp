@@ -32,8 +32,8 @@ void Node::expand(vector<float> ps, Player player) {
             children[i] = make_shared<Node>(shared_from_this(), ps[i], player);
         }
     }
-    DLOG(INFO) << "NUM: " << num;
-    DLOG(INFO) << "expend: " << dstr.str();
+//    DLOG(INFO) << "NUM: " << num;
+//    DLOG(INFO) << "expend: " << dstr.str();
 }
 
 void Node::backup(float v) {
@@ -105,7 +105,7 @@ std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) 
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());
     auto pos = distribution(gen);
-    change_root(pos);
+//    change_root(pos);
     return std::make_tuple(pos / board.get_size(), pos % board.get_size());
 }
 
@@ -120,9 +120,9 @@ void MctsStrategy::change_root(int action) {
 }
 
 std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise) {
-    DLOG(INFO) << "Search start!";
+//    DLOG(INFO) << "Search start!";
     for (int i = 0; i < simulate_num; i++) {
-        DLOG(INFO) << "simulate: " << i;
+//        DLOG(INFO) << "simulate: " << i;
         Board copy_board(board);
         shared_ptr<Node> node = current_root;
         std::tuple<bool, Player> status;
@@ -130,7 +130,7 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
             auto node_action = node->select();
             node = std::get<0>(node_action);
             int action = std::get<1>(node_action);
-            DLOG(INFO) << "select action: " << action;
+//            DLOG(INFO) << "select action: " << action;
             status = copy_board.step(Stone(
                     action / copy_board.get_size(),
                     action % copy_board.get_size(),
@@ -139,29 +139,29 @@ std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, in
         float v;
         if (std::get<0>(status)) {
             v = std::get<1>(status);
-            DLOG(INFO) << "Get done leaf, v: " << v;
+//            DLOG(INFO) << "Get done leaf, v: " << v;
         } else {
             auto features = board_status_to_feature(copy_board.get_current_status(),
                                                               copy_board.current_player);
             auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
             std::vector<float> ps = std::get<0>(*pv);
             v = std::get<1>(*pv);
-            DLOG(INFO) << "Get leaf, v: " << v;
+//            DLOG(INFO) << "Get leaf, v: " << v;
 
             if (add_dirichlet_noise && i == 0) {
                 dirichlet_noise(ps);
             }
 
-            std::stringstream ill_str;
+//            std::stringstream ill_str;
             for (auto &idx: copy_board.get_illegal_idx()) {
                 ps[idx] = 0;
-                ill_str << idx << ",";
+//                ill_str << idx << ",";
             }
             auto sum = std::accumulate(ps.begin(), ps.end(), 0.0);
             for (auto &p: ps) {
                 p /= sum;
             }
-            DLOG(INFO) << "illegal_idx: " << ill_str.str();
+//            DLOG(INFO) << "illegal_idx: " << ill_str.str();
             node->expand(ps, copy_board.current_player);
         }
         node->backup(v);

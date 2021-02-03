@@ -13,9 +13,22 @@ shared_ptr<GameResult> Pit::play_a_game(shared_ptr<Strategy> p1, shared_ptr<Stra
         auto position = current_stg->step(board, step_record);
         step_record.point = position;
         step_record.current_player = current_stg->getPlayer();
+
+        DLOG(INFO) << step_record.current_player;
+        DLOG(INFO) << std::get<0>(step_record.point) << ":" << std::get<1>(step_record.point);
+        string debug_status = "";
+        for (auto &row: step_record.status) {
+            for (auto &ii: row) {
+                debug_status += std::to_string(ii) + " ";
+            }
+            debug_status += "\n";
+        }
+        DLOG(INFO) << debug_status;
+
         ret->records.push_back(std::move(step_record));
         auto status = board.step(
                 Stone(std::get<0>(position), std::get<1>(position), board.current_player));
+
         LOG_IF(INFO, print) << "======board======\n" + board.to_str();
         p1->post_process(board);
         p2->post_process(board);

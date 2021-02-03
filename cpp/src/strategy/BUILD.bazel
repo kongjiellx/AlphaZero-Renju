@@ -3,7 +3,10 @@ package(default_visibility = ["//visibility:public"])
 cc_library(
     name = "strategy_h",
     srcs = ["strategy.h"],
-    deps = [],
+    deps = [
+        "//cpp/src:board",
+        "//cpp/src/data_structure",
+    ],
 )
 
 cc_library(
@@ -26,17 +29,21 @@ cc_library(
 cc_library(
     name = "random",
     srcs = [
-        "random_strategy.h",
         "random_strategy.cpp",
+        "random_strategy.h",
     ],
     deps = [
         ":strategy_h",
         "//cpp/src:board",
         "@com_github_google_glog//:glog",
+        "//cpp/src:resource_manager"
     ],
 )
 
 cc_library(
     name = "strategy",
-    deps = [":mcts", ":random"]
+    deps = [
+        ":mcts",
+        ":random",
+    ],
 )
