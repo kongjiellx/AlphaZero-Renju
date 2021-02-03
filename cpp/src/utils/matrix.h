@@ -7,6 +7,8 @@
 
 #include "cpp/src/third_party/eigen-3.3.9/Eigen/Dense"
 
+Eigen::MatrixXf rotation90(int n, const Eigen::MatrixXf &matrix);
+
 Eigen::MatrixXi rotation90(int n, const Eigen::MatrixXi &matrix);
 
 #endif //ALPHAZERO_RENJU_MATRIX_H

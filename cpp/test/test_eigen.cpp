@@ -10,7 +10,7 @@ int main() {
     Eigen::Matrix<float, 3, 2> matrix;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 2; j++) {
-            matrix(i, j) = 2 * i + j;
+            matrix << 2 * i + j;
             std::cout << matrix(i, j);
         }
         std::cout << std::endl;

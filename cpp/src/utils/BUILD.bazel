@@ -42,7 +42,7 @@ cc_library(
     deps = [],
 )
 
-cc_binary(
+cc_library(
     name = "matrix",
     srcs = [
         "matrix.cpp",
