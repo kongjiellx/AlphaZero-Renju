@@ -16,7 +16,7 @@ shared_ptr<GameResult> Pit::play_a_game(shared_ptr<Strategy> p1, shared_ptr<Stra
 
         DLOG(INFO) << step_record.current_player;
         DLOG(INFO) << std::get<0>(step_record.point) << ":" << std::get<1>(step_record.point);
-        string debug_status = "";
+        string debug_status = "====status====\n";
         for (auto &row: step_record.status) {
             for (auto &ii: row) {
                 debug_status += std::to_string(ii) + " ";
@@ -25,7 +25,7 @@ shared_ptr<GameResult> Pit::play_a_game(shared_ptr<Strategy> p1, shared_ptr<Stra
         }
         DLOG(INFO) << debug_status;
 
-        string distribution = "";
+        string distribution = "====distribution====\n";
         for (int i = 0; i < step_record.distribution.size(); i++) {
             distribution += std::to_string(step_record.distribution[i]) + " ";
             if (i % ResourceManager::instance().get_conf().game_conf().board_size() == 9) {
