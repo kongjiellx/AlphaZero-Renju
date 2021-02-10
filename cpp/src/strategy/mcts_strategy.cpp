@@ -9,6 +9,7 @@
 #include <numeric>
 #include <random>
 #include <iostream>
+#include <cmath>
 
 Node::Node(weak_ptr<Node> parent, float p, Player player)
         : parent(parent), N(0), W(0), P(p), player(player) {
@@ -87,9 +88,9 @@ Player Node::getPlayer() const {
     return player;
 }
 
-MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock)
+MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock, bool sample)
         : Strategy(player), root(new Node(weak_ptr<Node>(), 0, player)), current_root(root), mcts_conf(mcts_conf),
-          current_step(0), model_type(model_type), with_lock(with_lock) {}
+          current_step(0), model_type(model_type), with_lock(with_lock), sample(sample) {}
 
 
 std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) {
@@ -104,8 +105,12 @@ std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) 
     std::random_device rd;
     std::mt19937 gen(rd());
     std::discrete_distribution<int> distribution(ps.begin(), ps.end());
-    auto pos = distribution(gen);
-//    change_root(pos);
+    int pos;
+    if (sample) {
+        pos = distribution(gen);
+    } else {
+        pos = std::max_element(ps.begin(), ps.end()) - ps.begin();
+    }
     return std::make_tuple(pos / board.get_size(), pos % board.get_size());
 }
 

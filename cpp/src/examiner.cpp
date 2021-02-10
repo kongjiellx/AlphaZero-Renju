@@ -14,17 +14,18 @@ Examiner::Examiner(int thread_num, int game_num): thread_pool(thread_num), game_
 void Examiner::run() {
     LOG(INFO) << "examiner start";
     Pit pit;
+    int round = 0;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(5));
-
+        std::this_thread::sleep_for(std::chrono::minutes(10));
+        LOG(INFO) << "game round: " << round << " start!";
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();
         std::vector<std::future<shared_ptr<GameResult>>> futures;
+        auto mcts_conf = ResourceManager::instance().get_conf().mtcs_conf();
+        mcts_conf.set_simulate_num(500);
         for (size_t i = 0; i < game_num; i++) {
-            auto stg1 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::O, MODEL_TYPE::TRAIN,
-                                                  false);
-            auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::X, MODEL_TYPE::PREDICT,
-                                                  false);
+            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, MODEL_TYPE::TRAIN, false, false);
+            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, MODEL_TYPE::PREDICT, false, false);
             futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, i == game_num - 1));
         }
         int o_win = 0, x_win = 0;
@@ -47,6 +48,7 @@ void Examiner::run() {
         }
         ModelManager::instance().get_train_model_mutex().Unlock();
         ModelManager::instance().get_predict_model_mutex().Unlock();
+        round++;
     }
 }
 
