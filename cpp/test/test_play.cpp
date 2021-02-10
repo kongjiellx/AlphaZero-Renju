@@ -27,15 +27,9 @@ int main(int argc, char *argv[]) {
     auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::X, MODEL_TYPE::PREDICT);
     auto ret = pit.play_a_game(stg1, stg2, true);
     LOG(INFO) << "winner: " << ret->winner;
-    for (auto &record: ret->records) {
-        LOG(INFO) << record.current_player;
-        LOG(INFO) << std::get<0>(record.point) << ":" << std::get<1>(record.point);
-        for (auto &row: record.status) {
 
-        }
-    }
-//    LOG(INFO) << "instance";
-//    for (auto &instance: game_result_to_instances(ret)) {
+    auto p = game_result_to_instances(ret);
+//    for (auto &instance: *p) {
 //        LOG(INFO) << instance.label_v;
 //        LOG(INFO) << instance.features[0][0][0] << instance.features[0][0][1] << instance.features[0][0][2];
 //    }

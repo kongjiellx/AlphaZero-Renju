@@ -25,6 +25,15 @@ shared_ptr<GameResult> Pit::play_a_game(shared_ptr<Strategy> p1, shared_ptr<Stra
         }
         DLOG(INFO) << debug_status;
 
+        string distribution = "";
+        for (int i = 0; i < step_record.distribution.size(); i++) {
+            distribution += std::to_string(step_record.distribution[i]) + " ";
+            if (i % ResourceManager::instance().get_conf().game_conf().board_size() == 9) {
+                distribution += "\n";
+            }
+        }
+        DLOG(INFO) << distribution;
+
         ret->records.push_back(std::move(step_record));
         auto status = board.step(
                 Stone(std::get<0>(position), std::get<1>(position), board.current_player));
