@@ -71,14 +71,14 @@ void Model::init(string export_dir) {
 
 void Model::save(string path) {
     tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
-    checkpointPathTensor.scalar<std::string>()() = path + "/weights";
+    checkpointPathTensor.scalar<tensorflow::tstring>()() = path + "/weights";
     bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}},
             {}, {bundle.meta_graph_def.saver_def().save_tensor_name()}, nullptr);
 }
 
 void Model::load(string path) {
     tensorflow::Tensor checkpointPathTensor(tensorflow::DT_STRING, tensorflow::TensorShape());
-    checkpointPathTensor.scalar<std::string>()() = path + "/weights";
+    checkpointPathTensor.scalar<tensorflow::tstring>()() = path + "/weights";
     bundle.session->Run({{bundle.meta_graph_def.saver_def().filename_tensor_name(), checkpointPathTensor}}
     , {}, {bundle.meta_graph_def.saver_def().restore_op_name()}, nullptr);
 }

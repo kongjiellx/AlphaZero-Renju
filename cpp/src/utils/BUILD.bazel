@@ -49,6 +49,6 @@ cc_library(
         "matrix.h",
     ],
     deps = [
-        "//cpp/src/third_party/eigen-3.3.9:eigen",
+        "@org_tensorflow//third_party/eigen3:eigen3",
     ],
 )

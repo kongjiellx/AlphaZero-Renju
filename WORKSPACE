@@ -8,49 +8,26 @@ load(":repo.bzl", "tensorflow_http_archive")
 
 tensorflow_http_archive(
     name = "org_tensorflow",
-    git_commit = "e5bf8de410005de06a7ff5393fafdf832ef1d4ad",  # v2.1.0 release
-    sha256 = "1f4b09e6bff7f847bb1034699076055e50e87534d76008af8295ed71195b2b36",
+    sha256 = "3e6c98de0842520a65978549be7b1b6061080ecf9fa9f3a87739e19a0447a85c",
+    git_commit = "1f8f692143aa9a42c55f8b35d09aeed93bdab66e",
 )
 
-########################################################
-# Upstream TensorFlow dependencies
-# TensorFlow build depends on these dependencies.
-# Needs to be in-sync with TensorFlow sources.
-########################################################
-http_archive(
-    name = "io_bazel_rules_closure",
-    sha256 = "5b00383d08dd71f28503736db0500b6fb4dda47489ff5fc6bed42557c07c6ba9",
-    strip_prefix = "rules_closure-308b05b2419edb5c8ee0471b67a40403df940149",
-    urls = [
-        "https://storage.googleapis.com/mirror.tensorflow.org/github.com/bazelbuild/rules_closure/archive/308b05b2419edb5c8ee0471b67a40403df940149.tar.gz",
-        "https://github.com/bazelbuild/rulestiaodou_closure/archive/308b05b2419edb5c8ee0471b67a40403df940149.tar.gz",  # 2019-06-13
-    ],
+# Check bazel version requirement, which is stricter than TensorFlow's.
+load(
+    "@org_tensorflow//tensorflow:version_check.bzl",
+    "check_bazel_version_at_least"
 )
+check_bazel_version_at_least("5.0.0")
 
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-
-http_archive(
-    name = "bazel_skylib",
-    sha256 = "97e70364e9249702246c0e9444bccdc4b847bed1eb03c5a3ece4f83dfe6abc44",
-    urls = [
-        "https://mirror.bazel.build/github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
-        "https://github.com/bazelbuild/bazel-skylib/releases/download/1.0.2/bazel-skylib-1.0.2.tar.gz",
-    ],
-)
-
-load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
-
-bazel_skylib_workspace()
-
-########################################################
-# load tensorflow workspace
-########################################################
-load("@org_tensorflow//tensorflow:workspace.bzl", "tf_workspace")
-
-tf_workspace(
-    path_prefix = "",
-    tf_repo_name = "org_tensorflow",
-)
+# Initialize TensorFlow's external dependencies.
+load("@org_tensorflow//tensorflow:workspace3.bzl", "workspace")
+workspace()
+load("@org_tensorflow//tensorflow:workspace2.bzl", "workspace")
+workspace()
+load("@org_tensorflow//tensorflow:workspace1.bzl", "workspace")
+workspace()
+load("@org_tensorflow//tensorflow:workspace0.bzl", "workspace")
+workspace()
 
 #########################################################
 ## glog
@@ -114,23 +91,23 @@ rules_proto_grpc_cpp_repos()
 #)
 #load("@pip_deps//:requirements.bzl", "pip_install")
 #pip_install()
-http_archive(
-    name = "com_github_ali5h_rules_pip",
-    sha256 = "c8c11f219642ab94cb3f4a5ff25aadda6fb6dcb0c77329021e843a7e7ba294d1",
-    strip_prefix = "rules_pip-2.1.0",
-    urls = ["https://github.com/ali5h/rules_pip/archive/2.1.0.tar.gz"],
-)
+# http_archive(
+#     name = "com_github_ali5h_rules_pip",
+#     sha256 = "c8c11f219642ab94cb3f4a5ff25aadda6fb6dcb0c77329021e843a7e7ba294d1",
+#     strip_prefix = "rules_pip-2.1.0",
+#     urls = ["https://github.com/ali5h/rules_pip/archive/2.1.0.tar.gz"],
+# )
 
-load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
+# load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
 
-pip_import(
-    name = "pip_deps",
-    requirements = "//:requirements.txt",
-)
+# pip_import(
+#     name = "pip_deps",
+#     requirements = "//:requirements.txt",
+# )
 
-load("@pip_deps//:requirements.bzl", "pip_install")
+# load("@pip_deps//:requirements.bzl", "pip_install")
 
-pip_install()
+# pip_install()
 
 ########################################################
 # absl

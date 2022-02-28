@@ -1,4 +1,4 @@
-load("@org_tensorflow//tensorflow:tensorflow.bzl", "tf_cc_binary")
+
 
 cc_binary(
     name = "test_conf",
