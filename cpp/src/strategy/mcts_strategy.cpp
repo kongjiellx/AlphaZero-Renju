@@ -5,7 +5,6 @@
 #include "mcts_strategy.h"
 #include "cpp/src/utils/dirichlet.h"
 #include "cpp/src/model_manager.h"
-#include "glog/logging.h"
 #include <numeric>
 #include <random>
 #include <iostream>

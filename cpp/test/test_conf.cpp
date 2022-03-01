@@ -3,7 +3,7 @@
 #include <sstream>
 
 #include "conf/conf.pb.h"
-#include <google/protobuf/text_format.h>
+#include "google/protobuf/text_format.h"
 
 
 int main() {

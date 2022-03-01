@@ -6,7 +6,6 @@
 #define ALPHAZERO_RENJU_THREAD_H
 
 #include <thread>
-#include <glog/logging.h>
 
 
 class Thread {
@@ -21,9 +20,9 @@ public:
             try {
                 this->run();
             } catch (std::exception &e) {
-                LOG(ERROR) << "exception: " << e.what();
+                // LOG(ERROR) << "exception: " << e.what();
             } catch (...) {
-                LOG(ERROR) << "unknown exception";
+                // LOG(ERROR) << "unknown exception";
             }
         });
     }

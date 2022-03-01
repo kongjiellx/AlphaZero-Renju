@@ -126,5 +126,8 @@ cc_library(
 cc_binary(
     name = "main",
     srcs = ["main.cpp"],
-    deps = [":engine"],
+    deps = [
+        ":engine", 
+        "@com_github_gflags_gflags//:gflags",
+    ],
 )

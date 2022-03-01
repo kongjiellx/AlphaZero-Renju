@@ -3,21 +3,22 @@ build --cxxopt=-std=c++14
 build --host_cxxopt=-std=c++14
 
 # Processor native optimizations (depends on build host capabilities).
-build:nativeopt --copt=-march=native
-build:nativeopt --host_copt=-march=native
+build:nativeopt --copt=-mcpu=apple-m1
+build:nativeopt --host_copt=-mcpu=apple-m1
 build:nativeopt --copt=-O3
+build --config=nativeopt
+
+build -c opt
 
 build --keep_going
 build --verbose_failures=true
-build --spawn_strategy=standalone
 build --genrule_strategy=standalone
 
 build --define=grpc_no_ares=true
 
-# Sets the default Apple platform to macOS.
+# # Sets the default Apple platform to macOS.
 build --apple_platform_type=macos
-
-build -c opt
+build --cpu=darwin_arm64
 
 # Adding "--cxxopt=-D_GLIBCXX_USE_CXX11_ABI=0" creates parity with TF
 # compilation options. It also addresses memory use due to

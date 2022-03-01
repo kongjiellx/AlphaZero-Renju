@@ -4,11 +4,11 @@
 
 #ifndef ALPHAZERO_RENJU_MODEL_H
 #define ALPHAZERO_RENJU_MODEL_H
+#include "tensorflow/cc/saved_model/loader.h"
 
 #include <string>
 #include <iostream>
 #include <vector>
-#include "tensorflow/cc/saved_model/loader.h"
 #include "conf/conf.pb.h"
 #include "cpp/src/data_structure/data_structure.h"
 

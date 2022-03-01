@@ -22,7 +22,7 @@ float Model::train(const vector<float> &x_data, const vector<float> &p_data, con
                          {train_p_name, std::move(p_tensor)},
                          {train_v_name, std::move(v_tensor)}},
                         {train_loss_name}, {}, &outputs);
-    LOG_EVERY_N(INFO, 1000) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
+    // LOG_EVERY_N(INFO, 1000) << "avg loss: " << outputs[0].scalar<float>().data()[0] / batch_size;
     return outputs[0].scalar<float>().data()[0];
 }
 
@@ -66,7 +66,7 @@ void Model::init(string export_dir) {
     predict_x_name = predict_signature_def.inputs().at("x").name();
     predict_p_name = predict_signature_def.outputs().at("output_0").name();
     predict_v_name = predict_signature_def.outputs().at("output_1").name();
-    LOG(INFO) << "model inited!";
+    // LOG(INFO) << "model inited!";
 }
 
 void Model::save(string path) {

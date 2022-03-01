@@ -2,7 +2,6 @@
 // Created by 刘也宽 on 2020/8/14.
 //
 #include "data_structure.h"
-// #include "glog/logging.h"
 #include <iostream>
 
 shared_ptr<FEATURE> board_status_to_feature(const BOARD_STATUS &status, Player player) {

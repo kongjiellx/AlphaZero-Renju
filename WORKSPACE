@@ -5,7 +5,7 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 # tensorflow archive
 ########################################################
 load(":repo.bzl", "tensorflow_http_archive")
-
+# copy from tensorflow serving
 tensorflow_http_archive(
     name = "org_tensorflow",
     sha256 = "3e6c98de0842520a65978549be7b1b6061080ecf9fa9f3a87739e19a0447a85c",
@@ -29,27 +29,9 @@ workspace()
 load("@org_tensorflow//tensorflow:workspace0.bzl", "workspace")
 workspace()
 
-#########################################################
-## glog
-#########################################################
-http_archive(
-    name = "com_github_gflags_gflags",
-    sha256 = "34af2f15cf7367513b352bdcd2493ab14ce43692d2dcd9dfc499492966c64dcf",
-    strip_prefix = "gflags-2.2.2",
-    urls = ["https://github.com/gflags/gflags/archive/v2.2.2.tar.gz"],
-)
-
-http_archive(
-    name = "com_github_google_glog",
-    sha256 = "f28359aeba12f30d73d9e4711ef356dc842886968112162bc73002645139c39c",
-    strip_prefix = "glog-0.4.0",
-    urls = ["https://github.com/google/glog/archive/v0.4.0.tar.gz"],
-)
-
 ########################################################
 # grpc proto config
 ########################################################
-load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_archive(
     name = "rules_proto_grpc",
@@ -118,14 +100,3 @@ http_archive(
     strip_prefix = "abseil-cpp-7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72",
     urls = ["https://github.com/abseil/abseil-cpp/archive/7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72.zip"],  # 2019-03-14
 )
-
-#########################################################
-## eigen 3.3.9
-#########################################################
-#http_archive(
-#    name = "eigen",
-#    sha256 = "7985975b787340124786f092b3a07d594b2e9cd53bbfe5f3d9b1daee7d55f56f",
-#    strip_prefix = "eigen-3.3.9",
-#    urls = ["https://gitlab.com/libeigen/eigen/-/archive/3.3.9/eigen-3.3.9.tar.gz"],
-#    build_file = "//eigen.BUILD"
-#)

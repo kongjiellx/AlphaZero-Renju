@@ -2,7 +2,6 @@
 // Created by 刘也宽 on 2020/10/3.
 //
 #include "examiner.h"
-#include "glog/logging.h"
 #include "cpp/src/pit.h"
 #include "cpp/src/strategy/mcts_strategy.h"
 #include "cpp/src/resource_manager.h"
@@ -17,7 +16,7 @@ void Examiner::run() {
     int round = 0;
     while (true) {
         std::this_thread::sleep_for(std::chrono::minutes(10));
-        LOG(INFO) << "game round: " << round << " start!";
+        // LOG(INFO) << "game round: " << round << " start!";
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();
         std::vector<std::future<shared_ptr<GameResult>>> futures;
@@ -38,12 +37,12 @@ void Examiner::run() {
             }
         }
 
-        LOG(INFO) << "O win: " << o_win << ", X win: " << x_win;
+        // LOG(INFO) << "O win: " << o_win << ", X win: " << x_win;
         if (o_win > x_win) {
-            LOG(INFO) << "winner: O, update predict model!";
+            // LOG(INFO) << "winner: O, update predict model!";
             ModelManager::instance().update_predict_model();
         } else {
-            LOG(INFO) << "winner: X, reset train model!";
+            // LOG(INFO) << "winner: X, reset train model!";
             ModelManager::instance().reset_train_model();
         }
         ModelManager::instance().get_train_model_mutex().Unlock();
