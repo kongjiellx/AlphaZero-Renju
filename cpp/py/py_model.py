@@ -41,7 +41,8 @@ def residual_block(x):
 class Model(tf.Module):
     def __init__(self):
         super(Model).__init__()
-        inputs = Input(shape=(conf.game_conf.board_size, conf.game_conf.board_size, 3), dtype=tf.float32)
+        inputs = Input(shape=(conf.game_conf.board_size,
+                       conf.game_conf.board_size, 3), dtype=tf.float32)
 
         x = Conv2D(
             filters=32,
@@ -82,7 +83,7 @@ class Model(tf.Module):
         vh = Activation('elu')(vh)
         vh = Flatten()(vh)
         vh = Dense(
-            20,
+            100,
             activation='elu',
             kernel_regularizer=l2(conf.model_conf.l2_c),
             bias_regularizer=l2(conf.model_conf.l2_c)
@@ -94,22 +95,25 @@ class Model(tf.Module):
             bias_regularizer=l2(conf.model_conf.l2_c)
         )(vh)
 
-        self.model = tf.keras.models.Model(inputs=inputs, outputs=[ph, vh])
-        self.model.build(input_shape=(None, conf.game_conf.board_size, conf.game_conf.board_size, 3))
         self.optimizer = optimizers.Adam()
+        self.p_loss_func = losses.CategoricalCrossentropy()
+        self.v_loss_func = losses.MeanSquaredError()
+
+        self.model = tf.keras.models.Model(inputs=inputs, outputs=[ph, vh])
+        self.model.build(input_shape=(
+            None, conf.game_conf.board_size, conf.game_conf.board_size, 3))
+        
 
     @tf.function
     def train_step(self, x, p, v):
-        p_loss_func = losses.CategoricalCrossentropy()
-        v_loss_func = losses.MeanSquaredError()
-
         with tf.GradientTape() as tape:
             predictions = self.model(x)
-            p_loss = p_loss_func(p, predictions[0])
-            v_loss = v_loss_func(v, predictions[1])
+            p_loss = self.p_loss_func(p, predictions[0])
+            v_loss = self.v_loss_func(v, predictions[1])
             loss = p_loss + v_loss
         gradients = tape.gradient(loss, self.model.trainable_variables)
-        self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+        self.optimizer.apply_gradients(
+            zip(gradients, self.model.trainable_variables))
         return loss
 
     @tf.function
@@ -140,13 +144,13 @@ def save():
 
 
 def load():
-    model = tf.saved_model.load(conf.model_conf.model_path, )
+    model = tf.saved_model.load(conf.model_conf.model_path)
     for i in range(100):
-        x = np.ones((1, 10, 10, 3)).tolist()
-        y = [0.] * 100
-        y[3] = 1.
-        y = [y]
-        print(model.signatures["train_step"](x=tf.constant(x), p=tf.constant(y), v=tf.constant(1.)))
+        x = np.ones((1, 13, 13, 3)).tolist()
+        y = np.zeros((1, 169)).tolist()
+        y[0][3] = 1.
+        print(model.signatures["train_step"](
+            x=tf.constant(x), p=tf.constant(y), v=tf.constant(1.)))
         print(model.signatures["predict_func"](x=tf.constant(x)))
 
 

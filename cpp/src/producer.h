@@ -17,6 +17,7 @@ private:
     int thread_pool_size;
     Pit pit;
     std::atomic<int> total_produce_num;
+    std::atomic<int> total_game_num;
 public:
     explicit Producer(int thread_pool_size);
 

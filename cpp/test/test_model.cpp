@@ -6,14 +6,14 @@
 #include <vector>
 
 int main() {
-    Model model(10);
+    Model model(13);
     model.init("/Users/admin/fish/code/AlphaZero-Renju/cpp/model");
     std::vector<float> x_data;
     std::vector<float> p_data;
     std::vector<float> v_data;
 
     for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 10 * 10; j++) {
+        for (int j = 0; j < 13 * 13; j++) {
             for (int k = 0; k < 3; k++) {
                 x_data.push_back(0.1);
             }

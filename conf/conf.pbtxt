@@ -1,27 +1,25 @@
 game_conf: {
-    board_size: 10
+    board_size: 13
     win_num: 5
 }
 
 model_conf: {
-    #model_path: "/home/liuyekuan/workspace/mine/AlphaZero-Renju/cpp/model"
-    #model_path: "/Users/admin/repos/AlphaZero-Renju/cpp/model"
-    model_path: "/home/ubuntu/AlphaZero-Renju/cpp/model"
-    residual_blocks: 2
-    batch_size: 8
+    model_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/model"
+    residual_blocks: 3
+    batch_size: 32
     save_every_n_games: 10000
     l2_c: 0.00001
     lr: 0.001
     validation_split: 0.2
-    train_model_weight_save_path: "/home/ubuntu/AlphaZero-Renju/cpp/weights/train"
-    predict_model_weight_save_path: "/home/ubuntu/AlphaZero-Renju/cpp/weights/predict"
+    train_model_weight_save_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/weights/train"
+    predict_model_weight_save_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/weights/predict"
     load_pre: false
 }
 
 mtcs_conf: {
-    simulate_num: 200
+    simulate_num: 100
     c_puct: 5
-    explore_steps: 4
+    explore_steps: 10
     dirichlet_esp: 0.25
     dirichlet_alpha: 1.0
 }

@@ -1,5 +1,4 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
-load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 ########################################################
 # tensorflow archive
@@ -55,43 +54,6 @@ load("@rules_proto_grpc//cpp:repositories.bzl", rules_proto_grpc_cpp_repos = "cp
 rules_proto_grpc_cpp_repos()
 
 ########################################################
-# load pip dependencies
-########################################################
-#git_repository(
-#    name = "rules_python",
-#    remote = "https://github.com/bazelbuild/rules_python.git",
-#    commit = "748aa53d7701e71101dfd15d800e100f6ff8e5d1",
-#)
-#load("@rules_python//python:repositories.bzl", "py_repositories")
-#py_repositories()
-#load("@rules_python//python:pip.bzl", "pip_repositories")
-#pip_repositories()
-#load("@rules_python//python:pip.bzl", "pip_import")
-#pip_import(   # or pip3_import
-#   name = "pip_deps",
-#   requirements = "//:requirements.txt",
-#)
-#load("@pip_deps//:requirements.bzl", "pip_install")
-#pip_install()
-# http_archive(
-#     name = "com_github_ali5h_rules_pip",
-#     sha256 = "c8c11f219642ab94cb3f4a5ff25aadda6fb6dcb0c77329021e843a7e7ba294d1",
-#     strip_prefix = "rules_pip-2.1.0",
-#     urls = ["https://github.com/ali5h/rules_pip/archive/2.1.0.tar.gz"],
-# )
-
-# load("@com_github_ali5h_rules_pip//:defs.bzl", "pip_import")
-
-# pip_import(
-#     name = "pip_deps",
-#     requirements = "//:requirements.txt",
-# )
-
-# load("@pip_deps//:requirements.bzl", "pip_install")
-
-# pip_install()
-
-########################################################
 # absl
 ########################################################
 http_archive(
@@ -99,4 +61,15 @@ http_archive(
     sha256 = "71d00d15fe6370220b6685552fb66e5814f4dd2e130f3836fc084c894943753f",
     strip_prefix = "abseil-cpp-7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72",
     urls = ["https://github.com/abseil/abseil-cpp/archive/7c7754fb3ed9ffb57d35fe8658f3ba4d73a31e72.zip"],  # 2019-03-14
+)
+
+########################################################
+# logging
+########################################################
+http_archive(
+    name = "spdlog",
+    sha256 = "130bd593c33e2e2abba095b551db6a05f5e4a5a19c03ab31256c38fa218aa0a6",
+    strip_prefix = "spdlog-1.9.2",
+    urls = ["https://github.com/gabime/spdlog/archive/refs/tags/v1.9.2.zip"],
+    build_file = "//cpp/third_party:spdlog.BUILD"
 )

@@ -29,3 +29,9 @@ build --experimental_repo_remote_exec
 
 # TF now has `cc_shared_library` targets, so it needs the experimental flag
 build --experimental_cc_shared_library
+
+build --output_filter=DONT_MATCH_ANYTHING
+build --output_filter=
+
+build --disk_cache=~/.bazel_remote_cache
+build --incompatible_strict_action_env

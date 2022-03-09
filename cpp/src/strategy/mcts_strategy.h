@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/11/18.
-//
-
 #ifndef ALPHAZERO_RENJU_MCTS_STRATEGY_H
 #define ALPHAZERO_RENJU_MCTS_STRATEGY_H
 
@@ -54,7 +50,9 @@ private:
 
     void dirichlet_noise(std::vector<float> &ps);
 
-    std::vector<float> search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise);
+    void simulate(const Board &board, bool add_dirichlet_noise);
+
+    std::vector<float> search(const Board &board, int simulate_num, int T);
 
     void change_root(int action);
 

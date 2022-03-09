@@ -4,6 +4,7 @@
 
 #include "engine.h"
 #include "gflags/gflags.h"
+#include "spdlog/spdlog.h"
 
 DEFINE_string(conf_path, "", "conf file path");
 
@@ -14,6 +15,7 @@ void signal_callback_handler(int signum) {
 }
 
 int main(int argc, char *argv[]) {
+    spdlog::info("AlphaZero start.");
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     Engine m;

@@ -4,11 +4,12 @@
 #include "producer.h"
 #include "cpp/src/strategy/mcts_strategy.h"
 #include "data_structure/data_structure.h"
+#include "spdlog/spdlog.h"
 
-Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), total_produce_num(0) {
-    // LOG(INFO) << "start init data pool";
+Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), total_produce_num(0), total_game_num(0) {
+    spdlog::info("start init data pool");
     init_data_pool();
-    // LOG(INFO) << "init data pool: " << ResourceManager::instance().get_data_pool().get_real_size();
+    spdlog::info("init data pool: " + std::to_string(ResourceManager::instance().get_data_pool().get_real_size()));
 }
 
 void Producer::produce_one() {
@@ -21,7 +22,10 @@ void Producer::produce_one() {
     for (auto &instance: *instances) {
         ResourceManager::instance().get_data_pool().push_back(instance);
     }
-    // LOG_EVERY_N(INFO, 100) << "total_produce_num: " << total_produce_num;
+    total_game_num += 1;
+    if (total_game_num % 100 == 0) {
+        spdlog::info("total_produce_num: " + std::to_string(total_produce_num));
+    }
 }
 
 void Producer::produce_endless() {
@@ -42,14 +46,14 @@ void Producer::init_data_pool() {
         }
         futures.clear();
         if (ResourceManager::instance().get_data_pool().full()) {
-            // LOG(INFO) << "init data pool done!";
+            spdlog::info("init data pool done!");
             return;
         }
     }
 }
 
 void Producer::run() {
-    // LOG(INFO) << "producer start!";
+    spdlog::info("producer start!");
     ThreadPool thread_pool(thread_pool_size);
     std::vector<std::future<void>> futures;
     for (size_t i = 0; i < thread_pool_size; i++) {

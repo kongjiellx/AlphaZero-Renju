@@ -72,3 +72,9 @@ cc_binary(
     srcs = ["test_glog.cpp"],
     deps = ["@com_github_google_glog//:glog"],
 )
+
+cc_binary(
+    name = "test_spdlog",
+    srcs = ["test_spdlog.cpp"],
+    deps = ["@spdlog//:spdlog"],
+)

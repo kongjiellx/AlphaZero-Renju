@@ -7,21 +7,23 @@
 #include "cpp/src/resource_manager.h"
 #include "cpp/src/model_manager.h"
 #include <chrono>
+#include "spdlog/spdlog.h"
 
 Examiner::Examiner(int thread_num, int game_num): thread_pool(thread_num), game_num(game_num) {}
 
 void Examiner::run() {
-    LOG(INFO) << "examiner start";
+    spdlog::info("examiner start");
     Pit pit;
     int round = 0;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(10));
-        // LOG(INFO) << "game round: " << round << " start!";
+        std::this_thread::sleep_for(std::chrono::minutes(5));
+        spdlog::info("game round: " + std::to_string(round) + " start!");
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();
         std::vector<std::future<shared_ptr<GameResult>>> futures;
         auto mcts_conf = ResourceManager::instance().get_conf().mtcs_conf();
-        mcts_conf.set_simulate_num(500);
+        // int old_simulate_num = mcts_conf.get_simulate_num();
+        // mcts_conf.set_simulate_num(500);
         for (size_t i = 0; i < game_num; i++) {
             auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, MODEL_TYPE::TRAIN, false, false);
             auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, MODEL_TYPE::PREDICT, false, false);
@@ -36,13 +38,14 @@ void Examiner::run() {
                 x_win++;
             }
         }
+        // mcts_conf.set_simulate_num(old_simulate_num);
 
-        // LOG(INFO) << "O win: " << o_win << ", X win: " << x_win;
+        spdlog::info("O win: " + std::to_string(o_win) + ", X win: " + std::to_string(x_win));
         if (o_win > x_win) {
-            // LOG(INFO) << "winner: O, update predict model!";
+            spdlog::info("winner: O, update predict model!");
             ModelManager::instance().update_predict_model();
         } else {
-            // LOG(INFO) << "winner: X, reset train model!";
+            spdlog::info("winner: X, reset train model!");
             ModelManager::instance().reset_train_model();
         }
         ModelManager::instance().get_train_model_mutex().Unlock();

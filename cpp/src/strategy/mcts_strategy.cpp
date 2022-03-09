@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/11/18.
-//
-
 #include "mcts_strategy.h"
 #include "cpp/src/utils/dirichlet.h"
 #include "cpp/src/model_manager.h"
@@ -23,17 +19,11 @@ float Node::Q() {
 }
 
 void Node::expand(vector<float> ps, Player player) {
-    int num = 0;
-    std::stringstream dstr;
     for (int i = 0; i < ps.size(); i++) {
         if (ps[i] > 0) {
-            num++;
-            dstr << i << ",";
             children[i] = make_shared<Node>(shared_from_this(), ps[i], player);
         }
     }
-//    DLOG(INFO) << "NUM: " << num;
-//    DLOG(INFO) << "expend: " << dstr.str();
 }
 
 void Node::backup(float v) {
@@ -99,7 +89,7 @@ std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) 
     } else {
         t = 0.5;
     }
-    const auto &ps = search(board, mcts_conf.simulate_num(), t, true);
+    const auto &ps = search(board, mcts_conf.simulate_num(), t);
     record.distribution = ps;
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -123,52 +113,47 @@ void MctsStrategy::change_root(int action) {
     }
 }
 
-std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, int T, bool add_dirichlet_noise) {
-//    DLOG(INFO) << "Search start!";
+void MctsStrategy::simulate(const Board &board, bool add_dirichlet_noise) {
+    Board copy_board(board);
+    shared_ptr<Node> node = current_root;
+    std::tuple<bool, Player> status;
+    while (!node->is_leaf()) {
+        auto node_action = node->select();
+        node = std::get<0>(node_action);
+        int action = std::get<1>(node_action);
+        status = copy_board.step(Stone(
+                action / copy_board.get_size(),
+                action % copy_board.get_size(),
+                copy_board.current_player));
+    }
+    float v;
+    if (std::get<0>(status)) {
+        v = std::get<1>(status);
+    } else {
+        auto features = board_status_to_feature(copy_board.get_current_status(),
+                                                            copy_board.current_player);
+        auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
+        std::vector<float> ps = std::get<0>(*pv);
+        v = std::get<1>(*pv);
+
+        if (add_dirichlet_noise) {
+            dirichlet_noise(ps);
+        }
+        for (auto &idx: copy_board.get_illegal_idx()) {
+            ps[idx] = 0;
+        }
+        auto sum = std::accumulate(ps.begin(), ps.end(), 0.0);
+        for (auto &p: ps) {
+            p /= sum;
+        }
+        node->expand(ps, copy_board.current_player);
+    }
+    node->backup(v);    
+}
+
+std::vector<float> MctsStrategy::search(const Board &board, int simulate_num, int T) {
     for (int i = 0; i < simulate_num; i++) {
-//        DLOG(INFO) << "simulate: " << i;
-        Board copy_board(board);
-        shared_ptr<Node> node = current_root;
-        std::tuple<bool, Player> status;
-        while (!node->is_leaf()) {
-            auto node_action = node->select();
-            node = std::get<0>(node_action);
-            int action = std::get<1>(node_action);
-//            DLOG(INFO) << "select action: " << action;
-            status = copy_board.step(Stone(
-                    action / copy_board.get_size(),
-                    action % copy_board.get_size(),
-                    copy_board.current_player));
-        }
-        float v;
-        if (std::get<0>(status)) {
-            v = std::get<1>(status);
-//            DLOG(INFO) << "Get done leaf, v: " << v;
-        } else {
-            auto features = board_status_to_feature(copy_board.get_current_status(),
-                                                              copy_board.current_player);
-            auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
-            std::vector<float> ps = std::get<0>(*pv);
-            v = std::get<1>(*pv);
-//            DLOG(INFO) << "Get leaf, v: " << v;
-
-            if (add_dirichlet_noise && i == 0) {
-                dirichlet_noise(ps);
-            }
-
-//            std::stringstream ill_str;
-            for (auto &idx: copy_board.get_illegal_idx()) {
-                ps[idx] = 0;
-//                ill_str << idx << ",";
-            }
-            auto sum = std::accumulate(ps.begin(), ps.end(), 0.0);
-            for (auto &p: ps) {
-                p /= sum;
-            }
-//            DLOG(INFO) << "illegal_idx: " << ill_str.str();
-            node->expand(ps, copy_board.current_player);
-        }
-        node->backup(v);
+        simulate(board, i == 0 && current_root == root);
     }
     std::vector<float> ret(board.get_size() * board.get_size(), 0);
     for (auto it: current_root->getChildren()) {

@@ -1,18 +1,19 @@
-//
-// Created by 刘也宽 on 2020/10/3.
-//
 #include "trainer.h"
+#include "spdlog/spdlog.h"
 
 void Trainer::run() {
-    // LOG(INFO) << "trainer started!";
+    spdlog::info("trainer started!");
     int batch_size = ResourceManager::instance().get_conf().model_conf().batch_size();
-
+    int i = 0;
     while (true) {
         std::vector<Instance> instances;
         ResourceManager::instance().get_data_pool().sample_batch(instances, batch_size);
         ModelManager::instance().train_on_batch(instances);
         total_consume_num += instances.size();
-        // LOG_EVERY_N(INFO, 1000) << "total_consume_num: " << total_consume_num;
+        if (i++ % 100 == 0) {
+            spdlog::info("total_consume_num: " + std::to_string(total_consume_num));
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
     }
 }
 

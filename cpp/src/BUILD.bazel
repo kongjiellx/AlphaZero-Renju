@@ -22,6 +22,7 @@ cc_library(
         "//conf:conf_cc_proto",
         "//cpp/src/data_structure",
         "@org_tensorflow//tensorflow/cc/saved_model:loader",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -49,6 +50,7 @@ cc_library(
     deps = [
         ":resource_manager",
         "//cpp/src/strategy:strategy_h",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -63,6 +65,7 @@ cc_library(
         ":resource_manager",
         "//conf:conf_cc_proto",
         "//cpp/src/utils:protobuf_utils",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -78,6 +81,7 @@ cc_library(
         "//cpp/src/strategy",
         "//cpp/src/utils:thread",
         "//cpp/src/utils:thread_pool",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -92,6 +96,7 @@ cc_library(
         ":resource_manager",
         "//cpp/src/data_structure",
         "//cpp/src/utils:thread",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -107,6 +112,7 @@ cc_library(
         "//cpp/src/strategy",
         "//cpp/src/utils:thread",
         "//cpp/src/utils:thread_pool",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -120,6 +126,7 @@ cc_library(
         ":examiner",
         ":producer",
         ":trainer",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -129,5 +136,6 @@ cc_binary(
     deps = [
         ":engine", 
         "@com_github_gflags_gflags//:gflags",
+        "@spdlog//:spdlog"
     ],
 )

@@ -1,18 +1,16 @@
 package(default_visibility = ["//visibility:public"])
 
-load("@pip_deps//:requirements.bzl", "requirement")
+# py_binary(
+#     name = "learn_tf",
+#     srcs = ["learn_tf.py"],
+#     deps = [requirement("tensorflow")],
+# )
 
-py_binary(
-    name = "learn_tf",
-    srcs = ["learn_tf.py"],
-    deps = [requirement("tensorflow")],
-)
-
-py_binary(
-    name = "train_example",
-    srcs = ["train_example.py"],
-    deps = [requirement("tensorflow")],
-)
+# py_binary(
+#     name = "train_example",
+#     srcs = ["train_example.py"],
+#     deps = [requirement("tensorflow")],
+# )
 
 py_binary(
     name = "py_model",
@@ -21,7 +19,6 @@ py_binary(
         "//conf:conf_file",
     ],
     deps = [
-        requirement("tensorflow"),
         "//conf:conf_py_proto",
     ],
 )
