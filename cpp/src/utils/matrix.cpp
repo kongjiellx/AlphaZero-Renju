@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2021/1/26.
-//
-
 #include "matrix.h"
 
 Eigen::MatrixXf rotation90(int n, const Eigen::MatrixXf &matrix) {

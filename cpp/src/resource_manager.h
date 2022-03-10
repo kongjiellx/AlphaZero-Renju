@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/5/5.
-//
-
 #ifndef ALPHAZERO_RENJU_RESOURCE_MANAGER_H
 #define ALPHAZERO_RENJU_RESOURCE_MANAGER_H
 

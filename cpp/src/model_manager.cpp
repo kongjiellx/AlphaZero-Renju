@@ -34,13 +34,13 @@ shared_ptr<tuple<vector<float>, float>> ModelManager::predict(const FEATURE &fea
     return ret;
 }
 
-void ModelManager::reset_train_model() {
-    save_model(MODEL_TYPE::PREDICT);
+void ModelManager::reset_train_model() { // only called in examiner, can be lock free
+    save_model(MODEL_TYPE::PREDICT, false);
     train_model.load(ResourceManager::instance().get_conf().model_conf().predict_model_weight_save_path());
 }
 
-void ModelManager::update_predict_model() {
-    save_model(MODEL_TYPE::TRAIN);
+void ModelManager::update_predict_model() { // only called in examiner, can be lock free
+    save_model(MODEL_TYPE::TRAIN, false);
     predict_model.load(ResourceManager::instance().get_conf().model_conf().train_model_weight_save_path());
 }
 
@@ -50,22 +50,38 @@ void ModelManager::train_on_batch(std::vector<Instance> &instances) {
     train_model_mutex.Unlock();
 }
 
-void ModelManager::save_model(MODEL_TYPE model_type) {
+void ModelManager::save_model(MODEL_TYPE model_type, bool with_lock) {
     if (model_type == MODEL_TYPE::PREDICT) {
+        if (with_lock) {
+            predict_model_mutex.ReaderLock();
+        }
         predict_model.save(ResourceManager::instance().get_conf().model_conf().predict_model_weight_save_path());
+        if (with_lock) {
+            predict_model_mutex.ReaderUnlock();
+        }
         LOG(INFO) << "predict model saved!";
     } else if (model_type == MODEL_TYPE::TRAIN) {
+        if (with_lock) {
+            train_model_mutex.ReaderLock();
+        }
         train_model.save(ResourceManager::instance().get_conf().model_conf().train_model_weight_save_path());
+        if (with_lock) {
+            train_model_mutex.ReaderUnlock();
+        }
         LOG(INFO) << "train model saved!";
     }
 }
 
 void ModelManager::load_model(MODEL_TYPE model_type) {
     if (model_type == MODEL_TYPE::PREDICT) {
+        predict_model_mutex.Lock();
         predict_model.load(ResourceManager::instance().get_conf().model_conf().predict_model_weight_save_path());
+        predict_model_mutex.Unlock();
         LOG(INFO) << "predict model loaded!";
     } else if (model_type == MODEL_TYPE::TRAIN) {
+        train_model_mutex.Lock();
         train_model.load(ResourceManager::instance().get_conf().model_conf().train_model_weight_save_path());
+        train_model_mutex.Unlock();
         LOG(INFO) << "train model loaded!";
     }
 }

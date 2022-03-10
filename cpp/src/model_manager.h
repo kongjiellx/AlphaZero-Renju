@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/5/16.
-//
-
 #ifndef ALPHAZERO_RENJU_MODEL_MANAGER_H
 #define ALPHAZERO_RENJU_MODEL_MANAGER_H
 
@@ -31,7 +27,7 @@ public:
 
     void update_predict_model();
 
-    void save_model(MODEL_TYPE model_type);
+    void save_model(MODEL_TYPE model_type, bool with_lock=true);
 
     void load_model(MODEL_TYPE model_type);
 

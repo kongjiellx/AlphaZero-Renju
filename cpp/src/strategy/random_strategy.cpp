@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/11/18.
-//
-
 #include "random_strategy.h"
 #include "cpp/src/resource_manager.h"
 

@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/11/18.
-//
-
 #ifndef ALPHAZERO_RENJU_RANDOM_STRATEGY_H
 #define ALPHAZERO_RENJU_RANDOM_STRATEGY_H
 

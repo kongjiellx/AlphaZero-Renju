@@ -1,7 +1,3 @@
-//
-// Created by liuyekuan on 2020/5/5.
-//
-
 #include "engine.h"
 #include "gflags/gflags.h"
 #include "spdlog/spdlog.h"

@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/5/16.
-//
-
 #ifndef ALPHAZERO_RENJU_THREAD_POOL_H
 #define ALPHAZERO_RENJU_THREAD_POOL_H
 

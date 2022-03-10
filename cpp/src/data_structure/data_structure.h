@@ -1,7 +1,3 @@
-//
-// Created by liuyekuan on 2020/5/16.
-//
-
 #ifndef ALPHAZERO_RENJU_DATA_STRUCTURE_H
 #define ALPHAZERO_RENJU_DATA_STRUCTURE_H
 

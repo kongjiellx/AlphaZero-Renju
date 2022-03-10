@@ -1,6 +1,3 @@
-//
-// Created by 刘也宽 on 2020/11/11.
-//
 #include "protobuf_utils.h"
 
 conf::Conf load_conf(const std::string path) {

@@ -1,6 +1,3 @@
-//
-// Created by 刘也宽 on 2020/10/3.
-//
 #include "examiner.h"
 #include "cpp/src/pit.h"
 #include "cpp/src/strategy/mcts_strategy.h"

@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2021/1/26.
-//
-
 #ifndef ALPHAZERO_RENJU_MATRIX_H
 #define ALPHAZERO_RENJU_MATRIX_H
 
