@@ -10,6 +10,17 @@ cc_library(
 )
 
 cc_library(
+    name = "experts",
+    srcs = [
+        "experts.h",
+        "experts.cpp",
+    ],
+    deps = [
+        "//cpp/src:model_manager",
+    ],
+)
+
+cc_library(
     name = "mcts",
     srcs = [
         "mcts_strategy.cpp",
