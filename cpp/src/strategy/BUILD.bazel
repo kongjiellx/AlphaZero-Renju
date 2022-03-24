@@ -10,13 +10,33 @@ cc_library(
 )
 
 cc_library(
-    name = "experts",
+    name = "expert",
     srcs = [
-        "experts.h",
-        "experts.cpp",
+        "expert.h",
     ],
     deps = [
-        "//cpp/src:model_manager",
+        "//cpp/src/data_structure",
+    ]
+)
+
+cc_library(
+    name = "random_expert",
+    srcs = [
+        "random_expert.h",
+        "random_expert.cpp"
+    ],
+    deps = [":expert"],
+)
+
+cc_library(
+    name = "model_expert",
+    srcs = [
+        "model_expert.h",
+        "model_expert.cpp"
+    ],
+    deps = [
+        ":expert",
+        "//cpp/src:model_manager"
     ],
 )
 
@@ -28,9 +48,10 @@ cc_library(
     ],
     deps = [
         ":strategy_h",
+        ":expert",
         "//cpp/src:board",
-        "//cpp/src:model_manager",
-        "//cpp/src:resource_manager",
+        # "//cpp/src:model_manager",
+        # "//cpp/src:resource_manager",
         "//cpp/src/data_structure",
         "//cpp/src/utils:dirichlet",
     ],

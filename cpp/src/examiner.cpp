@@ -1,6 +1,7 @@
 #include "examiner.h"
 #include "cpp/src/pit.h"
 #include "cpp/src/strategy/mcts_strategy.h"
+#include "cpp/src/strategy/model_expert.h"
 #include "cpp/src/resource_manager.h"
 #include "cpp/src/model_manager.h"
 #include <chrono>
@@ -22,8 +23,8 @@ void Examiner::run() {
         // int old_simulate_num = mcts_conf.get_simulate_num();
         // mcts_conf.set_simulate_num(500);
         for (size_t i = 0; i < game_num; i++) {
-            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, MODEL_TYPE::TRAIN, false, false);
-            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, MODEL_TYPE::PREDICT, false, false);
+            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, make_shared<ModelExpert>(false, MODEL_TYPE::TRAIN), false);
+            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT), false);
             futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, i == game_num - 1));
         }
         int o_win = 0, x_win = 0;

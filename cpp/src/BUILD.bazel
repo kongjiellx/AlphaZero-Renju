@@ -79,6 +79,7 @@ cc_library(
         ":pit",
         ":resource_manager",
         "//cpp/src/strategy",
+        "//cpp/src/strategy:model_expert",
         "//cpp/src/utils:thread",
         "//cpp/src/utils:thread_pool",
         "@spdlog//:spdlog"
@@ -110,6 +111,7 @@ cc_library(
         ":model_manager",
         ":pit",
         "//cpp/src/strategy",
+        "//cpp/src/strategy:model_expert",
         "//cpp/src/utils:thread",
         "//cpp/src/utils:thread_pool",
         "@spdlog//:spdlog"

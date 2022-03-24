@@ -1,9 +1,7 @@
-//
-// Created by 刘也宽 on 2020/10/3.
-//
 #include "producer.h"
 #include "cpp/src/strategy/mcts_strategy.h"
 #include "data_structure/data_structure.h"
+#include "cpp/src/strategy/model_expert.h"
 #include "spdlog/spdlog.h"
 
 Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), total_produce_num(0), total_game_num(0) {
@@ -14,8 +12,9 @@ Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), t
 
 void Producer::produce_one() {
     auto &conf = ResourceManager::instance().get_conf();
-    auto stg1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, MODEL_TYPE::PREDICT, true);
-    auto stg2 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::X, MODEL_TYPE::PREDICT, true);
+    auto model_expert = make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT);
+    auto stg1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, model_expert, true);
+    auto stg2 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::X, model_expert, true);
     auto result = pit.play_a_game(stg1, stg2, false);
     total_produce_num += result->records.size();
     auto instances = game_result_to_instances(result);

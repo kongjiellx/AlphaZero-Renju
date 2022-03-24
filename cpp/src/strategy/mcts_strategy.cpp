@@ -1,6 +1,5 @@
 #include "mcts_strategy.h"
 #include "cpp/src/utils/dirichlet.h"
-#include "cpp/src/model_manager.h"
 #include <numeric>
 #include <random>
 #include <iostream>
@@ -77,9 +76,9 @@ Player Node::getPlayer() const {
     return player;
 }
 
-MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock, bool sample)
+MctsStrategy::MctsStrategy(conf::MctsConf mcts_conf, Player player, shared_ptr<Expert> expert, bool sample)
         : Strategy(player), root(new Node(weak_ptr<Node>(), 0, player)), current_root(root), mcts_conf(mcts_conf),
-          current_step(0), model_type(model_type), with_lock(with_lock), sample(sample) {}
+          current_step(0), sample(sample), expert(expert) {}
 
 
 std::tuple<int, int> MctsStrategy::step(const Board &board, StepRecord &record) {
@@ -130,9 +129,10 @@ void MctsStrategy::simulate(const Board &board, bool add_dirichlet_noise) {
     if (std::get<0>(status)) {
         v = std::get<1>(status);
     } else {
-        auto features = board_status_to_feature(copy_board.get_current_status(),
-                                                            copy_board.current_player);
-        auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
+        // auto features = board_status_to_feature(copy_board.get_current_status(),
+        //                                                     copy_board.current_player);
+        // auto pv = ModelManager::instance().predict(*features, model_type, with_lock);
+        auto pv = expert->get_pv(copy_board.get_current_status(), copy_board.current_player);
         std::vector<float> ps = std::get<0>(*pv);
         v = std::get<1>(*pv);
 

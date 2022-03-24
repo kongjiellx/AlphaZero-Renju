@@ -5,6 +5,7 @@
 #include "conf/conf_cc_proto_pb/conf/conf.pb.h"
 #include <tuple>
 #include <unordered_map>
+#include "cpp/src/strategy/expert.h"
 
 class Node: public std::enable_shared_from_this<Node> {
 private:
@@ -44,9 +45,8 @@ private:
     shared_ptr<Node> current_root;
     int current_step;
     conf::MctsConf mcts_conf;
-    MODEL_TYPE model_type;
-    bool with_lock; // is predict with mutex
     bool sample; // true: choice from distribution; false: choice max
+    shared_ptr<Expert> expert;
 
     void dirichlet_noise(std::vector<float> &ps);
 
@@ -57,7 +57,7 @@ private:
     void change_root(int action);
 
 public:
-    MctsStrategy(conf::MctsConf mcts_conf, Player player, MODEL_TYPE model_type, bool with_lock=true, bool sample=true);
+    MctsStrategy(conf::MctsConf mcts_conf, Player player, shared_ptr<Expert> expert, bool sample=true);
 
     void post_process(const Board &board) override;
 

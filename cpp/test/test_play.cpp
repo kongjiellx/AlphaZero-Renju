@@ -20,19 +20,11 @@ int main(int argc, char *argv[]) {
     ModelManager::instance().init();
     Pit pit;
 
-//    auto stg1 = make_shared<RandomStrategy>(Player::O);
-//    auto stg2 = make_shared<RandomStrategy>(Player::X);
-
     auto stg1 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::O, MODEL_TYPE::PREDICT);
     auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::X, MODEL_TYPE::PREDICT);
     auto ret = pit.play_a_game(stg1, stg2, true);
     LOG(INFO) << "winner: " << ret->winner;
 
     auto p = game_result_to_instances(ret);
-//    for (auto &instance: *p) {
-//        LOG(INFO) << instance.label_v;
-//        LOG(INFO) << instance.features[0][0][0] << instance.features[0][0][1] << instance.features[0][0][2];
-//    }
-//    LOG(INFO) << "instance";
     return 0;
 }

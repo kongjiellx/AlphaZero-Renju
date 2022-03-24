@@ -78,3 +78,18 @@ cc_binary(
     srcs = ["test_spdlog.cpp"],
     deps = ["@spdlog//:spdlog"],
 )
+
+cc_binary(
+    name = "test_mcts",
+    srcs = [
+        "test_mcts.cpp",
+    ],
+    data = [
+        "//conf:conf.pbtxt",
+    ],
+    deps = [
+        "//cpp/src/strategy:random_expert",
+        "//cpp/src/strategy:mcts",
+        "//cpp/src/utils:protobuf_utils",
+    ],  
+)
