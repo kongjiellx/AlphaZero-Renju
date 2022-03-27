@@ -40,9 +40,10 @@ bool Node::is_leaf() {
 
 tuple<shared_ptr<Node>, int> Node::select() {
     int nb = 0;
-    for (auto &it: children) {
-        nb += it.second->getN();
-    }
+    // for (auto &it: children) {
+    //     nb += it.second->getN();
+    // }
+    nb += N;
     float max_qu = -1;
     int select_action = -1;
     for (auto &it: children) {

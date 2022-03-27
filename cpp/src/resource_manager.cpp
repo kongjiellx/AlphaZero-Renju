@@ -1,11 +1,7 @@
-//
-// Created by 刘也宽 on 2020/10/3.
-//
 #include "resource_manager.h"
+#include "spdlog/spdlog.h"
 
-ResourceManager::ResourceManager() : data_pool(10000) {
-    conf = load_conf(FLAGS_conf_path);
-}
+ResourceManager::ResourceManager() : conf(load_conf(FLAGS_conf_path)), data_pool(conf.self_play_conf().data_pool_size()) {}
 
 ResourceManager &ResourceManager::instance() {
     static ResourceManager ins;

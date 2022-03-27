@@ -12,9 +12,10 @@ Engine::Engine() {
 }
 
 void Engine::add_workers() {
-    workers.push_back(make_shared<Producer>(8));
+    auto self_play_conf = ResourceManager::instance().get_conf().self_play_conf();
+    workers.push_back(make_shared<Producer>(self_play_conf.producer_threads_num()));
     workers.push_back(make_shared<Trainer>());
-    workers.push_back(make_shared<Examiner>(8, 50));
+    workers.push_back(make_shared<Examiner>(self_play_conf.examiner_threads_num(), self_play_conf.examiner_game_num()));
 }
 
 void Engine::start() {

@@ -11,8 +11,8 @@ DECLARE_string(conf_path);
 
 class ResourceManager {
 private:
-    FixedDeque<Instance> data_pool;
     conf::Conf conf;
+    FixedDeque<Instance> data_pool;
 
     ResourceManager();
 

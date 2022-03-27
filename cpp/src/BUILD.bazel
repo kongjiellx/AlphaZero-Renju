@@ -1,3 +1,4 @@
+load("@pybind11_bazel//:build_defs.bzl", "pybind_extension")
 package(default_visibility = ["//visibility:public"])
 
 cc_library(
@@ -38,6 +39,7 @@ cc_library(
         "//cpp/src/utils:fixed_deque",
         "//cpp/src/utils:protobuf_utils",
         "@com_github_gflags_gflags//:gflags",
+        "@spdlog//:spdlog"
     ],
 )
 
@@ -139,5 +141,24 @@ cc_binary(
         ":engine", 
         "@com_github_gflags_gflags//:gflags",
         "@spdlog//:spdlog"
+    ],
+)
+
+cc_library(
+    name = "py_interface",
+    srcs = [
+        "py_interface.h",
+        "py_interface.cpp"
+    ],
+    deps = [],
+)
+
+pybind_extension(
+    name = "py_interface_pybind",
+    srcs = [
+        "py_interface_pybind.cpp",
+    ],
+    deps = [
+        ":py_interface",
     ],
 )

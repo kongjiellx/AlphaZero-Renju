@@ -14,17 +14,16 @@ void Examiner::run() {
     Pit pit;
     int round = 0;
     while (true) {
-        std::this_thread::sleep_for(std::chrono::minutes(5));
+        auto examiner_interval = ResourceManager::instance().get_conf().self_play_conf().examiner_interval();
+        std::this_thread::sleep_for(std::chrono::minutes(examiner_interval));
         spdlog::info("game round: " + std::to_string(round) + " start!");
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();
         std::vector<std::future<shared_ptr<GameResult>>> futures;
         auto mcts_conf = ResourceManager::instance().get_conf().mtcs_conf();
-        // int old_simulate_num = mcts_conf.get_simulate_num();
-        // mcts_conf.set_simulate_num(500);
         for (size_t i = 0; i < game_num; i++) {
-            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, make_shared<ModelExpert>(false, MODEL_TYPE::TRAIN), false);
-            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT), false);
+            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT), false);
+            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, make_shared<ModelExpert>(false, MODEL_TYPE::TRAIN), false);
             futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, i == game_num - 1));
         }
         int o_win = 0, x_win = 0;
@@ -36,14 +35,13 @@ void Examiner::run() {
                 x_win++;
             }
         }
-        // mcts_conf.set_simulate_num(old_simulate_num);
 
         spdlog::info("O win: " + std::to_string(o_win) + ", X win: " + std::to_string(x_win));
-        if (o_win > x_win) {
-            spdlog::info("winner: O, update predict model!");
+        if (x_win >= o_win) {
+            spdlog::info("winner: X, update predict model!");
             ModelManager::instance().update_predict_model();
         } else {
-            spdlog::info("winner: X, reset train model!");
+            spdlog::info("winner: O, reset train model!");
             ModelManager::instance().reset_train_model();
         }
         ModelManager::instance().get_train_model_mutex().Unlock();

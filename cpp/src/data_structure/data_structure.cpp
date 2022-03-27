@@ -38,16 +38,9 @@ shared_ptr<std::vector<Instance>> game_result_to_instances(shared_ptr<GameResult
                 label_matrix(i, j) = label_p[i * record.status.size() + j];
             }
         }
-//        std::cout << "====base_status====" << std::endl;
-//        std::cout << status_matrix << std::endl;
-//        std::cout << "====base_label====" << std::endl;
-//        std::cout << label_matrix << std::endl;
         for (int i = 0; i < 4; i++) {
-//            std::cout << "rotation: " << i << std::endl;
             auto rotated_status_matrix = rotation90(i, status_matrix);
-//            std::cout << rotated_status_matrix << std::endl;
             auto rotated_label = rotation90(i, label_matrix);
-//            std::cout << rotated_label << std::endl;
             BOARD_STATUS rotated_status(record.status.size(), vector<int>(record.status.size(), 0));
             for (int j = 0; j < record.status.size(); j++) {
                 for (int k = 0; k < record.status.size(); k++) {

@@ -1,0 +1,20 @@
+package(default_visibility = ["//visibility:public"])
+
+py_binary(
+    name = "py_model",
+    srcs = ["py_model.py"],
+    data = [
+        "//conf:conf_file",
+    ],
+    deps = [
+        "//conf:conf_py_proto",
+    ],
+)
+
+py_binary(
+    name = "test_bind",
+    srcs = ["test_bind.py"],
+    data = [
+        "//cpp/src:py_interface_pybind.so"
+    ],
+)

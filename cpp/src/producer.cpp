@@ -12,19 +12,20 @@ Producer::Producer(int thread_pool_size) : thread_pool_size(thread_pool_size), t
 
 void Producer::produce_one() {
     auto &conf = ResourceManager::instance().get_conf();
-    auto model_expert = make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT);
+    auto model_expert = make_shared<ModelExpert>(true, MODEL_TYPE::PREDICT);
     auto stg1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, model_expert, true);
     auto stg2 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::X, model_expert, true);
     auto result = pit.play_a_game(stg1, stg2, false);
-    total_produce_num += result->records.size();
+    total_produce_num += result->records.size() * 8;
     auto instances = game_result_to_instances(result);
     for (auto &instance: *instances) {
         ResourceManager::instance().get_data_pool().push_back(instance);
     }
     total_game_num += 1;
-    if (total_game_num % 100 == 0) {
-        spdlog::info("total_produce_num: " + std::to_string(total_produce_num));
+    if (total_game_num % conf.self_play_conf().producer_log_freq() == 0) {
+        spdlog::info("total_game_num: " + std::to_string(total_game_num) + ", total_produce_num:" + std::to_string(total_produce_num));
     }
+    
 }
 
 void Producer::produce_endless() {

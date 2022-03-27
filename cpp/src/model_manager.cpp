@@ -1,4 +1,5 @@
 #include "model_manager.h"
+#include "spdlog/spdlog.h"
 
 ModelManager &ModelManager::instance() {
     static ModelManager ins(ResourceManager::instance().get_conf().game_conf().board_size());
@@ -59,7 +60,7 @@ void ModelManager::save_model(MODEL_TYPE model_type, bool with_lock) {
         if (with_lock) {
             predict_model_mutex.ReaderUnlock();
         }
-        LOG(INFO) << "predict model saved!";
+        spdlog::info("predict model saved!");
     } else if (model_type == MODEL_TYPE::TRAIN) {
         if (with_lock) {
             train_model_mutex.ReaderLock();
@@ -68,7 +69,7 @@ void ModelManager::save_model(MODEL_TYPE model_type, bool with_lock) {
         if (with_lock) {
             train_model_mutex.ReaderUnlock();
         }
-        LOG(INFO) << "train model saved!";
+        spdlog::info("train model saved!");
     }
 }
 
@@ -77,12 +78,12 @@ void ModelManager::load_model(MODEL_TYPE model_type) {
         predict_model_mutex.Lock();
         predict_model.load(ResourceManager::instance().get_conf().model_conf().predict_model_weight_save_path());
         predict_model_mutex.Unlock();
-        LOG(INFO) << "predict model loaded!";
+        spdlog::info("predict model loaded!");
     } else if (model_type == MODEL_TYPE::TRAIN) {
         train_model_mutex.Lock();
         train_model.load(ResourceManager::instance().get_conf().model_conf().train_model_weight_save_path());
         train_model_mutex.Unlock();
-        LOG(INFO) << "train model loaded!";
+        spdlog::info("train model loaded!");
     }
 }
 

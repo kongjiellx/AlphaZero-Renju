@@ -66,7 +66,6 @@ cc_library(
     deps = [
         ":strategy_h",
         "//cpp/src:board",
-        "//cpp/src:resource_manager"
     ],
 )
 

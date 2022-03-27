@@ -90,6 +90,8 @@ cc_binary(
     deps = [
         "//cpp/src/strategy:random_expert",
         "//cpp/src/strategy:mcts",
+        "//cpp/src/strategy:random",
         "//cpp/src/utils:protobuf_utils",
+        "@spdlog//:spdlog"
     ],  
 )

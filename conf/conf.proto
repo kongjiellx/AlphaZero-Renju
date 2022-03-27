@@ -11,13 +11,22 @@ message ModelConf {
     string model_path = 1;
     int32 residual_blocks = 2;
     int32 batch_size = 3;
-    int32 save_every_n_games = 4;
-    float l2_c = 5;
-    float lr = 6;
-    float validation_split = 7;
-    string train_model_weight_save_path = 8;
-    string predict_model_weight_save_path = 9;
-    bool load_pre = 10;
+    float l2_c = 4;
+    float lr = 5;
+    string train_model_weight_save_path = 6;
+    string predict_model_weight_save_path = 7;
+    bool load_pre = 8;
+}
+
+message SelfPlayConf {
+    int32 data_pool_size = 1;
+    int32 producer_threads_num = 2;
+    int32 producer_log_freq = 3;
+    int32 examiner_threads_num = 4;
+    int32 examiner_game_num = 5;
+    int32 examiner_interval = 6;
+    int32 train_step_interval = 7;
+    int32 trainer_log_freq = 8;
 }
 
 message MctsConf {
@@ -46,5 +55,6 @@ message Conf {
     MctsConf mtcs_conf = 3;
     DataConf data_conf = 4;
     UiConf ui_conf = 5;
+    SelfPlayConf self_play_conf = 6;
 }
 

@@ -3,12 +3,17 @@ build --cxxopt=-std=c++14
 build --host_cxxopt=-std=c++14
 
 # Processor native optimizations (depends on build host capabilities).
-build:nativeopt --copt=-mcpu=apple-m1
-build:nativeopt --host_copt=-mcpu=apple-m1
-build:nativeopt --copt=-O3
-build --config=nativeopt
+build --copt=-mcpu=apple-m1
+build --host_copt=-mcpu=apple-m1
 
-build -c opt
+build:deploy --copt=-O3
+build:deploy -c opt
+
+build:debug -c dbg
+# build:debug --copt="-g"
+# build:debug --spawn_strategy=local
+# build:debug --sandbox_debug
+# build:debug --apple_enable_auto_dsym_dbg
 
 build --keep_going
 build --verbose_failures=true
@@ -31,7 +36,8 @@ build --experimental_repo_remote_exec
 build --experimental_cc_shared_library
 
 build --output_filter=DONT_MATCH_ANYTHING
-build --output_filter=
 
 build --disk_cache=~/.bazel_remote_cache
-build --incompatible_strict_action_env
+
+# 加了这个配置debug会炸
+# build --incompatible_strict_action_env

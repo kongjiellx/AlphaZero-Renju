@@ -73,3 +73,24 @@ http_archive(
     urls = ["https://github.com/gabime/spdlog/archive/refs/tags/v1.9.2.zip"],
     build_file = "//cpp/third_party:spdlog.BUILD"
 )
+
+########################################################
+# pybind11
+########################################################
+http_archive (
+   name = "pybind11_bazel" ,
+   strip_prefix = "pybind11_bazel-26973c0ff320cb4b39e45bc3e4297b82bc3a6c09" ,
+   urls = ["https://github.com/pybind/pybind11_bazel/archive/26973c0ff320cb4b39e45bc3e4297b82bc3a6c09.zip"],
+   sha256 = "8f546c03bdd55d0e88cb491ddfbabe5aeb087f87de2fbf441391d70483affe39"
+)
+
+http_archive(
+    name = "pybind11",
+    urls = ["https://github.com/pybind/pybind11/archive/v2.9.0.tar.gz"],
+    sha256 = "057fb68dafd972bc13afb855f3b0d8cf0fa1a78ef053e815d9af79be7ff567cb",
+    strip_prefix = "pybind11-2.9.0",
+    build_file = "@pybind11_bazel//:pybind11.BUILD"
+)
+
+load("@pybind11_bazel//:python_configure.bzl", "python_configure")
+python_configure(name = "local_config_python")

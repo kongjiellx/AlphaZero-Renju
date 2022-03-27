@@ -6,20 +6,29 @@ game_conf: {
 model_conf: {
     model_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/model"
     residual_blocks: 3
-    batch_size: 32
-    save_every_n_games: 10000
+    batch_size: 10
     l2_c: 0.00001
     lr: 0.001
-    validation_split: 0.2
     train_model_weight_save_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/weights/train"
     predict_model_weight_save_path: "/Users/admin/fish/code/AlphaZero-Renju/cpp/weights/predict"
-    load_pre: false
+    load_pre: true
+}
+
+self_play_conf {
+    data_pool_size: 10000
+    producer_threads_num: 7
+    producer_log_freq: 10
+    examiner_threads_num: 7
+    examiner_game_num: 14
+    examiner_interval: 30
+    train_step_interval: 200
+    trainer_log_freq: 100
 }
 
 mtcs_conf: {
-    simulate_num: 100
+    simulate_num: 1000
     c_puct: 5
-    explore_steps: 10
+    explore_steps: 4
     dirichlet_esp: 0.25
     dirichlet_alpha: 1.0
 }
