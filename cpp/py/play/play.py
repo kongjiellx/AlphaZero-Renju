@@ -2,7 +2,7 @@
 # coding: utf-8
 
 import pygame
-from enum import Enum
+from cpp.src.py_interface_pybind import PyInterface, Player
 import time
 
 board_size = 13
@@ -20,9 +20,8 @@ screen = pygame.display.set_mode((background_size, background_size), 0, 32)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
-class Player(Enum):
-    O = 1
-    X = 2
+HUMAN = Player.X
+AI = Player.X if HUMAN == Player.O else Player.O
 
 
 class Stone:
@@ -54,23 +53,42 @@ class Board:
 
 
 if __name__ == "__main__":
+    interface = PyInterface()
+    interface.test_func(Player.O)
+    interface.init("/Users/admin/fish/code/AlphaZero-Renju/conf/conf.pbtxt")
+
+    interface.new_game(AI)
     game_board = Board(background)
     pygame.display.update()
+    
     current_player = Player.O
     while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                exit()
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1 and game_board.outline.collidepoint(event.pos):
-                    x = int(round((event.pos[0] - empty) / per_width, 0))
-                    y = int(round((event.pos[1] - empty) / per_width, 0))
-                    pos = (x, y)
-                    stone = Stone(pos, current_player)
-                    stone.draw()
-                    if current_player == Player.O:
-                        current_player = Player.X
-                    else:
-                        current_player = Player.O
-                    pygame.display.update()
-            time.sleep(0.1)
+        if current_player == HUMAN:
+            move_done = False
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.QUIT:
+                        exit()
+                    if event.type == pygame.MOUSEBUTTONDOWN:
+                        if event.button == 1 and game_board.outline.collidepoint(event.pos):
+                            x = int(round((event.pos[0] - empty) / per_width, 0))
+                            y = int(round((event.pos[1] - empty) / per_width, 0))
+                            pos = (x, y)
+                            print(pos)
+                            interface.enemy_move(pos)
+                            move_done = True
+                if move_done:
+                    break
+                time.sleep(0.1)
+        else:  # AI
+            pos = interface.self_move()
+            print(pos)
+        
+        stone = Stone(pos, current_player)
+        stone.draw()
+        
+        if current_player == Player.O:
+            current_player = Player.X
+        else:
+            current_player = Player.O
+        pygame.display.update()

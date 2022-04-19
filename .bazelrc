@@ -8,6 +8,7 @@ build --host_copt=-mcpu=apple-m1
 
 build:deploy --copt=-O3
 build:deploy -c opt
+build --config deploy
 
 build:debug -c dbg
 # build:debug --copt="-g"

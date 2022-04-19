@@ -7,3 +7,11 @@ py_binary(
         "//cpp/src:py_interface_pybind.so"
     ],
 )
+
+py_binary(
+    name = "play",
+    srcs = ["play.py"],
+    data = [
+        "//cpp/src:py_interface_pybind.so"
+    ],
+)

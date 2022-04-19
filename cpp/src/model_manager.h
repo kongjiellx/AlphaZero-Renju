@@ -12,12 +12,11 @@ private:
     absl::Mutex predict_model_mutex;
     Model train_model;
     Model predict_model;
+    conf::ModelConf model_conf;
 public:
-    static ModelManager &instance();
+    static ModelManager &instance(int board_size=0, const conf::ModelConf &model_conf=*((conf::ModelConf*) nullptr));
 
-    ModelManager(int board_size);
-
-    void init();
+    ModelManager(int board_size, const conf::ModelConf &model_conf);
 
     void train_on_batch(std::vector<Instance> &instances);
 

@@ -1,9 +1,12 @@
 #include "engine.h"
 #include "spdlog/spdlog.h"
 
-Engine::Engine() {
-    ResourceManager::instance();
-    ModelManager::instance().init();
+Engine::Engine(std::string conf_path) {
+    ResourceManager::instance(conf_path);  // init
+    ModelManager::instance(
+            ResourceManager::instance().get_conf().game_conf().board_size(), 
+            ResourceManager::instance().get_conf().model_conf()
+    );  // init
     if (ResourceManager::instance().get_conf().model_conf().load_pre()) {
         spdlog::info("load pre trained model!");
         ModelManager::instance().load_model(MODEL_TYPE::TRAIN);

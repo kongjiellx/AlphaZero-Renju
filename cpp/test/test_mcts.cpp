@@ -8,7 +8,7 @@
 int main(int argc, char *argv[]) {
     auto conf = load_conf("conf/conf.pbtxt");
 
-    auto p1 = make_shared<MctsStrategy>(conf.mtcs_conf(), Player::O, make_shared<RandomExpert>(), true);
+    auto p1 = make_shared<MctsStrategy>(conf.mcts_conf(), Player::O, make_shared<RandomExpert>(), true);
     auto p2 = make_shared<RandomStrategy>(Player::O);
 
     Board board(conf.game_conf());

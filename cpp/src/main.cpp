@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
     spdlog::info("AlphaZero start.");
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-    Engine m;
+    Engine m(FLAGS_conf_path);
     m.add_workers();
 
     signal(SIGINT, signal_callback_handler);

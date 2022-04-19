@@ -7,13 +7,16 @@
 #include "cpp/src/trainer.h"
 #include "cpp/src/examiner.h"
 #include <vector>
+#include "gflags/gflags.h"
+
+DECLARE_string(conf_path);
 
 
 class Engine {
 private:
     std::vector<shared_ptr<Thread>> workers;
 public:
-    Engine();
+    Engine(std::string conf_path);
 
     void add_workers();
 

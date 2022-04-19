@@ -20,28 +20,35 @@ void Examiner::run() {
         ModelManager::instance().get_train_model_mutex().Lock();
         ModelManager::instance().get_predict_model_mutex().Lock();
         std::vector<std::future<shared_ptr<GameResult>>> futures;
-        auto mcts_conf = ResourceManager::instance().get_conf().mtcs_conf();
-        for (size_t i = 0; i < game_num; i++) {
+        auto mcts_conf = ResourceManager::instance().get_conf().mcts_conf();
+        for (size_t i = 0; i < game_num / 2; i++) {
             auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::O, make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT), false);
             auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::X, make_shared<ModelExpert>(false, MODEL_TYPE::TRAIN), false);
-            futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, i == game_num - 1));
+            futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, false));
         }
-        int o_win = 0, x_win = 0;
+        for (size_t i = 0; i < game_num / 2; i++) {
+            auto stg1 = make_shared<MctsStrategy>(mcts_conf, Player::X, make_shared<ModelExpert>(false, MODEL_TYPE::PREDICT), false);
+            auto stg2 = make_shared<MctsStrategy>(mcts_conf, Player::O, make_shared<ModelExpert>(false, MODEL_TYPE::TRAIN), false);
+            futures.emplace_back(thread_pool.enqueue(&Pit::play_a_game, &pit, stg1, stg2, i == game_num / 2 - 1));
+        }
+        int new_win = 0, old_win = 0;
+        int idx = 0;
         for (auto &&future: futures) {
             auto result = future.get();
-            if (result->winner == Player::O) {
-                o_win++;
-            } else if (result->winner == Player::X) {
-                x_win++;
+            if ((idx < game_num / 2 && result->winner == Player::X) || (idx >= game_num / 2 && result->winner == Player::O)) {
+                new_win++;
+            } else if ((idx < game_num / 2 && result->winner == Player::O) || (idx >= game_num / 2 && result->winner == Player::X)) {
+                old_win++;
             }
+            idx++;
         }
 
-        spdlog::info("O win: " + std::to_string(o_win) + ", X win: " + std::to_string(x_win));
-        if (x_win >= o_win) {
-            spdlog::info("winner: X, update predict model!");
+        spdlog::info("new win: " + std::to_string(new_win) + ", old win: " + std::to_string(old_win));
+        if (new_win > old_win) {
+            spdlog::info("winner: NEW, update predict model!");
             ModelManager::instance().update_predict_model();
         } else {
-            spdlog::info("winner: O, reset train model!");
+            spdlog::info("winner: OLD, reset train model!");
             ModelManager::instance().reset_train_model();
         }
         ModelManager::instance().get_train_model_mutex().Unlock();

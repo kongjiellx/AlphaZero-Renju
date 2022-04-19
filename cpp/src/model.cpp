@@ -1,7 +1,3 @@
-//
-// Created by 刘也宽 on 2020/8/14.
-//
-
 #include "model.h"
 #include "spdlog/spdlog.h"
 

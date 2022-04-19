@@ -150,7 +150,12 @@ cc_library(
         "py_interface.h",
         "py_interface.cpp"
     ],
-    deps = [],
+    deps = [
+        ":resource_manager",
+        ":model_manager",
+        "//cpp/src/strategy",
+        "//cpp/src/strategy:model_expert",
+    ],
 )
 
 pybind_extension(

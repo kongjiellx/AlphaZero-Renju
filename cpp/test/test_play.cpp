@@ -20,8 +20,8 @@ int main(int argc, char *argv[]) {
     ModelManager::instance().init();
     Pit pit;
 
-    auto stg1 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::O, MODEL_TYPE::PREDICT);
-    auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mtcs_conf(), Player::X, MODEL_TYPE::PREDICT);
+    auto stg1 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mcts_conf(), Player::O, MODEL_TYPE::PREDICT);
+    auto stg2 = make_shared<MctsStrategy>(ResourceManager::instance().get_conf().mcts_conf(), Player::X, MODEL_TYPE::PREDICT);
     auto ret = pit.play_a_game(stg1, stg2, true);
     LOG(INFO) << "winner: " << ret->winner;
 
