@@ -5,10 +5,11 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 ########################################################
 load(":repo.bzl", "tensorflow_http_archive")
 # copy from tensorflow serving
-tensorflow_http_archive(
+http_archive(
     name = "org_tensorflow",
-    sha256 = "3e6c98de0842520a65978549be7b1b6061080ecf9fa9f3a87739e19a0447a85c",
-    git_commit = "1f8f692143aa9a42c55f8b35d09aeed93bdab66e",
+    sha256 = "6eaf86ead73e23988fe192da1db68f4d3828bcdd0f3a9dc195935e339c95dbdc",
+    strip_prefix = "tensorflow-2.9.1",
+    urls = ["https://github.com/tensorflow/tensorflow/archive/refs/tags/v2.9.1.tar.gz"],
 )
 
 # Check bazel version requirement, which is stricter than TensorFlow's.
